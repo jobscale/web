@@ -1,0 +1,39 @@
+#!/bin/bash
+
+web() {
+    apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
+    rm -f /etc/nginx/sites-enabled/default
+    cp -pr /var/site/projects/_/conf.d /etc/nginx
+    ln -s /run/php/php7*sock /run/php/php-fpm.sock
+    chown -R www-data. /var/log/nginx
+    systemctl restart nginx
+}
+
+account() {
+    files="/etc/passwd /etc/group /etc/shadow /etc/sudoers.d/90-cloud-init-users"
+    for f in $files
+    do
+        sed 's/ubuntu/jobscale/g' < $f > $f.swap
+        mv $f.swap $f
+    done
+    mv /home/{ubuntu,jobscale}
+    systemctl restart sshd
+}
+
+system() {
+    dd if=/dev/zero of=/swap bs=1M count=1024
+    chmod 0600 /swap
+    mkswap /swap
+    swapon /swap
+}
+
+main() {
+    date +'START my-init %Y-%m-%d %H:%M:%S'
+    web
+    account
+    system
+    date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
+}
+
+main | tee -a /var/log/cloud-my-init.log
+

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+date +'BEGIN user-data %Y-%m-%d %H:%M:%S'
+
+efsInit() {
+    apt update
+    apt dist-upgrade -y
+    apt install -y nfs-common
+    mkdir /efs
+    echo "fs-f4a8113d.efs.eu-west-1.amazonaws.com:/ /efs nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,soft,intr,timeo=4,retrans=1 0 0" | tee -a /etc/fstab
+    mount -a
+    mount -v
+    ln -s /efs/site /var
+}
+
+time efsInit
+
+if [ -x /var/site/cloud/init ]
+then
+    time /var/site/cloud/init
+fi
+
+date +'END user-data %Y-%m-%d %H:%M:%S'
+
