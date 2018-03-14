@@ -10,25 +10,22 @@ web() {
 }
 
 account() {
-    files="/etc/passwd /etc/group /etc/shadow /etc/sudoers.d/90-cloud-init-users"
-    for f in $files
-    do
-        sed 's/ubuntu/jobscale/g' < $f > $f.swap
-        mv $f.swap $f
-    done
-    mv /home/{ubuntu,jobscale}
+    usermod -l jobscale -m -d /home/jobscale ubuntu
+    ln -s /var/site/cloud/land.pem /home/jobscale/.ssh/id_rsa
+    echo 'jobscale ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers.d/70-users
     systemctl restart sshd
 }
 
 system() {
-    dd if=/dev/zero of=/swap bs=1M count=1024
-    chmod 0600 /swap
-    mkswap /swap
-    swapon /swap
+    dd if=/dev/zero of=/mnt/swap bs=1M count=1024
+    chmod 0600 /mnt/swap
+    mkswap /mnt/swap
+    swapon /mnt/swap
+    echo '/mnt/swap swap swap defaults 0 0' | tee -a /etc/fstab
 }
 
 main() {
-    date +'START my-init %Y-%m-%d %H:%M:%S'
+    date +'START    my-init %Y-%m-%d %H:%M:%S'
     web
     account
     system
