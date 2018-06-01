@@ -1,0 +1,94 @@
+mkcd() {
+    mkdir $1 && cd $1
+}
+
+phpstorm() {
+    nohup $(which phpstorm | tail -1) $@ >& /dev/null &
+}
+
+git() {
+    if [[ $@ == "branch -a" ]]
+    then
+        echo git fetch --all
+        command git fetch --all
+        echo git remote prune origin
+        command git remote prune origin
+    fi
+    command git "$@"
+}
+
+realdir() {
+    if [ "-bash" == "$0" ]
+    then
+        pwd
+        return
+    fi
+    dir=$(dirname "$0")
+    if [ -d "$dir" ]
+    then
+        echo $(cd "$dir" && pwd)
+    else
+        pwd
+    fi
+}
+
+skip() {
+    for i in $(seq 1 $1)
+    do
+        echo
+    done
+}
+
+loop() {
+    for i in $(seq $1 -1 1)
+    do
+        printf '\r%5d' $i
+        sleep 1
+    done
+    printf '\r%5d\n' 0
+}
+
+ff() {
+    find * -type f | grep -v node_modules | grep -v \.bundle\. | grep -v /min/
+}
+
+gff() {
+    while read file
+    do
+        grep $@ "${file}"
+    done < <(ff)
+}
+
+git() {
+    if [[ $@ == "branch -a" ]]
+    then
+        cmd="git fetch --all --prune"
+        echo $cmd
+        command $cmd
+    fi
+    command git "$@"
+}
+
+gulp() {
+    if [ -f ./gulp ]
+    then
+        cmd="./gulp build"
+    elif [ -f node_modules/.bin/gulp ]
+    then
+        cmd="node_modules/.bin/gulp $@"
+    else
+        bin=$(which gulp 2>/dev/null)
+        if [ "$bin" == "" ]
+        then
+            echo No such gulp found.
+            return
+        fi
+        cmd="$bin $@"
+    fi
+    echo $cmd
+    time $cmd ; date
+}
+
+less_with_unbuffer () {
+    unbuffer "$@" |& less -SR
+}

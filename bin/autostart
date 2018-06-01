@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+
+wait=5
+sleep $wait
+
+google-chrome "https://time.is"
+sleep $wait
+
+main() {
+    exo-open "https://jsx.jp"
+    sleep $wait
+
+    nohup discord >& /dev/null &
+    sleep $wait
+
+    nohup slack >& /dev/null &
+    sleep $wait
+
+    nohup terminator >& /dev/null &
+    sleep $wait
+}
+
+main
+

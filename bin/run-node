@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+
+cd $1
+npm start

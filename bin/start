@@ -1,0 +1,17 @@
+#!/bin/bash -eu
+
+group=$1
+list="."
+
+if [ -f artisan ]
+then
+    list="bootstrap storage"
+fi
+
+run() {
+    echo $1
+    $1
+}
+
+run "sudo chown -R $(whoami):$group $list"
+run "sudo chmod -R ug+rwX $list"
