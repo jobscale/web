@@ -1,4 +1,5 @@
 #!/bin/bash -eu
 
 cd $1
+. ~/.nvm/nvm.sh
 npm start

@@ -1,0 +1,11 @@
+#!/bin/bash -eu
+
+for i in ~/projects/_/home/.[a-z]*
+do
+    echo $i
+    ln -fns $i ~
+done
+
+sudo apt update
+sudo apt install -y vim
+vim +PluginInstall +qall

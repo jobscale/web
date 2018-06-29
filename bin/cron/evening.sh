@@ -9,7 +9,6 @@ then
 fi
 
 ~/bin/run-node ~/projects/node/itnews
-~/bin/run-node ~/projects/node/technews
 ~/bin/run-node ~/projects/node/news
 
 # 6日おき
@@ -18,5 +17,4 @@ then
     exit
 fi
 
-~/bin/run-node ~/projects/node/curazy
 ~/bin/run-node ~/projects/node/it

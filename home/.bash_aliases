@@ -3,16 +3,19 @@ then
     alias sudo='sudo -E'
 else
     alias sudo=''
-fi  
+fi
 alias grep='grep --color=auto'
 alias ul=less_with_unbuffer
 alias netstat='netstat -anptu'
 alias rsync='rsync -tlrhv --delete'
-    
+
 if [ -f ~/.bash_scripts ]; then
     . ~/.bash_scripts
 fi
-    
+
 if [ "" = "${DISPLAY}" ]; then
     export DISPLAY='localhost:0.0'
 fi
+
+. ~/.nvm/nvm.sh
+
