@@ -48,7 +48,7 @@
             .links > a {
                 color: #222;
                 padding: 0 1vw;
-                font-size: .1vw;
+                font-size: 2vw;
                 letter-spacing: .3vw;
                 text-decoration: none;
                 text-transform: uppercase;
