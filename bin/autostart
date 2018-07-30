@@ -16,7 +16,7 @@ main() {
     nohup slack >& /dev/null &
     sleep $wait
 
-    nohup wire >& /dev/null &
+    nohup wire-desktop >& /dev/null &
     sleep $wait
 
     nohup terminator >& /dev/null &
