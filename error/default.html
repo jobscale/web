@@ -9,6 +9,7 @@
 
         <!-- Styles -->
         <style>
+            * { overflow: hidden; }
             html, body {
                 color: #222;
                 background-color: #666;
