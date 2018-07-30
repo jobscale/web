@@ -1,30 +1,4 @@
-server {
-    listen 80;
-    listen 443 ssl;
-
-    server_name
-        ~(?<prefix>[\w-]+)\.aws\.jsx\.jp
-        ~(?<prefix>[\w-]+)\.jsx\.jp
-        ~(?<prefix>[\w-]+).\d+.\d+.\d+.\d+\.[nx]ip\.io;
-    set_by_lua $prefix "return ngx.var.prefix";
-
-    access_log /var/log/nginx/${prefix}-access.log main;
-    error_log /var/log/nginx/prefix-error.log;
-
-    set $chk "${scheme}://${host}:${server_port}";
-    if ($chk = "http://jsx.jp:80") {
-        return 301 https://$host$request_uri;
-    }
-
-    if ($prefix = "aws") {
-        return 301 https://jsx.jp$request_uri;
-    }
-    if ($prefix = "") {
-        set $prefix _;
-    }
-
-    if (!-d /var/site/web/$prefix) {
-        return 401 '<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -107,23 +81,3 @@ server {
         </div>
     </body>
 </html>
-        ';
-    }
-
-    root /var/site/web/$prefix;
-
-    location /wetty {
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
-        proxy_pass http://terminal_server;
-    }
-
-    include conf.d/inc/access-ctrl.conf;
-
-    location / { try_files $uri $uri/ /?$is_args$query_string; }
-
-    location /secret/storage { internal; alias /var/storage; include mime.types; }
-
-    include conf.d/inc/default.conf;
-}
