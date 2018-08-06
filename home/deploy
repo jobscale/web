@@ -1,11 +1,12 @@
 #!/bin/bash -eu
 
-for i in ~/projects/_/home/.[a-z]*
+for i in .[a-z]*
 do
-    echo $i
-    ln -fns $i ~
+  echo $i
+  rm -f ~/$i
+  ln -fns $(pwd)/$i ~
 done
 
-sudo apt update
-sudo apt install -y vim
+sudo -E apt update
+sudo -E apt install -y vim
 vim +PluginInstall +qall

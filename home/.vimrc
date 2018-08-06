@@ -1,5 +1,5 @@
 " Common -------------------------------
-set nocompatible        " vim
+set nofixendofline      " EOF
 set background=dark     " 背景色の傾向(カラースキームがそれに併せて色の明暗を変えてくれる)
 
 " 色
