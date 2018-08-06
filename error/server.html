@@ -56,7 +56,27 @@
             }
 
             .m-b-md {
-                margin-bottom: 12vh;
+                height: 12vh;
+            }
+            .anim-bound {
+                -webkit-animation: bounce-text 2s infinite cubic-bezier(0.245, 0.325, 0.67, 1.51);
+                animation: bounce-text 2s infinite cubic-bezier(0.245, 0.325, 0.67, 1.51);
+            }
+            @-webkit-keyframes bounce-text {
+                60% {
+                    font-size: 7vw;
+                }
+                100% {
+                    font-size: 7vw;
+                }
+            }
+            @keyframes bounce-text {
+                60% {
+                    font-size: 7vw;
+                                }
+                100% {
+                    font-size: 7vw;
+                }
             }
         </style>
     </head>
@@ -68,7 +88,7 @@
             </div>
 
             <div class="content">
-                <div class="title m-b-md">50x error</div>
+                <div class="title m-b-md anim-bound">50x error</div>
 
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
