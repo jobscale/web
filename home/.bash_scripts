@@ -9,10 +9,9 @@ phpstorm() {
 git() {
     if [[ $@ == "branch -a" ]]
     then
-        echo git fetch --all
-        command git fetch --all
-        echo git remote prune origin
-        command git remote prune origin
+        cmd="$(which git) fetch --all --prune"
+        echo "$cmd"
+        $cmd
     fi
     command git "$@"
 }
