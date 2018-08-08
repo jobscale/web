@@ -1,3 +1,5 @@
+export PROMPT_DIRTRIM=3
+
 if [ "$(which sudo 2>/dev/null)" != "" ]
 then
     alias sudo='sudo -E'
