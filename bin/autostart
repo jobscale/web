@@ -7,7 +7,7 @@ google-chrome "https://time.is"
 sleep $wait
 
 main() {
-    exo-open "https://jsx.jp"
+    google-chrome "https://jsx.jp"
     sleep $wait
 
     nohup discord >& /dev/null &
