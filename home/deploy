@@ -9,4 +9,5 @@ done
 
 sudo -E apt update
 sudo -E apt install -y vim
+git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
