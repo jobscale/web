@@ -9,7 +9,8 @@ then
 else
     alias sudo=''
 fi
-alias ul=less_with_unbuffer
+alias ul='less_with_unbuffer'
+alias diff='colordiff'
 alias netstat='netstat -anptu'
 alias rsync='rsync -tlrhv --delete'
 

@@ -10,7 +10,7 @@ web() {
 }
 
 cli() {
-    apt install -y git subversion vim net-tools whois tmux mariadb-client traceroute dstat expect sslh sshfs nfs-common cifs-utils curl zip unzip
+    apt install -y git subversion vim net-tools whois tmux mariadb-client traceroute dstat expect sslh sshfs nfs-common cifs-utils curl zip unzip colordiff
 }
 
 gui() {
@@ -27,9 +27,10 @@ java() {
 }
 
 account() {
-    usermod -l jobscale -m -d /home/jobscale ubuntu
-    ln -s /var/site/cloud/land.pem /home/jobscale/.ssh/id_rsa
-    echo 'jobscale ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers.d/70-users
+    user=jobscale
+    usermod -l $user -m -d /home/$user ubuntu
+    ln -s /var/site/cloud/land.pem /home/$user/.ssh/id_rsa
+    echo "$user ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/70-users
     systemctl restart sshd
 }
 
