@@ -3,6 +3,8 @@
 wait=5
 sleep $wait
 
+[ $(id -u) -eq 1000 ] && [ -e /dev/kvm ] && sudo chown $(whoami). /dev/kvm
+
 google-chrome "https://time.is"
 sleep $wait
 
