@@ -10,7 +10,7 @@ web() {
 }
 
 cli() {
-    apt install -y git subversion vim net-tools whois tmux mariadb-client traceroute dstat expect sslh sshfs nfs-common cifs-utils curl zip unzip colordiff
+    apt install -y git subversion vim net-tools whois tmux mariadb-client traceroute dstat expect sslh sshfs nfs-common cifs-utils curl zip unzip colordiff speedtest-cli
 }
 
 gui() {
