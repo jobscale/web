@@ -5,7 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jsx.jp</title>
-  <link rel="shortcut icon" type="image/x-icon" href="http://cdn.jsx.jp/img/favicon.png">
   <link rel="stylesheet" media="all" href="//jsx.jp/cdn/css/common.css">
 </head>
 <body>
