@@ -17,6 +17,15 @@ gui() {
     apt install -y terminator mysql-workbench polari gimp
 }
 
+npm() {
+    user=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | sudo -u $user bash
+}
+
+java() {
+    apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
+}
+
 account() {
     usermod -l jobscale -m -d /home/jobscale ubuntu
     ln -s /var/site/cloud/land.pem /home/jobscale/.ssh/id_rsa
