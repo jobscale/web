@@ -14,7 +14,7 @@ cli() {
 }
 
 gui() {
-    apt install -y terminator mysql-workbench polari
+    apt install -y terminator mysql-workbench polari gimp
 }
 
 account() {
