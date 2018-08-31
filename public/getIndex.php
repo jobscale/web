@@ -13,25 +13,15 @@
       <a href="http://gate.jsx.jp/login">Login</a>
       <a href="http://gate.jsx.jp/register">Register</a>
     </div>
-  <div class="content">
-    <div class="title">
-      <div>welcome <?= exec('hostname'); ?></div>
-    </div>
-    <div class="title">
-      <div>hello <?= filter_input(INPUT_SERVER, 'REMOTE_ADDR') ?></div>
-    </div>
-    <div class="title m-b-md">
-      <div id='date'><?= (new DateTime)->format('Y-m-d H:i:s') ?></div>
-<script>
-setInterval(() => {
-  fetch('/date.php', { method: 'post' })
-  .then(response => response.text())
-  .catch(e => e.message)
-  .then(text => {
-    document.getElementById('date').innerHTML = text;
-  });
-}, 1000);
-</script>
+    <div class="content">
+      <div class="title">
+        <div>welcome <?= exec('hostname'); ?></div>
+      </div>
+      <div class="title">
+        <div>hello <?= filter_input(INPUT_SERVER, 'REMOTE_ADDR') ?></div>
+      </div>
+      <div class="title m-b-md">
+        <div id='date'><?= (new DateTime)->format('Y-m-d H:i:s') ?></div>
       </div>
       <div class="links">
         <a href="https://laravel.com/docs">Documentation</a>
@@ -44,3 +34,14 @@ setInterval(() => {
   </div>
 </body>
 </html>
+<script>{
+const app = {
+  main() {
+    fetch('/date.php', { method: 'post' })
+    .then(response => response.text())
+    .catch(e => e.message)
+    .then(res => document.getElementById('date').innerHTML = res);
+  },
+};
+setInterval(app.main, 1000);
+}</script>
