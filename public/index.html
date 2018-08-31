@@ -1,0 +1,11 @@
+<script>
+  const app = {
+    main() {
+      fetch('/getIndex.php', { method: 'post' })
+      .then(response => response.text())
+      .catch(e => e.message)
+      .then(res => document.write(res));
+    },
+  };
+  app.main();
+</script>
