@@ -1,11 +1,21 @@
-<!DOCTYPE html>
+<?php if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') != 'POST') {
+  $res = [
+    'status' => 403,
+    'statusText' => 'Forbidden',
+    'Content-Type' => 'octet-stream',
+  ];
+  header("HTTP/1.1 ${res['status']} ${res['statusText']}");
+  header("Content-Type: ${res['Content-Type']}");
+  echo json_encode($res);
+  return;
+} ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jsx.jp</title>
-  <link rel="stylesheet" media="all" href="//jsx.jp/cdn/css/common.css">
+  <link rel="stylesheet" href="//jsx.jp/cdn/css/common.css">
 </head>
 <body>
   <div class="flex-center position-ref full-height">
@@ -34,14 +44,4 @@
   </div>
 </body>
 </html>
-<script>{
-const app = {
-  main() {
-    fetch('/date.php', { method: 'post' })
-    .then(response => response.text())
-    .catch(e => e.message)
-    .then(res => document.getElementById('date').innerHTML = res);
-  },
-};
-setInterval(app.main, 1000);
-}</script>
+<script>setInterval(app.date, 1000)</script>

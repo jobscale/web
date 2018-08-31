@@ -1,11 +1,5 @@
-<script>{
-const app = {
-  main() {
-    fetch('/getIndex.php', { method: 'post' })
-    .then(response => response.text())
-    .catch(e => e.message)
-    .then(res => document.write(res));
-  },
-};
-setTimeout(app.main, 100);
-}</script>
+<!DOCTYPE html><html lang="en"><head>
+<link rel="stylesheet" href="//jsx.jp/cdn/css/common.css">
+<script src="//jsx.jp/cdn/js/app.js"></script>
+</head></html>
+<script>setTimeout(app.index, 0)</script>
