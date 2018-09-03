@@ -9,10 +9,28 @@ web() {
     systemctl restart nginx
 }
 
+cli() {
+    apt install -y git subversion vim net-tools whois tmux mariadb-client traceroute dstat expect sslh sshfs nfs-common cifs-utils curl zip unzip colordiff speedtest-cli
+}
+
+gui() {
+    apt install -y terminator mysql-workbench polari gimp
+}
+
+npm() {
+    user=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | sudo -u $user bash
+}
+
+java() {
+    apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
+}
+
 account() {
-    usermod -l jobscale -m -d /home/jobscale ubuntu
-    ln -s /var/site/cloud/land.pem /home/jobscale/.ssh/id_rsa
-    echo 'jobscale ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers.d/70-users
+    user=jobscale
+    usermod -l $user -m -d /home/$user ubuntu
+    ln -s /var/site/cloud/land.pem /home/$user/.ssh/id_rsa
+    echo "$user ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/70-users
     systemctl restart sshd
 }
 
@@ -29,6 +47,7 @@ main() {
     web
     account
     system
+    cli
     date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 

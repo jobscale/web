@@ -1,0 +1,23 @@
+{
+  "name": "_",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "phplint '**/*.php' '**/*.html' '!vendor/**' '!node_modules/**'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jobscale/_.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jobscale/_/issues"
+  },
+  "homepage": "https://github.com/jobscale/_#readme",
+  "devDependencies": {
+    "phplint": "^2.0.1"
+  }
+}

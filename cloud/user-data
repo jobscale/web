@@ -1,5 +1,9 @@
 #!/bin/bash
 
+netInit() {
+    sudo ln -sfn /run/systemd/resolve/resolv.conf /etc/resolv.conf
+}
+
 fsInit() {
     apt update
 # can't automatically   apt dist-upgrade -y
@@ -13,14 +17,12 @@ fsInit() {
 
 main() {
     date +'BEGIN $0 user-data %Y-%m-%d %H:%M:%S'
-
+    time netInit
     time fsInit
-
     if [ -x /var/site/cloud/init ]
     then
         time /var/site/cloud/init
     fi
-
     date +'END   $0 user-data %Y-%m-%d %H:%M:%S'
 }
 

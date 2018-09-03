@@ -1,12 +1,21 @@
-<!DOCTYPE html>
+<?php if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') != 'POST') {
+  $res = [
+    'status' => 403,
+    'statusText' => 'Forbidden',
+    'Content-Type' => 'octet-stream',
+  ];
+  header("HTTP/1.1 ${res['status']} ${res['statusText']}");
+  header("Content-Type: ${res['Content-Type']}");
+  echo json_encode($res);
+  return;
+} ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jsx.jp</title>
-  <link rel="shortcut icon" type="image/x-icon" href="http://cdn.jsx.jp/img/favicon.png">
-  <link rel="stylesheet" media="all" href="//jsx.jp/cdn/css/common.css">
+  <link rel="stylesheet" href="//jsx.jp/cdn/css/common.css">
 </head>
 <body>
   <div class="flex-center position-ref full-height">
@@ -14,25 +23,15 @@
       <a href="http://gate.jsx.jp/login">Login</a>
       <a href="http://gate.jsx.jp/register">Register</a>
     </div>
-  <div class="content">
-    <div class="title">
-      <div>welcome <?= exec('hostname'); ?></div>
-    </div>
-    <div class="title">
-      <div>hello <?= filter_input(INPUT_SERVER, 'REMOTE_ADDR') ?></div>
-    </div>
-    <div class="title m-b-md">
-      <div id='date'><?= (new DateTime)->format('Y-m-d H:i:s') ?></div>
-<script>
-setInterval(() => {
-  fetch('/date.php', { method: 'post' })
-  .then(response => response.text())
-  .catch(e => e.message)
-  .then(text => {
-    document.getElementById('date').innerHTML = text;
-  });
-}, 1000);
-</script>
+    <div class="content">
+      <div class="title">
+        <div>welcome <?= exec('hostname'); ?></div>
+      </div>
+      <div class="title">
+        <div>hello <?= filter_input(INPUT_SERVER, 'REMOTE_ADDR') ?></div>
+      </div>
+      <div class="title m-b-md">
+        <div id='date'><?= (new DateTime)->format('Y-m-d H:i:s') ?></div>
       </div>
       <div class="links">
         <a href="https://laravel.com/docs">Documentation</a>
@@ -45,3 +44,4 @@ setInterval(() => {
   </div>
 </body>
 </html>
+<script>setInterval(app.date, 1000)</script>
