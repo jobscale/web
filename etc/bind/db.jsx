@@ -30,10 +30,9 @@ share   IN      A       172.16.6.22
 wp      IN      A       172.16.6.22
 beg     IN      A       172.16.6.22
 
-pegasus IN      A       172.16.6.23
-db      IN      A       172.16.6.24
+db      IN      A       172.16.6.23
+uranus  IN      A       172.16.6.24
 
-earth   IN      A       172.16.6.41
-moon    IN      A       172.16.6.42
+earth   IN      A       172.16.6.61
 
 

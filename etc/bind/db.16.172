@@ -13,10 +13,10 @@ $TTL	60
 ;
 @	IN	NS	localhost.
 
-22.6 IN PTR uranus.jsx.jp.
-23.6 IN PTR pegasus.jsx.jp.
+22.6 IN PTR novus.jsx.jp.
+23.6 IN PTR db.jsx.jp.
+24.6 IN PTR uranus.jsx.jp.
 
-42.6 IN PTR earth.jsx.jp.
-43.6 IN PTR moon.jsx.jp.
+61.6 IN PTR earth.jsx.jp.
 
 
