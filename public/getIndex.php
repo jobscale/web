@@ -15,7 +15,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jsx.jp</title>
-  <link rel="stylesheet" href="//jsx.jp/cdn/css/common.css">
+  <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
 </head>
 <body>
   <div class="flex-center position-ref full-height">
@@ -44,4 +44,4 @@
   </div>
 </body>
 </html>
-<script>setInterval(app.date, 1000)</script>
+<script>app.intervalDate()</script>
