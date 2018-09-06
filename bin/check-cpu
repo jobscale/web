@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+
+limit=20
+line=6
+file=/tmp/check-CPU
+cpu=($(vmstat | tail -1))
+used=$(echo "100 - ${cpu[14]}" | bc)
+ok() {
+  >$file
+  echo "CPU OK"
+  return 0
+}
+ng() {
+  echo "CPU NG used $used%" | tee -a $file
+  [ $(cat $file | wc -l) -gt $line ] && echo "over limit"
+  return 0
+}
+[ $(echo "$used > $limit" | bc) -ne 0 ] && ng && exit 1
+ok && exit 0

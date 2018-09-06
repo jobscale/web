@@ -1,0 +1,16 @@
+#!/bin/bash -u
+
+ipHead=$1
+
+run() {
+  ping -c 1 -w 1 $ipHead.$n >/dev/null && ping -c 1 -w 1 $ipHead.$n | grep ttl
+}
+main() {
+  for n in {1..254}
+  do
+    run &
+  done
+  wait
+  arp -a | grep ether
+}
+main | grep -oPw '\d+\.\d+\.\d+\.\d+|^.*ttl.*$' | sort | uniq
