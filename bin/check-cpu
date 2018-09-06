@@ -10,10 +10,17 @@ ok() {
   echo "CPU OK"
   return 0
 }
+over() {
+  echo "$(date) used $used% - cpu over limit" >&2
+  >$file
+}
 ng() {
   echo "CPU NG used $used%" | tee -a $file
-  [ $(cat $file | wc -l) -gt $line ] && echo "over limit"
+  [ $(cat $file | wc -l) -gt $line ] && over
   return 0
 }
-[ $(echo "$used > $limit" | bc) -ne 0 ] && ng && exit 1
-ok && exit 0
+main() {
+  [ $(echo "$used > $limit" | bc) -ne 0 ] && ng && exit 1
+  ok && exit 0
+}
+main
