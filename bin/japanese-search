@@ -1,0 +1,5 @@
+#!/bin/bash -eu
+
+directory=$1
+unbuffer find "$directory" -type f -name "*html" -exec grep --color=auto -nPoH "[^\x01-\x7E\xA1-\xDF]+" {} \; | less -SR
+
