@@ -28,7 +28,7 @@ autocmd BufWritePre * :%s/\s\+$//ge     " 保存時に行末の空白を除去�
 match ZSpace /　/                       " 全角スペースの色を変更
 
 " Indent
-set tabstop=4 shiftwidth=4 softtabstop=0
+set tabstop=2 shiftwidth=2 softtabstop=0
 set expandtab smartindent noautoindent   " スマートインデント
 set noautoindent
 

@@ -3,6 +3,13 @@ mkcd() {
 }
 
 git() {
+    if [[ $@ == "clone" ]]
+    then
+        cmd="git clone --depth 1 $@"
+        echo "$cmd"
+        $cmd
+        return
+    fi
     if [[ $@ == "branch -a" ]]
     then
         cmd="$(which git) fetch --all --prune"
