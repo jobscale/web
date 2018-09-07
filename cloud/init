@@ -13,7 +13,7 @@ cli() {
     apt install -y \
         curl whois nmap traceroute net-tools \
         nfs-common cifs-utils exfat-utils sshfs \
-        git subversion vim tmux dstat \
+        git subversion vim tmux dstat peco \
         at expect zip unzip colordiff speedtest-cli \
         mariadb-client libpng-dev nasm
 }
