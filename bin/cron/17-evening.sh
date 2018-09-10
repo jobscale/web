@@ -3,6 +3,7 @@
 ~/bin/run-node ~/projects/node/speedtest-slack
 
 choseisan() {
+  echo '調整さん' >&2
 }
 
 day3() {
