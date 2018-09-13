@@ -1,0 +1,4 @@
+#!/bin/bash -eu
+
+~/bin/run-node ~/projects/node/post-slack $@
+
