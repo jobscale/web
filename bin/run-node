@@ -1,5 +1,13 @@
 #!/bin/bash -eu
 
-cd $1
-. ~/.nvm/nvm.sh
-npm start
+run() {
+  . ~/.nvm/nvm.sh
+  npm start -- $@
+}
+main() {
+  cd $1
+  shift
+  run $@
+}
+main $@
+
