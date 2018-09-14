@@ -1,4 +1,4 @@
 #!/bin/bash -eu
 
 rm -fr ~/.java/.userPrefs/jetbrains
-rm -fr ~/.PhpStorm*
+rm -fr ~/.{AndroidStudio,PhpStorm,IntelliJIdea}*
