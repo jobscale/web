@@ -16,6 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jsx.jp</title>
   <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
+  <script src="/cdn/js/app.js"></script>
 </head>
 <body>
   <div class="flex-center position-ref full-height">
@@ -44,4 +45,4 @@
   </div>
 </body>
 </html>
-<script>app.intervalDate()</script>
+<script>setTimeout(app.intervalDate, 220)</script>
