@@ -27,3 +27,5 @@ main() {
 
 main
 
+[ -s .autostart-extra ] && . .autostart-extra && extra
+
