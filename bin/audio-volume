@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+percent="$1"
+[ "" = "$percent" ] && percent="200%"
+name=$(pacmd list-sinks | grep -e 'name:' -e 'index' | tail -1 | awk -F'[<>]' '{print $2}')
+pactl set-sink-volume $name "$percent"
+
