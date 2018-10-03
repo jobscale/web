@@ -27,5 +27,5 @@ main() {
 
 main
 
-[ -s .autostart-extra ] && . .autostart-extra && extra
+[ -s "$HOME/bin/.autostart-extra" ] && . "$HOME/bin/.autostart-extra" && extra
 
