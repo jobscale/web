@@ -3,8 +3,7 @@ window.app = {
     fetch('/getIndex.php', { method: 'post' })
     .then(res => res.text())
     .catch(e => e.message)
-    .then(res => document.write(res))
-    .then(() => setTimeout(() => document.readyState = 'complete', 2200));
+    .then(res => document.write(res));
   },
   intervalDate() {
     setInterval(() => {
