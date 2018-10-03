@@ -1,10 +1,10 @@
-Channel || Common && (() => {
+window.Channel || window.Common && (() => {
   class Channel extends Common {
     constructor() {
       super();
       this.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
       this.pluginKey = 'ce9303bb-c19c-41ae-8edb-e6646dcce2d6';
-      if (channelPluginSettings) throw new Error('duplicate');
+      if (window.channelPluginSettings) throw new Error('duplicate');
       window.channelPluginSettings = this.load();
     }
     createElement() {
@@ -15,8 +15,9 @@ Channel || Common && (() => {
       s.async = true;
       return s;
     }
-    attach() {
-      if (ChannelIOInitialized) return;
+    attach(...argv) {
+      this.logger.info(...argv);
+      if (window.ChannelIOInitialized) return;
       window.ChannelIOInitialized = true;
       document.body.appendChild(this.createElement());
     }
@@ -27,15 +28,15 @@ Channel || Common && (() => {
       window.ChannelIO = ch;
     }
     addEventListener() {
-      setTimeout(this.attach, 3300);
-      window.addEventListener('DOMContentLoaded', this.attach, false);
-      window.addEventListener('load', this.attach, false);
+      setTimeout(() => this.attach('timeout'), 3300);
+      window.addEventListener('DOMContentLoaded', () => this.attach('DOMContentLoaded'), false);
+      window.addEventListener('load', () => this.attach('load'), false);
     }
     load() {
-      if (ChannelIO) return;
+      if (window.ChannelIO) return;
       this.initialize();
       if (document.readyState === 'complete') this.attach();
-      else if (window.attachEvent) window.attachEvent('onload', this.attach);
+      else if (window.attachEvent) window.attachEvent('onload', () => this.attach('onload'));
       else this.addEventListener();
       return this;
     }

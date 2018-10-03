@@ -1,4 +1,4 @@
-App || Common && (() => {
+window.App || window.Common && (() => {
   class App extends Common {
     constructor() {
       super();
@@ -6,8 +6,8 @@ App || Common && (() => {
         index: '/getIndex.php',
         date: '/date.php',
       };
-      setTimeout(this.index, 220);
-      setTimeout(this.setInterval, 2200);
+      setTimeout(() => this.index(), 220);
+      setTimeout(() => this.setInterval(), 2200);
     }
     index() {
       fetch(this.url.index, { method: 'post' })
@@ -23,7 +23,7 @@ App || Common && (() => {
       .then(obj => obj.element.innerHTML = obj.html);
     }
     setInterval() {
-      setInterval(this.date, 1000);
+      setInterval(() => this.date(), 1000);
     }
   }
   window.App = App;
