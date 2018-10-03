@@ -15,10 +15,7 @@ class Channel {
   attach() {
     if (window.ChannelIOInitialized) return;
     window.ChannelIOInitialized = true;
-    window.parentNode.insertBefore(
-      this.createElement(),
-      document.getElementsByTagName('script')[0]
-    );
+    document.body.appendChild(this.createElement());
   }
   initialize() {
     const ch = (...argv) => ch.c(argv);
@@ -27,6 +24,7 @@ class Channel {
     window.ChannelIO = ch;
   }
   addEventListener() {
+    setTimeout(() => this.attach(), 220);
     window.addEventListener('DOMContentLoaded', this.attach, false);
     window.addEventListener('load', this.attach, false);
   }
