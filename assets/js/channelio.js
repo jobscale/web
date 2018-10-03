@@ -24,7 +24,7 @@ class Channel {
     window.ChannelIO = ch;
   }
   addEventListener() {
-    setTimeout(() => this.attach(), 220);
+    setTimeout(() => this.attach(), 2200);
     window.addEventListener('DOMContentLoaded', this.attach, false);
     window.addEventListener('load', this.attach, false);
   }
