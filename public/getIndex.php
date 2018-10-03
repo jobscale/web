@@ -17,6 +17,7 @@
   <title>jsx.jp</title>
   <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
   <script src="/cdn/js/app.js"></script>
+  <script src="/cdn/js/channelio.js"></script>
 </head>
 <body>
   <div class="flex-center position-ref full-height">
