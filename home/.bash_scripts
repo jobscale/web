@@ -3,7 +3,7 @@ mkcd() {
 }
 
 git() {
-    if [[ $1 == "clone" $2 == "--depth" ]]
+    if [[ $1 == "clone" && $2 == "--depth" ]]
     then
         shift
         cmd="git clone --depth 1 $@"
