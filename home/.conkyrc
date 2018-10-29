@@ -1,0 +1,63 @@
+conky.config = {
+    color1 = 'white',
+    color2 = 'eeeeee',
+    color3 = 'light gray',
+    template0 = '${if_mounted \\1}\n $color2\\1 $color${fs_used \\1}/${fs_size \\1}  ${fs_bar 6 \\1}$endif$color3',
+    template1 = '${if_up \\1}\n$color2 \\1 $color1${addrs \\1}$color3  $stippled_hr\n Up: $color1${upspeed \\1}$alignr${upspeedgraph \\1 18,160 ffffff 00ffff}$color3\n Down: $color1${downspeed \\1}$alignr${downspeedgraph \\1 18,160 ffffff 00ff00}$color3$endif$color3',
+    alignment = 'bottom_middle',
+    background = false,
+    border_width = 1,
+    cpu_avg_samples = 2,
+    default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    double_buffer = true,
+    override_utf8_locale = true,
+    use_xft = true,
+    font = 'IPAGothic:style=Regular:size=10',
+    gap_x = 870,
+    gap_y = 0,
+    minimum_height = 5,
+    minimum_width = 5,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'normal',
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    show_graph_scale = false,
+    show_graph_range = false
+}
+
+conky.text = [[
+Uptime: $color1$uptime$color3$alignr Load: $color1$loadavg$color3
+RAM: $color1$mem/$memmax - $memperc%$alignr Freq: $color1${freq_g}GHz$color3
+${membar 4}$color3
+${cpugraph 30,320 ffffff ff0000}$color3
+CPU: $color1$cpu%  Swap: $color1$swap/$swapmax  ${swapbar 4}$color3
+Proces: $color1$processes$color3  Runs: $color1$running_processes$color3  Thrds: $color1$threads$color3
+$hr
+File systems:${template0 /}
+$hr
+Networking:${template1 ens9}
+$hr
+Name$alignr PID   CPU%   MEM%
+ $color2${top name 1}$alignr${top pid 1} ${top cpu 1}% ${top mem 1}%$color3
+ $color2${top name 2}$alignr${top pid 2} ${top cpu 2}% ${top mem 2}%$color3
+ $color2${top name 3}$alignr${top pid 3} ${top cpu 3}% ${top mem 3}%$color3
+ $color2${top name 4}$alignr${top pid 4} ${top cpu 4}% ${top mem 4}%$color3
+]]
+

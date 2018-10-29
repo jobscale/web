@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
 main() {
-  nohup ~/.bin/idea-*/bin/idea.sh >&/dev/null . &
+  nohup ~/.bin/idea-*/bin/idea.sh $@ >&/dev/null &
 }
-main
+main $@

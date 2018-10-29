@@ -12,7 +12,7 @@ fi
 alias ul='less_with_unbuffer'
 alias diff='colordiff'
 alias netstat='netstat -anptu'
-alias rsync='rsync -tlrhv --delete'
+alias rsync='rsync -tlrHhv --delete'
 
 [ "" = "${DISPLAY}" ] && export DISPLAY='localhost:0.0'
 [ -d "$HOME/Android/Sdk" ] && export ANDROID_HOME="$HOME/Android/Sdk" && export PATH="$PATH:$ANDROID_HOME/tools"

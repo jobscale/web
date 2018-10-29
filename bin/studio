@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+
+main() {
+  nohup ~/.bin/android-studio/bin/studio.sh $@ >&/dev/null &
+}
+main $@

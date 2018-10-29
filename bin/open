@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+
+main() {
+  nohup nautilus $@ >&/dev/null &
+}
+main $@
