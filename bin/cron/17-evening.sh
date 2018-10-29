@@ -3,7 +3,7 @@
 ~/bin/run-node ~/projects/node/speedtest-slack
 
 choseisan() {
-  ~/bin/run-node ~/projects/node/post-slack --text '調整さん'
+  ~/bin/run-node ~/projects/node/post-slack --text '調整さん <https://chouseisan.com/s?h=256ccb038d624b0ea61c37aff7eb177c|Click here>'
 }
 
 day3() {
