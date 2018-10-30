@@ -3,7 +3,7 @@ conky.config = {
     color2 = 'eeeeee',
     color3 = 'light gray',
     template0 = '${if_mounted \\1}\n$color2\\1 $color${fs_used \\1}/${fs_size \\1}  ${fs_bar 6 \\1}$color3\n${diskiograph_read \\2 18,160 07CC0D FF0000 -t}$alignr ${diskiograph_write \\2 18,160 07CC0D FF0000 -t}$endif',
-    template1 = '${if_up \\1}$color2 \\1 $color1${addrs \\1}$color3  $stippled_hr\n Up: $color1${upspeed \\1}$alignr${upspeedgraph \\1 18,160 ffffff 00ffff}$color3\n Down: $color1${downspeed \\1}$alignr${downspeedgraph \\1 18,160 ffffff 00ff00}$color3$endif$color3',
+    template1 = '${if_up \\1}\n$color2 $alignr \\1  $color1${addrs \\1}$color3  \n  Up: $color1${upspeed \\1}$alignr${upspeedgraph \\1 18,200 ffffff 00ffff}$color3\n  Down: $color1${downspeed \\1}$alignr${downspeedgraph \\1 18,200 ffffff 00ff00}$color3$endif$color3',
     alignment = 'top_right',
     gap_x = 0,
     gap_y = 0,
@@ -52,7 +52,7 @@ Proces: $color1$processes$color3  Runs: $color1$running_processes$color3  Thrds:
 $hr
 File systems:  ${template0 / /dev/sda}${template0 /home /dev/sdb}
 $hr
-Networking:  ${template1 enp4s0} ${template1 ens9}
+Networking:  ${template1 enp4s0} ${template1 ens9} ${template1 wlp3s0}
 $hr
 $alignr PID   CPU%   MEM%
  $color2${top name 1}$alignr${top pid 1} ${top cpu 1}% ${top mem 1}%$color3
