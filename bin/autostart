@@ -9,22 +9,22 @@ google-chrome "https://time.is"
 sleep $wait
 
 main() {
-    nohup google-chrome "https://jsx.jp" &
-    sleep $wait
+  nohup google-chrome "https://jsx.jp" &
+  sleep $wait
 
-    nohup discord &
-    sleep $wait
+  nohup discord &
+  sleep $wait
 
-    nohup slack &
-    sleep $wait
+  nohup slack &
+  sleep $wait
 
-    nohup wire-desktop &
-    sleep $wait
+  nohup wire-desktop &
+  sleep $wait
 
-    nohup terminator &
-    sleep $wait
+  nohup terminator &
+  sleep $wait
 }
 main >& /dev/null
 
-[ -s "$HOME/bin/.autostart-extra" ] && . "$HOME/bin/.autostart-extra"
+[ -s "$HOME/bin/.autostart-extra" ] && "$HOME/bin/.autostart-extra"
 
