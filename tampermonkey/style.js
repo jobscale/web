@@ -10,9 +10,10 @@
 // ==/UserScript==
 
 (() => {
-  'use strict';
-  let style = 'html{background-color:black;color:white;}body{opacity:0.8;background-color:aliceblue;color:dimgray;}';
-  style += '#clock0 div#twd{color:dimgray;}#favs,iframe{opacity:0.4;}';
-  document.body.appendChild(document.createElement('style')).innerText = style;
+  const url = 'https://jsx.jp/cdn/css/assign.css';
+  const element = document.createElement('link');
+  element.setAttribute('href', url);
+  element.setAttribute('type', 'text/css');
+  element.setAttribute('rel', 'stylesheet');
+  document.head.appendChild(element);
 })();
-
