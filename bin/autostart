@@ -10,9 +10,11 @@ sleep $wait
 cinnamon-screensaver-command -a
 
 google-chrome "https://time.is"
-sleep $wait
 
 main() {
+  nohup ibus-daemon --xim &
+  sleep $wait
+
   nohup google-chrome "https://jsx.jp" &
   sleep $wait
 
