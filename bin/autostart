@@ -4,6 +4,10 @@ wait=5
 sleep $wait
 
 [ $(id -u) -eq 1000 ] && [ -e /dev/kvm ] && sudo chown $(whoami). /dev/kvm
+conky -d
+
+sleep $wait
+cinnamon-screensaver-command -a
 
 google-chrome "https://time.is"
 sleep $wait
