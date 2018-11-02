@@ -21,3 +21,5 @@ alias rsync='rsync -tlrHhv --delete'
 [ -s "$HOME/.bash_scripts" ] && . "$HOME/.bash_scripts"
 [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
 
+PATH="$PATH:node_modules/.bin"
+

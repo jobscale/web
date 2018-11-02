@@ -6,6 +6,7 @@ sleep $wait
 [ $(id -u) -eq 1000 ] && [ -e /dev/kvm ] && sudo chown $(whoami). /dev/kvm
 conky -d
 ibus-daemon -rxd
+$HOME/bin/mouse-scroll
 
 sleep $wait
 cinnamon-screensaver-command -a
