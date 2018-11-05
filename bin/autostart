@@ -14,19 +14,18 @@ cinnamon-screensaver-command -a
 google-chrome "https://time.is"
 
 main() {
-  nohup google-chrome "https://jsx.jp" >$ /dev/null &
+  nohup google-chrome "https://jsx.jp" >& /dev/null &
   sleep $wait
 
-  nohup discord >$ /dev/null &
+  nohup discord >& /dev/null &
   sleep $wait
 
-  nohup slack >$ /dev/null &
+  nohup slack >& /dev/null &
   sleep $wait
 
-  nohup terminator >$ /dev/null &
+  nohup terminator >& /dev/null &
   sleep $wait
 }
 main >& /dev/null
 
 [ -s "$HOME/bin/.autostart-extra" ] && "$HOME/bin/.autostart-extra"
-
