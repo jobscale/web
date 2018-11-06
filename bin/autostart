@@ -8,6 +8,8 @@ conky -d
 ibus-daemon -rxd
 $HOME/bin/mouse-scroll
 
+[ -s "$HOME/bin/.autostart-extra-before" ] && "$HOME/bin/.autostart-extra-before"
+
 sleep $wait
 cinnamon-screensaver-command -a
 
