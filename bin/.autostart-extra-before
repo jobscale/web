@@ -1,7 +1,0 @@
-#!/bin/bash -eu
-
-main() {
-  sleep 2
-  VBoxManage startvm db --type headless
-}
-main >& /dev/null
