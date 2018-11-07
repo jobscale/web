@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
 main() {
-  nohup nautilus $@ >&/dev/null &
+  nohup xdg-open $@ >&/dev/null &
 }
 main $@
