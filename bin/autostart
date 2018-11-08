@@ -25,7 +25,7 @@ main() {
   nohup slack >& /dev/null &
   sleep $wait
 
-  nohup terminator >& /dev/null &
+  nohup terminator -l start >& /dev/null &
   sleep $wait
 }
 main >& /dev/null
