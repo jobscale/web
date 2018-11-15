@@ -1,4 +1,4 @@
-<script defer>(()=>{setTimeout(location.reload,1000);})();</script>
+<script defer>(()=>{setTimeout(()=>location.reload(),1000)})()</script>
 <style>
 body {
   background-color: black;
