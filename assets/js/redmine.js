@@ -73,6 +73,8 @@
       }
     }
   }
+})();
+(() => {
   const job = {
     idInput: 'load-latest-timestamp',
     button() {
