@@ -3,12 +3,12 @@
 wait=5
 sleep $wait
 
-[ $(id -u) -eq 1000 ] && [ -e /dev/kvm ] && sudo chown $(whoami). /dev/kvm
+[[ $(id -u) -eq 1000 && -e /dev/kvm ]] && sudo chown $(whoami). /dev/kvm
 conky -d
 ibus-daemon -rxd
-$HOME/bin/mouse-scroll
+[[ -s "$HOME/bin/mouse-scroll" ]] && "$HOME/bin/mouse-scroll"
 
-[ -s "$HOME/bin/.autostart-extra-before" ] && "$HOME/bin/.autostart-extra-before"
+[[ -s "$HOME/bin/.autostart-extra-before" ]] && "$HOME/bin/.autostart-extra-before"
 
 sleep $wait
 cinnamon-screensaver-command -a
@@ -30,4 +30,4 @@ main() {
 }
 main >& /dev/null
 
-[ -s "$HOME/bin/.autostart-extra" ] && "$HOME/bin/.autostart-extra"
+[[ -s "$HOME/bin/.autostart-extra" ]] && "$HOME/bin/.autostart-extra"
