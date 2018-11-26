@@ -44,7 +44,7 @@ system() {
     chmod 0600 /mnt/swap
     mkswap /mnt/swap
     swapon /mnt/swap
-    echo '/mnt/swap swap swap defaults 0 0' | tee -a /etc/fstab
+    echo '/mnt/swap none swap sw 0 0' | tee -a /etc/fstab
 }
 
 main() {
