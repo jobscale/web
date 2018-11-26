@@ -24,12 +24,7 @@ ns1     IN      A       172.16.6.22
 ns2     IN      A       172.16.6.22
 ns3     IN      A       172.16.6.22
 
-uranus  IN      A       172.16.6.22
-terminal IN     A       172.16.6.22
-share   IN      A       172.16.6.22
-wp      IN      A       172.16.6.22
-beg     IN      A       172.16.6.22
-
+novus   IN      A       172.16.6.22
 db      IN      A       172.16.6.23
 uranus  IN      A       172.16.6.24
 
