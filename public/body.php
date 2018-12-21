@@ -8,18 +8,7 @@
   header("Content-Type: ${res['Content-Type']}");
   echo json_encode($res);
   return;
-} ?><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jsx.jp</title>
-  <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
-  <script src="/cdn/js/common.js" defer></script>
-  <script src="/cdn/js/app.js" defer></script>
-  <script src="/cdn/js/channelio.js" defer></script>
-</head>
+} ?>
 <body>
   <div class="flex-center position-ref full-height">
     <div class="top-right links">
@@ -46,4 +35,3 @@
     </div>
   </div>
 </body>
-</html>

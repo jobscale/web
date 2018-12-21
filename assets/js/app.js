@@ -3,17 +3,25 @@ window.App || window.Common && (() => {
     constructor() {
       super();
       this.url = {
-        index: '/getIndex.php',
+        head: '/head.php',
+        body: '/body.php',
         date: '/date.php',
       };
-      setTimeout(() => this.index(), 220);
+      setTimeout(() => this.head(), 220);
+      setTimeout(() => this.body(), 220);
       setTimeout(() => this.setInterval(), 2200);
     }
-    index() {
-      fetch(this.url.index, { method: 'post' })
+    head() {
+      fetch(this.url.head, { method: 'post' })
       .then(res => res.text())
       .catch(e => e.message)
-      .then(res => document.write(res));
+      .then(res => document.head.outerHTML = res);
+    }
+    body() {
+      fetch(this.url.body, { method: 'post' })
+      .then(res => res.text())
+      .catch(e => e.message)
+      .then(res => document.body.outerHTML = res);
     }
     date() {
       fetch(this.url.date, { method: 'post' })
