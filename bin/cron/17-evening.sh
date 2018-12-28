@@ -8,7 +8,6 @@ jiyu() {
 
 day3() {
   ~/bin/run-node ~/projects/node/itnews
-  ~/bin/run-node ~/projects/node/news
 }
 
 day6() {
