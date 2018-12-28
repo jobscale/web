@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+
+main() {
+  nohup $HOME/.bin/mattermost-desktop-*-linux-x64/mattermost-desktop $@ >&/dev/null &
+}
+main $@
