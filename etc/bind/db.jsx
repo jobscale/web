@@ -26,7 +26,12 @@ ns3     IN      A       172.16.6.22
 
 novus   IN      A       172.16.6.22
 db      IN      A       172.16.6.23
+db-ro   IN      A       172.16.6.23
+redis   IN      A       172.16.6.23
 uranus  IN      A       172.16.6.24
+
+mattermost IN      A    172.16.6.23
+jenkins IN      A       172.16.6.23
 
 earth   IN      A       172.16.6.61
 
