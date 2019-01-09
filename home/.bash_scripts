@@ -1,5 +1,9 @@
 mkcd() {
-    mkdir $1 && cd $1
+    mkdir $1 && cd $_
+}
+
+b() {
+  cp -pr $1{,.B-$(date +'%Y%m%d%H%M%S')} && echo "backuped --- $1.B-$(date +'%Y%m%d%H%M%S')"
 }
 
 git() {
