@@ -4,6 +4,7 @@
     "name": "jsx.jp",
     "scope": "/",
     "display": "browser",
+    "gcm_sender_id": "592002215665",
     "start_url": "https://jsx.jp/",
     "short_name": "jsx.jp",
     "theme_color": "transparent",
@@ -15,7 +16,7 @@
     "icons": [
         {
             "src": "/favicon.ico",
-            "sizes": "256x256 128x128 64x64 48x48 32x32 16x16"
+            "sizes": "256x256 192x192 128x128 64x64 48x48 32x32 16x16"
         }
     ]
 }
