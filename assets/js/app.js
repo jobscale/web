@@ -12,13 +12,13 @@ window.App || window.Common && (() => {
       setTimeout(() => this.setInterval(), 2200);
       if ('serviceWorker' in navigator) {
         document.addEventListener('DOMContentLoaded', () => {
-          navigator.serviceWorker.register('./service-worker.js');
+          navigator.serviceWorker.register('/service-worker.js');
           navigator.serviceWorker.ready
-          .then((registration) => {
+          .then(registration => {
             console.info('registration.pushManager.subscribe');
             return registration.pushManager.subscribe({userVisibleOnly: true});
           })
-          .then((subscription) => {
+          .then(subscription => {
             const rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
             const rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
             const key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
@@ -26,7 +26,7 @@ window.App || window.Common && (() => {
             const endpoint = subscription.endpoint;
             this.logger.info(JSON.stringify({ key, auth, endpoint }, null, 2));
           })
-          .catch(e => console.error(e));
+          .catch(console.error);
         }, false);
       }
     }

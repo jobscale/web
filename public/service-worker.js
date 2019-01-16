@@ -1,12 +1,8 @@
-self.addEventListener('install', (event) => {
-  console.info('install', event);
-  event.waitUntil(self.skipWaiting());
-});
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
   console.info('activate', event);
   event.waitUntil(self.clients.claim());
 });
-self.addEventListener('push', (event) => {
+self.addEventListener('push', event => {
   console.info('push', event);
   const message = event.data ? event.data.text() : '(・∀・)';
   event.waitUntil(
@@ -17,33 +13,36 @@ self.addEventListener('push', (event) => {
     })
   );
 });
-self.addEventListener('install', function(event) {
-  var offlinePage = new Request('/');
+self.addEventListener('install', event => {
+  console.info('install', event);
+  event.waitUntil(self.skipWaiting());
+  const offlinePage = new Request('/');
   event.waitUntil(
     fetch(offlinePage)
-    .then(function(response) {
+    .then(response => {
       return caches.open('pwabuilder-offline')
-      .then(function(cache) {
+      .then(cache => {
         console.log('[PWA Builder] Cached offline page during Install'+ response.url);
         return cache.put(offlinePage, response);
       });
   }));
 });
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', event => {
+  if (typeof self.fetch === 'undefined') return;
   event.respondWith(
-    fetch(event.request)
-    .catch(function(error) {
+    self.fetch(event.request)
+    .catch(error => {
       console.error( '[PWA Builder] Network request Failed. Serving offline page ' + error );
       return caches.open('pwabuilder-offline')
-      .then(function(cache) {
+      .then(cache => {
         return cache.match('/');
       });
     })
   );
 });
-self.addEventListener('refreshOffline', function(response) {
+self.addEventListener('refreshOffline', response => {
   return caches.open('pwabuilder-offline')
-  .then(function(cache) {
+  .then(cache => {
     console.log('[PWA Builder] Offline page updated from refreshOffline event: '+ response.url);
     return cache.put(offlinePage, response);
   });

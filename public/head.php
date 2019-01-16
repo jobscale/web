@@ -19,6 +19,5 @@
   <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
   <script src="/cdn/js/common.js" defer></script>
   <script src="/cdn/js/app.js" defer></script>
-  <script src="/pwabuilder-sw.js" defer></script>
   <script src="/cdn/js/channelio.js" defer></script>
 </head>
