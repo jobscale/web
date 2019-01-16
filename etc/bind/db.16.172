@@ -14,6 +14,7 @@ $TTL	60
 @	IN	NS	localhost.
 
 22.6 IN PTR novus.jsx.jp.
+22.6 IN PTR mattermost.jsx.jp.
 23.6 IN PTR db.jsx.jp.
 24.6 IN PTR uranus.jsx.jp.
 
