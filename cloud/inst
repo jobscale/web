@@ -1,0 +1,84 @@
+#!/bin/bash -eu
+
+iCommon() {
+  cd ~
+  apt update
+  apt install -y tzdata
+  apt install -y curl git vim
+}
+
+iNginx() {
+  apt install -y nginx nginx-extras
+  nginx -v
+  /etc/init.d/nginx start
+}
+
+iPhp() {
+  apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs)
+  php -v
+  /usr/sbin/php-fpm7.2 -v
+  /etc/init.d/php7.2-fpm start
+}
+
+iNodejs() {
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+}
+
+iBuild() {
+  apt install -y g++ make libssl-dev libreadline-dev zlib1g-dev libffi-dev
+}
+
+iLatest() {
+  LATEST=$($1 install --list | grep -v '[A-Za-z]' | tail -1)
+  $1 install $LATEST
+  $1 global $LATEST
+  $2 --version
+}
+
+iRuby() {
+  iBuild
+  git clone --depth=1 https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone --depth=1 https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+  echo 'export PATH="$PATH:$HOME/.rbenv/bin"' | tee -a ~/.bash_profile
+  echo 'eval "$(rbenv init -)"' | tee -a ~/.bash_profile
+  exec $SHELL -l
+  iLatest rbenv ruby
+}
+
+iPython() {
+  iBuild
+  git clone --depth=1 https://github.com/yyuu/pyenv.git ~/.pyenv
+  echo 'export PYENV_ROOT="$HOME/.pyenv"' | tee -a ~/.bash_profile
+  echo 'export PATH="$PATH:$PYENV_ROOT/bin"' | tee -a ~/.bash_profile
+  echo 'eval "$(pyenv init -)"' | tee -a ~/.bash_profile
+  exec $SHELL -l
+  iLatest pyenv python
+}
+
+iJava() {
+  apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
+}
+
+main() {
+    date +'START    my-init %Y-%m-%d %H:%M:%S'
+    iCommon
+    for cmd in $@
+    do
+      $cmd
+    done
+    if [[ "$@" == '' ]]
+    then
+      echo 'usage: $0 [support]'
+      echo '  support'
+      echo '    iNginx'
+      echo '    iPhp'
+      echo '    iNodejs'
+      echo '    iPython'
+      echo '    iRuby'
+      echo '    iJava'
+    fi
+    date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
+}
+
+main $@ | tee -a /var/log/cloud-my-inst.log
+

@@ -40,7 +40,7 @@ account() {
 }
 
 system() {
-    dd if=/dev/zero of=/mnt/swap bs=2M count=2K
+    dd if=/dev/zero of=/mnt/swap bs=1M count=4K
     chmod 0600 /mnt/swap
     mkswap /mnt/swap
     swapon /mnt/swap
