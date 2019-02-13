@@ -1,9 +1,13 @@
 #!/bin/bash -eu
 
+##
+## with Docker
+##
+
 iCommon() {
   cd ~
   apt update
-  apt install -y tzdata
+  DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   apt install -y curl git vim
 }
 
@@ -14,14 +18,33 @@ iNginx() {
 }
 
 iPhp() {
-  apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs)
+  apt install -y $(apt search php | grep "^php7" | grep -v snmp | grep -v fpm | awk -F'/' '{print $1}' | xargs)
   php -v
+}
+
+iPhpWeb() {
+  iPhp
+  iNginx
+  apt install -y $(apt search php | grep "^php7" | grep -v snmp | grep fpm | awk -F'/' '{print $1}' | xargs)
   /usr/sbin/php-fpm7.2 -v
   /etc/init.d/php7.2-fpm start
 }
 
 iNodejs() {
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  . ~/.bashrc
+  LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
+  nvm install $LATEST
+  nvm alias default $LATEST
+  node --version
+  npm --version
+}
+
+iNodejsWeb() {
+  iNodejs
+  iWeb
+  apt install -y supervisor
+  /etc/init.d/supervisor start
 }
 
 iBuild() {
@@ -35,24 +58,44 @@ iLatest() {
   $2 --version
 }
 
+iPython() {
+  iBuild
+  git clone --depth=1 https://github.com/yyuu/pyenv.git ~/.pyenv
+  echo 'export PYENV_ROOT="$HOME/.pyenv"' | tee -a ~/.bashrc
+  echo 'export PATH="$PATH:$PYENV_ROOT/bin"' | tee -a ~/.bashrc
+  echo 'eval "$(pyenv init -)"' | tee -a ~/.bashrc
+  . ~/.bashrc
+  iLatest pyenv python
+  pip --version
+}
+
+iPythonWeb() {
+  iPython
+  iNginx
+  pip install gunicorn
+  gunicorn --version
+  pip install django
+  django-admin --version
+}
+
 iRuby() {
   iBuild
   git clone --depth=1 https://github.com/sstephenson/rbenv.git ~/.rbenv
   git clone --depth=1 https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-  echo 'export PATH="$PATH:$HOME/.rbenv/bin"' | tee -a ~/.bash_profile
-  echo 'eval "$(rbenv init -)"' | tee -a ~/.bash_profile
-  exec $SHELL -l
+  echo 'export PATH="$PATH:$HOME/.rbenv/bin"' | tee -a ~/.bashrc
+  echo 'eval "$(rbenv init -)"' | tee -a ~/.bashrc
+  . ~/.bashrc
   iLatest rbenv ruby
+  bundle --version
+  gem install unicorn
+  unicorn --version
 }
 
-iPython() {
-  iBuild
-  git clone --depth=1 https://github.com/yyuu/pyenv.git ~/.pyenv
-  echo 'export PYENV_ROOT="$HOME/.pyenv"' | tee -a ~/.bash_profile
-  echo 'export PATH="$PATH:$PYENV_ROOT/bin"' | tee -a ~/.bash_profile
-  echo 'eval "$(pyenv init -)"' | tee -a ~/.bash_profile
-  exec $SHELL -l
-  iLatest pyenv python
+iRubyWeb() {
+  iRuby
+  iNginx
+  pip install gunicorn
+  gunicorn --version
 }
 
 iJava() {

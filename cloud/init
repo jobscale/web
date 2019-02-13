@@ -1,5 +1,9 @@
 #!/bin/bash
 
+##
+## with EC2
+##
+
 web() {
     apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
     rm -f /etc/nginx/sites-enabled/default
