@@ -5,7 +5,6 @@
 ##
 
 iCommon() {
-  cd ~
   apt update
   DEBIAN_FRONTEND=noninteractive apt install -y tzdata
   apt install -y curl git vim
