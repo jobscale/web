@@ -16,8 +16,21 @@
   <meta name="Description" content="just jsx.jp site.">
   <meta name="theme-color" content="black">
   <title>jsx.jp</title>
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="//<?= filter_input(INPUT_SERVER, 'HTTP_HOST') ?>/cdn/css/common.css">
   <script src="/cdn/js/common.js" defer></script>
   <script src="/cdn/js/app.js" defer></script>
   <script src="/cdn/js/channelio.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+<script>
+  const config = {
+    apiKey: "AIzaSyAlGETt2oe_9zfGwuzdvKzNK9pdqrQqwgA",
+    authDomain: "notification-aaa.firebaseapp.com",
+    databaseURL: "https://notification-aaa.firebaseio.com",
+    projectId: "notification-aaa",
+    storageBucket: "notification-aaa.appspot.com",
+    messagingSenderId: "592002215665"
+  };
+  firebase.initializeApp(config);
+</script>
 </head>

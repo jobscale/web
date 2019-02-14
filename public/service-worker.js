@@ -6,6 +6,7 @@ self.addEventListener('push', event => {
   console.info('push', event);
   const message = event.data ? event.data.text() : '(・∀・)';
   event.waitUntil(
+    self.registration.showNotification &&
     self.registration.showNotification('Push Notification Title', {
       body: message,
       icon: 'https://i.gyazo.com/69e6152de89ca872c9a2540d401db927.png',
@@ -28,11 +29,13 @@ self.addEventListener('install', event => {
   }));
 });
 self.addEventListener('fetch', event => {
-  if (typeof self.fetch === 'undefined') return;
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+    return;
+  }
   event.respondWith(
     self.fetch(event.request)
     .catch(error => {
-      console.error( '[PWA Builder] Network request Failed. Serving offline page ' + error );
+      console.error(`[PWA Builder] Network request Failed. Serving offline page ${error}`);
       return caches.open('pwabuilder-offline')
       .then(cache => {
         return cache.match('/');
