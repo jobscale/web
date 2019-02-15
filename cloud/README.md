@@ -33,12 +33,65 @@ vi Dockerfile
 docker build . -t REPOSITORY:TAG
 ```
 
-#### Runch Docker
+#### Run Container
 ```bash
 docker run -it -v /home/user/projects:/root/projects --network=host REPOSITORY:TAG
 ```
 
-#### Start Existing Docker
+#### Attach Running Container
+```bash
+docker exec -it NAMES bash
+```
+
+#### Start Existing Container
 ```bash
 docker start -i NAMES
 ```
+
+#### Stop Existing Container
+```bash
+docker stop NAMES
+```
+
+#### Show Running Container
+```bash
+docker ps
+```
+
+#### Show Existing Container
+```bash
+docker ps -a
+```
+
+#### Remove Existing Container
+```bash
+docker rm $(docker ps -aq)
+```
+
+#### Show Existing Image
+```bash
+docker images
+```
+
+#### Remove Existing Image
+```bash
+docker rm $(docker images -q)
+```
+
+### Setup k8s Dashboard
+
+#### Install minikube
+```bash
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.33.1/minikube-linux-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
+curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
+curl -Lo kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubeadm && chmod +x kubeadm && sudo cp kubeadm /usr/local/bin/ && rm kubeadm
+curl -Lo kubelet https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubelet && chmod +x kubelet && sudo cp kubelet /usr/local/bin/ && rm kubelet
+```
+
+#### Start minikube
+```bash
+minikube status
+minikube start --bootstrapper=kubeadm --vm-driver=none
+minikube dashboard
+```
+
