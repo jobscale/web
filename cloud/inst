@@ -35,6 +35,7 @@ iNodejs() {
   LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
   nvm install $LATEST
   nvm alias default $LATEST
+  nvm use $LATEST
   node --version
   npm --version
 }
