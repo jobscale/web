@@ -81,6 +81,7 @@ docker rm $(docker images -q)
 ### Setup k8s Dashboard
 
 #### Install minikube
+Check new version https://github.com/kubernetes/minikube/releases
 ```bash
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.33.1/minikube-linux-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.2/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
