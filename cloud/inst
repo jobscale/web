@@ -25,8 +25,8 @@ iPhpWeb() {
   iPhp
   iNginx
   apt install -y $(apt search php | grep "^php7" | grep -v snmp | grep fpm | awk -F'/' '{print $1}' | xargs)
-  /usr/sbin/php-fpm7.2 -v
-  /etc/init.d/php7.2-fpm start
+  /usr/sbin/php-fpm7* -v
+  /etc/init.d/php7*-fpm start
 }
 
 iNodejs() {
@@ -115,9 +115,13 @@ main() {
       echo '  support'
       echo '    iNginx'
       echo '    iPhp'
+      echo '    iPhpWeb'
       echo '    iNodejs'
+      echo '    iNodejsWeb'
       echo '    iPython'
+      echo '    iPythonWeb'
       echo '    iRuby'
+      echo '    iRubyWeb'
       echo '    iJava'
     fi
     date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
