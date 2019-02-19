@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "phplint '**/*.php' '**/*.html' '!vendor/**' '!node_modules/**'"
+    "lint": "eslint .",
+    "lint-": "phplint '**/*.php' '**/*.html' '!vendor/**' '!node_modules/**'"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,12 @@
     "url": "https://github.com/jobscale/_/issues"
   },
   "homepage": "https://github.com/jobscale/_#readme",
+  "dependencies": {
+  },
   "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "phplint": "^2.0.1"
   }
 }

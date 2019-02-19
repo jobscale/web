@@ -1,52 +1,61 @@
-self.addEventListener('activate', event => {
-  console.info('activate', event);
-  event.waitUntil(self.clients.claim());
-});
-self.addEventListener('push', event => {
-  console.info('push', event);
-  const getData = data => {
-    try { return data.json().notification; }
-    catch (e) { return { title: 'Push Notification Title',  body: data.text() }; }
-  };
-  const message = event.data ? getData(event.data) : ',,Ծ‸Ծ,,';
-  event.waitUntil(
-    self.registration.showNotification &&
-    self.registration.showNotification(message.title, message)
-  );
-});
-self.addEventListener('install', event => {
-  console.info('install', event);
-  event.waitUntil(self.skipWaiting());
-  const offlinePage = new Request('/');
-  event.waitUntil(
-    fetch(offlinePage)
-    .then(response => {
-      return caches.open('pwabuilder-offline')
-      .then(cache => {
-        console.log('[PWA Builder] Cached offline page during Install'+ response.url);
-        return cache.put(offlinePage, response);
-      });
-  }));
-});
-self.addEventListener('fetch', event => {
-  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
-    return;
+/* global self Request fetch caches */
+class ServiceWorker {
+  constructor() {
+    /* eslint-disable no-console */
+    this.logger = console; /* eslint-enable no-console */
+    /* eslint-disable no-restricted-globals */
+    this.self = self; /* eslint-enable no-restricted-globals */
+    this.offlinePage = new Request('/');
+    this.initEvent();
   }
-  event.respondWith(
-    self.fetch(event.request)
-    .catch(error => {
-      console.error(`[PWA Builder] Network request Failed. Serving offline page ${error}`);
-      return caches.open('pwabuilder-offline')
-      .then(cache => {
-        return cache.match('/');
-      });
-    })
-  );
-});
-self.addEventListener('refreshOffline', response => {
-  return caches.open('pwabuilder-offline')
-  .then(cache => {
-    console.log('[PWA Builder] Offline page updated from refreshOffline event: '+ response.url);
-    return cache.put(offlinePage, response);
-  });
-});
+  initEvent() {
+    this.addEventListener('activate', event => {
+      this.logger.info('activate', event);
+      event.waitUntil(this.self.clients.claim());
+    });
+    this.addEventListener('push', event => {
+      this.logger.info('push', event);
+      const getData = data => {
+        try { return data.json().notification; } catch (e) { return { title: 'Push Notification Title', body: data.text() }; }
+      };
+      const message = event.data ? getData(event.data) : ',,Ծ‸Ծ,,';
+      event.waitUntil(
+        this.self.registration.showNotification(message.title, message),
+      );
+    });
+    this.addEventListener('install', event => {
+      this.logger.info('install', event);
+      event.waitUntil(this.self.skipWaiting());
+      event.waitUntil(
+        fetch(this.offlinePage)
+        .then(response => caches.open('pwabuilder-offline')
+        .then(cache => {
+          this.logger.log(`[PWA Builder] Cached offline page during Install${response.url}`);
+          return cache.put(this.offlinePage, response);
+        })),
+      );
+    });
+    this.addEventListener('fetch', event => {
+      if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+        return;
+      }
+      event.respondWith(
+        this.self.fetch(event.request)
+        .catch(error => {
+          this.logger.error(`[PWA Builder] Network request Failed. Serving offline page ${error}`);
+          return caches.open('pwabuilder-offline')
+          .then(cache => cache.match('/'));
+        }),
+      );
+    });
+    this.addEventListener('refreshOffline', event => caches.open('pwabuilder-offline')
+    .then(cache => {
+      this.logger.log(`[PWA Builder] Offline page updated from refreshOffline event: ${event.url}`);
+      return cache.put(this.offlinePage, event);
+    }));
+  }
+  addEventListener(type, listener) {
+    this.self.addEventListener(type, listener);
+  }
+}
+(() => new ServiceWorker())();
