@@ -18,8 +18,7 @@
     "url": "https://github.com/jobscale/_/issues"
   },
   "homepage": "https://github.com/jobscale/_#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",

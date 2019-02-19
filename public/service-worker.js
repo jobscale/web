@@ -5,6 +5,7 @@ class ServiceWorker {
     this.logger = console; /* eslint-enable no-console */
     /* eslint-disable no-restricted-globals */
     this.self = self; /* eslint-enable no-restricted-globals */
+    this.url = 'https://jsx.jp';
     this.offlinePage = new Request('/');
     this.initEvent();
   }
@@ -19,8 +20,24 @@ class ServiceWorker {
         try { return data.json().notification; } catch (e) { return { title: 'Push Notification Title', body: data.text() }; }
       };
       const message = event.data ? getData(event.data) : ',,Ծ‸Ծ,,';
+      if (message.click_action) this.url = message.click_action;
       event.waitUntil(
         this.self.registration.showNotification(message.title, message),
+      );
+    });
+    this.addEventListener('notificationclick', event => {
+      if (!this.url) return;
+      event.notification.close();
+      event.waitUntil(
+        this.self.clients.matchAll({ type: 'window' }).then(windowClients => {
+          for (let i = 0; i < windowClients.length; i++) {
+            const client = windowClients[i];
+            if (client.url === this.url && 'focus' in client) {
+              return client.focus();
+            }
+          }
+          return this.self.clients.openWindow && this.self.clients.openWindow(this.url);
+        }),
       );
     });
     this.addEventListener('install', event => {
