@@ -4,14 +4,14 @@ self.addEventListener('activate', event => {
 });
 self.addEventListener('push', event => {
   console.info('push', event);
-  const message = event.data ? event.data.text() : '(・∀・)';
+  const getData = data => {
+    try { return data.json().notification; }
+    catch (e) { return { title: 'Push Notification Title',  body: data.text() }; }
+  };
+  const message = event.data ? getData(event.data) : ',,Ծ‸Ծ,,';
   event.waitUntil(
     self.registration.showNotification &&
-    self.registration.showNotification('Push Notification Title', {
-      body: message,
-      icon: 'https://i.gyazo.com/69e6152de89ca872c9a2540d401db927.png',
-      tag: 'push-notification-tag',
-    })
+    self.registration.showNotification(message.title, message)
   );
 });
 self.addEventListener('install', event => {
