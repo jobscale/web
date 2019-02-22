@@ -1,3 +1,4 @@
+/* global document window navigator */
 (() => {
   class App {
     constructor() {
@@ -20,8 +21,7 @@
     promise() {
       const promise = {};
       promise.instance = new Promise((...argv) => {
-        promise.resolve = argv[0];
-        promise.reject = argv[1];
+        [promise.resolve, promise.reject] = argv;
       });
       return promise;
     }
@@ -73,10 +73,42 @@
       }
     }
   }
-})();
-(() => {
-  const job = {
+  const run = {
+    id: 'redmine-pdf',
     idInput: 'load-latest-timestamp',
+    tips() {
+      const tips = [
+        '１．設定＞詳細設定＞ダウンロード\nダウンロード前に各ファイルの保存場所を確認する＞OFF',
+        '２．ポップアップブロックを解除してください。',
+      ];
+      return App.confirm(tips.join('\n\n'));
+    },
+    status() {
+      return document.querySelector(`#${run.id}`);
+    },
+    attach() {
+      const owner = document.querySelector('#query_form_with_buttons > .buttons');
+      /* eslint-disable no-use-before-define */
+      owner.append(job.button());
+      owner.append(job.status());
+      owner.append(job.dateTime());
+      /* eslint-enable no-use-before-define */
+    },
+    printer() {
+      run.status().textContent = '完了しました';
+    },
+    download() {
+      if (!run.tips()) return;
+      const loader = new DownloadPDF({
+        wait: 5,
+        latest: document.querySelector(`#${run.idInput}`).value,
+      });
+      loader.select()
+      .then(list => loader.loop(list))
+      .then(run.printer);
+    },
+  };
+  const job = {
     button() {
       const element = document.createElement('span');
       element.style.padding = '20px 5px 20px 20px';
@@ -123,42 +155,10 @@
       };
       return `${dt.Y}-${dt.m}-${dt.d} ${dt.H}:${dt.M}`;
     },
-  };
-  const run = {
-    id: 'redmine-pdf',
-    tips() {
-      const tips = [
-        '１．設定＞詳細設定＞ダウンロード\nダウンロード前に各ファイルの保存場所を確認する＞OFF',
-        '２．ポップアップブロックを解除してください。',
-      ];
-      return App.confirm(tips.join('\n\n'));
-    },
-    status() {
-      return document.querySelector(`#${run.id}`);
-    },
-    attach() {
-      const owner = document.querySelector('#query_form_with_buttons > .buttons');
-      owner.append(job.button());
-      owner.append(job.status());
-      owner.append(job.dateTime());
-    },
-    printer() {
-      run.status().textContent = '完了しました';
-    },
-    download() {
-      if (!run.tips()) return;
-      const loader = new DownloadPDF({
-        wait: 5,
-        latest: document.querySelector(`#${job.idInput}`).value,
-      });
-      loader.select()
-      .then(list => loader.loop(list))
-      .then(run.printer);
-    },
     start() {
       if (run.status()) return;
       run.attach();
     },
   };
-  run.start();
+  job.start();
 })();

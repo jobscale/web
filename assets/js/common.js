@@ -1,3 +1,5 @@
+/* global window */
+/* eslint-disable no-unused-expressions */
 window.Common || (() => {
   class Common {
     constructor() {
