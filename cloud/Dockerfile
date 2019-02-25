@@ -2,9 +2,9 @@ FROM ubuntu:bionic
 SHELL ["bash", "-c"]
 
 WORKDIR /root
-COPY inst .
+COPY . .
 
-RUN bash inst
+RUN . inst iNginx
 
 EXPOSE 80
-CMD ["/bin/bash", "-c", "bash"]
+CMD ["/root/daemon"]
