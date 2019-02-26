@@ -17,13 +17,6 @@ iDocker() {
   apt install -y docker-ce
 }
 
-iMunikube() {
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.34.1/minikube-linux-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
-  curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.13.3/bin/linux/amd64/kubectl && chmod +x kubectl && sudo cp kubectl /usr/local/bin/ && rm kubectl
-  curl -Lo kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.13.3/bin/linux/amd64/kubeadm && chmod +x kubeadm && sudo cp kubeadm /usr/local/bin/ && rm kubeadm
-  curl -Lo kubelet https://storage.googleapis.com/kubernetes-release/release/v1.13.3/bin/linux/amd64/kubelet && chmod +x kubelet && sudo cp kubelet /usr/local/bin/ && rm kubelet
-}
-
 iNginx() {
   apt install -y nginx nginx-extras
   nginx -v

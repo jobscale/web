@@ -4,7 +4,7 @@
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt install -y install docker-ce
+sudo apt install -y docker-ce
 sudo usermod -aG docker $(whoami)
 ```
 
@@ -118,8 +118,8 @@ minikube delete
 ```bash
 minikube status
 minikube start --bootstrapper=kubeadm --vm-driver=none
-nohup minikube dashboard &
 nohup kubectl proxy --address=0.0.0.0 --accept-hosts='.*' &
+nohup minikube dashboard
 no_proxy=127.0.0.1 curl http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/
 ```
 
