@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
 /etc/init.d/nginx start
+/etc/init.d/php7* start
 
 tail -f /var/log/nginx/*
 
