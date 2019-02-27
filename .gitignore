@@ -2,3 +2,4 @@
 node_modules/
 bin/.autostart-extra-before
 package-lock.json
+nohup.out
