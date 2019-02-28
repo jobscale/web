@@ -1,0 +1,23 @@
+#!/bin/bash -eu
+
+host=$1
+a() {
+  no_proxy=$host curl $host
+}
+b() {
+  for i in {1..50}
+  do
+    a &
+  done
+}
+c() {
+  b
+  wait
+}
+d() {
+  for i in {1..100}
+  do
+    time c
+  done
+}
+d
