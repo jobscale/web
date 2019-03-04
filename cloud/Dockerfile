@@ -4,8 +4,7 @@ SHELL ["bash", "-c"]
 WORKDIR /root
 COPY . .
 
-RUN ./inst iPhpWeb
 RUN ./setup
 
-EXPOSE 80
+EXPOSE $PORT
 CMD ["/root/daemon"]

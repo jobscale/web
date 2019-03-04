@@ -1,6 +1,12 @@
 #!/bin/bash -eu
 
-mkdir -p /var/www/html
+. inst iPhpWeb
+exit
+
+unlink /etc/nginx/sites-enabled/default
+rm -fr /etc/nginx/conf.d
+ln -sfn /root/nginx.conf.d /etc/nginx/conf.d
+sed -e "s/80/$PORT/" nginx.conf.d/default.conf
 echo '<?php
   $x = 0.0001;
   for ($i = 0; $i < 100000; $i++) {
@@ -8,7 +14,4 @@ echo '<?php
   }
   echo "OK ";' > /var/www/html/index.php
 # echo '<?php system("timeout 1 openssl speed -multi $(grep processor /proc/cpuinfo | wc -l)");' > /var/www/html/index.php
-unlink /etc/nginx/sites-enabled/default
-rm -fr /etc/nginx/conf.d
-ln -sfn /root/nginx.conf.d /etc/nginx/conf.d
 
