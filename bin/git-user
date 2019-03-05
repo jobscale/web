@@ -1,0 +1,5 @@
+#!/bin/bash -eu
+
+git config user.name jobscale
+git config user.email jobscale@jsx.jp
+
