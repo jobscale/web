@@ -1,4 +1,21 @@
 #!/bin/bash -eu
 
-rm -fr ~/.java/.userPrefs/jetbrains
-rm -fr ~/.{IntelliJIdea,PhpStorm,CLion,AndroidStudio}*
+linux() {
+  rm -fr ~/.java/.userPrefs/jetbrains
+  rm -fr ~/.{IntelliJIdea,PhpStorm,CLion,AndroidStudio}*
+}
+
+darwin() {
+  list=("$HOME/Library/Caches/IntelliJIdea2018.2"
+  "$HOME/Library/Saved Application State/com.jetbrains.intellij.savedState"
+  "$HOME/Library/Logs/IntelliJIdea2018.2"
+  "$HOME/.gradle/caches/modules-2/files-2.1/com.intellij"
+  "$HOME/.gradle/caches/modules-2/metadata-2.23/descriptors/com.intellij")
+
+  for i in $(seq 0 $(echo "${#list[@]} - 1" | bc))
+  do
+    [[ -s "${list[i]}" ]] && echo "${list[i]}" && rm -fr "${list[i]}"
+  done
+}
+
+$(uname | awk '{print tolower($0)}')
