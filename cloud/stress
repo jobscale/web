@@ -20,4 +20,4 @@ d() {
     time c
   done
 }
-d
+time d
