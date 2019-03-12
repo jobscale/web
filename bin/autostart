@@ -3,6 +3,7 @@
 wait=5
 sleep $wait
 
+tmux new-session -d
 [[ $(id -u) -eq 1000 && -e /dev/kvm ]] && sudo chown $(whoami). /dev/kvm
 conky -d
 ibus-daemon -rxd
