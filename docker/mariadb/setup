@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-
-apt update
-apt upgrade -y
-apt install -y redis mariadb-server

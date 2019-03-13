@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-
-/etc/init.d/mysql start
-
-tail -f /var/log/lastlog
