@@ -13,9 +13,10 @@ $TTL 60
 @       IN      NS      ns1
 @       IN      NS      ns2
 @       IN      NS      ns3
-aws     IN      NS      ns11.value-domain.com.
-aws     IN      NS      ns12.value-domain.com.
-aws     IN      NS      ns13.value-domain.com.
+aws     IN      NS      ns1.value-domain.com.
+aws     IN      NS      ns2.value-domain.com.
+local   IN      NS      ns1.value-domain.com.
+local   IN      NS      ns2.value-domain.com.
 
 @       IN      A       172.16.6.22
 *       IN      A       172.16.6.22
@@ -31,3 +32,12 @@ redis   IN      A       172.16.6.22
 uranus  IN      A       172.16.6.22
 
 earth   IN      A       172.16.6.61
+
+novus0-local IN A 127.0.0.1
+novus1-local IN A 127.0.0.1
+machine0-local IN A 127.0.0.1
+machine1-local IN A 127.0.0.1
+mojave0-local IN A 127.0.0.1
+mojave1-local IN A 127.0.0.1
+mac0-local IN A 127.0.0.1
+mac1-local IN A 127.0.0.1
