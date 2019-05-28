@@ -5,59 +5,60 @@
 ##
 
 web() {
-    apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
-    rm -f /etc/nginx/sites-enabled/default
-    cp -pr /var/site/projects/_/conf.d /etc/nginx
-    ln -sfn /run/php/php7*sock /var/site/run/php/php-fpm.sock
-    chown -R www-data. /var/log/nginx
-    systemctl restart nginx
+  apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
+  rm -f /etc/nginx/sites-enabled/default
+  cp -pr /var/site/projects/_/conf.d /etc/nginx
+  ln -sfn /run/php/php7*sock /var/site/run/php/php-fpm.sock
+  chown -R www-data. /var/log/nginx
+  systemctl restart nginx
 }
 
 cli() {
-    apt install -y \
-        curl dnsutils net-tools whois nmap traceroute \
-        nfs-common cifs-utils exfat-utils sshfs \
-        git subversion vim tmux dstat peco \
-        at expect zip unzip colordiff speedtest-cli \
-        mariadb-client libpng-dev nasm
+  apt install -y \
+    curl dnsutils net-tools whois nmap traceroute \
+    nfs-common cifs-utils exfat-utils sshfs \
+    git subversion vim tmux dstat peco \
+    at expect zip unzip colordiff speedtest-cli \
+    cmatrix sl \
+    mariadb-client libpng-dev nasm
 }
 
 gui() {
-    apt install -y terminator mysql-workbench polari gimp
+  apt install -y terminator conky mysql-workbench polari gimp
 }
 
 npm() {
-    user=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | sudo -u $user bash
+  user=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | sudo -u $user bash
 }
 
 java() {
-    apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
+  apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
 }
 
 account() {
-    user=jobscale
-    usermod -l $user -m -d /home/$user ubuntu
-    ln -s /var/site/cloud/land.pem /home/$user/.ssh/id_rsa
-    echo "$user ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/70-users
-    systemctl restart sshd
+  user=jobscale
+  usermod -l $user -m -d /home/$user ubuntu
+  ln -s /var/site/cloud/land.pem /home/$user/.ssh/id_rsa
+  echo "$user ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/70-users
+  systemctl restart sshd
 }
 
 system() {
-    dd if=/dev/zero of=/mnt/swap bs=1M count=4K
-    chmod 0600 /mnt/swap
-    mkswap /mnt/swap
-    swapon /mnt/swap
-    echo '/mnt/swap none swap sw 0 0' | tee -a /etc/fstab
+  dd if=/dev/zero of=/mnt/swap bs=1M count=4K
+  chmod 0600 /mnt/swap
+  mkswap /mnt/swap
+  swapon /mnt/swap
+  echo '/mnt/swap none swap sw 0 0' | tee -a /etc/fstab
 }
 
 main() {
-    date +'START    my-init %Y-%m-%d %H:%M:%S'
-    web
-    account
-    system
-    cli
-    date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
+  date +'START    my-init %Y-%m-%d %H:%M:%S'
+  web
+  account
+  system
+  cli
+  date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 
 main | tee -a /var/log/cloud-my-init.log
