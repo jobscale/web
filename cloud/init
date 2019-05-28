@@ -27,9 +27,24 @@ gui() {
   apt install -y terminator conky mysql-workbench polari gimp
 }
 
-npm() {
+iNodejs() {
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  . ~/.bashrc
+  LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
+  nvm install $LATEST
+  nvm alias default $LATEST
+  nvm use $LATEST
+  node --version
+  npm --version
+  id
+}
+
+useFunction() {
   user=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | sudo -u $user bash
+  name=$1
+  type $name | tail -$(echo $(type $name | wc -l)-1 | bc) > /tmp/$name
+  sudo -u $user bash -c ". /tmp/$name && $name"
+  rm /tmp/$name
 }
 
 java() {
