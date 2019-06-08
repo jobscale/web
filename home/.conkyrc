@@ -64,7 +64,8 @@ ${template0 /media/jobscale/7b2fc0f8-0a3b-47b5-9dc4-75075f935c09 sdd SSD}\
 ${template0 /media/jobscale/e657358c-0471-4cb6-87db-a24a055f2031 sde SD}\
 ${template0 /media/jobscale/b1ed86b0-511e-4eaa-85d8-5c145ae8af44 sdf SD}\
 ${template0 /media/jobscale/8f387411-a7dd-4144-ae04-7aa7075b275c sdb ext4}\
-${template0 /media/jobscale/Central sdc Central}
+${template0 /media/jobscale/Central sdc Central}\
+${template0 /media/jobscale/7A2012EB2012ADDF sdf HDD}
 ${color5}Network         $stippled_hr ${template1 enp4s0}${template1 ens9}${template1 wlp3s0}
 ${color5}Date         $stippled_hr$color3
 ${alignc}${font Regular:size=26}${time %H:%M:%S}${font}${alignr}$color2${time %B %e日 %A}  ${voffset 12}
