@@ -19,8 +19,9 @@ alias rsync='rsync -tlrHhv --delete'
 alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
+GPATH="$HOME/.bin/android-studio/gradle/gradle-5.1.1/bin"
+[[ -d "$GPATH" ]] && export PATH="$PATH:$GPATH"
 [[ -d "$HOME/Android/Sdk" ]] && export ANDROID_HOME="$HOME/Android/Sdk" && export PATH="$PATH:$ANDROID_HOME/tools"
-[[ -d "$HOME/.bin/android-studio/gradle/gradle-4.4/bin" ]] && export PATH="$PATH:$HOME/.bin/android-studio/gradle/gradle-4.4/bin"
 
 [[ -s "$HOME/.bash_scripts" ]] && . "$HOME/.bash_scripts"
 [[ -s "$HOME/.nvm/nvm.sh" ]] && . "$HOME/.nvm/nvm.sh"

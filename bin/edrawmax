@@ -1,1 +1,6 @@
-/home/okutani/.bin/edrawmax-9-amd64/EdrawMax
+#!/bin/bash -eu
+
+main() {
+  nohup ~/.bin/edrawmax-*-amd64/EdrawMax $@ >&/dev/null &
+}
+main $@
