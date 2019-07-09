@@ -1,1 +1,1 @@
-ifconfig | grep broadcast | awk '{print $2}' | grep -v '\.0\.1$'
+ifconfig | grep broadcast | grep -v '\.1 ' | awk '{print $2}'

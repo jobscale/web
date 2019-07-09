@@ -18,7 +18,9 @@ alias netstat='netstat -anptu'
 alias rsync='rsync -tlrHhv --delete'
 alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
+alias kubectl='sudo microk8s.kubectl'
 
+PATH="$PATH:$HOME/bin"
 GPATH="$HOME/.bin/android-studio/gradle/gradle-5.1.1/bin"
 [[ -d "$GPATH" ]] && export PATH="$PATH:$GPATH"
 [[ -d "$HOME/Android/Sdk" ]] && export ANDROID_HOME="$HOME/Android/Sdk" && export PATH="$PATH:$ANDROID_HOME/tools"
