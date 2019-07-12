@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-
-main() {
-  nohup ~/.bin/edrawmax-*-amd64/EdrawMax $@ >&/dev/null &
-}
-main $@
