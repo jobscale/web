@@ -52,8 +52,11 @@ $color4${membar 8}$color3
 CPU: $color1$cpu%  ${color3}Swap: $color1$swapperc%  $color4${swapbar 8}$color3
 ${template2 cpu1 cpu2}
 ${template2 cpu3 cpu4}
+${if_match $nodename == "machine"}\
+$else\
 ${template2 cpu5 cpu6}
 ${template2 cpu7 cpu8}
+$endif\
   Proces: $color1$processes$color3        Thrds: $color1$threads$color3        Runs: $color1$running_processes
 ${color5}Storage         $stippled_hr \
 ${template0 / sda /}\
