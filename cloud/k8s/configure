@@ -1,11 +1,24 @@
+sys-svc() {
+  KUBE_NAMESPACE=kube-system
+  KUBE_USER=admin-user
+  KUBE_SERVICE=$1
+  KUBE_HOST=http://127.0.0.1:8001
+  KUBE_TOKEN=$(kubectl -n $KUBE_NAMESPACE describe secret $(kubectl -n $KUBE_NAMESPACE get secret | grep $KUBE_USER | awk '{print $1}') | grep ^token | awk '{print $2}')
+  kubectl config view --raw
+  echo "token $KUBE_TOKEN"
+  # open ${KUBE_HOST}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+  kubectl -n $KUBE_NAMESPACE -ojson get service $KUBE_SERVICE > ../loadbalancer.json
+  vi ../loadbalancer.json
+  https_proxy= http_proxy= curl -k --header "Authorization: Bearer $KUBE_TOKEN" ${KUBE_HOST}/api/v1/namespaces/${KUBE_NAMESPACE}/services/${KUBE_SERVICE}/status -X PUT -d @../loadbalancer.json -H 'content-type:application/json'
+}
+
 svc() {
   KUBE_NAMESPACE=default
-  [[ "$2" != "" ]] && KUBE_NAMESPACE=$2
   KUBE_SERVICE=$1
   KUBE_HOST=http://127.0.0.1:8001
   KUBE_TOKEN=$(kubectl describe secrets | grep ^token | awk '{print $2}')
-  echo $KUBE_TOKEN
   kubectl config view --raw
+  echo "token $KUBE_TOKEN"
   # open ${KUBE_HOST}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
   kubectl -n $KUBE_NAMESPACE -ojson get service $KUBE_SERVICE > ../loadbalancer.json
   vi ../loadbalancer.json
