@@ -1,0 +1,48 @@
+svc() {
+  KUBE_NAMESPACE=default
+  [[ "$2" != "" ]] && KUBE_NAMESPACE=$2
+  KUBE_SERVICE=$1
+  KUBE_HOST=http://127.0.0.1:8001
+  KUBE_TOKEN=$(kubectl describe secrets | grep ^token | awk '{print $2}')
+  echo $KUBE_TOKEN
+  kubectl config view --raw
+  # open ${KUBE_HOST}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+  kubectl -n $KUBE_NAMESPACE -ojson get service $KUBE_SERVICE > ../loadbalancer.json
+  vi ../loadbalancer.json
+  https_proxy= http_proxy= curl -k --header "Authorization: Bearer $KUBE_TOKEN" ${KUBE_HOST}/api/v1/namespaces/${KUBE_NAMESPACE}/services/${KUBE_SERVICE}/status -X PUT -d @../loadbalancer.json -H 'content-type:application/json'
+}
+
+token() {
+  kubectl describe secrets | grep ^token | awk '{print $2}'
+}
+
+portForward() {
+  kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
+  sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
+  wait
+}
+
+adminGen() {
+echo 'apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system' > admin-user-service-account.yaml
+
+kubectl apply -f admin-user-service-account.yaml
+
+kubectl describe secret $(kubectl get secrets -n kube-system | grep admin-user | awk '{print $1}') -n kube-system | grep ^token
+}
