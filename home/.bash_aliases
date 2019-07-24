@@ -20,7 +20,7 @@ alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
 PATH="$PATH:$HOME/bin"
-# export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+alias kubeconfig='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
 # eval $(minikube docker-env)
 
 GPATH="$HOME/.bin/android-studio/gradle/gradle-5.1.1/bin"
