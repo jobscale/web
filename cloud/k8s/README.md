@@ -68,6 +68,12 @@ xdg-open http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kube
 ### kubectl port-forward
 
 ```
-kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 9443:443
+kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443
 sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80
+```
+
+### service ingress
+```
+. configure
+svc web
 ```
