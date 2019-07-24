@@ -1,53 +1,41 @@
-### IAM Role 権限
+# Web Site
+
+## https://jsx.jp
+
+Kubernetes v1.15.0
+
+### install go lang
 
 ```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:*Profile*",
-        "iam:*Asume*",
-        "iam:*Role*"
-      ],
-      "Resource": [
-        "arn:aws:iam::*:instance-profile/*",
-        "arn:aws:iam::*:role/*"
-      ]
-    }
-  ]
-}
+sudo snap install go --channel=stable --classic
 ```
 
-### Create
+### install kind
 
 ```
-eksctl create cluster --name default --version 1.13 --nodegroup-name standard-workers --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 1 --node-ami auto
+GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
 ```
 
-### Delete
+### create cluster
 
 ```
-eksctl delete cluster --name default
-```
-
-### Update config
-
-```
-kubectl get svc -A
-aws eks update-kubeconfig --name default
-aws-iam-authenticator init -i 0
-```
-
-### Dashboard
-
-```
+kind create cluster
 kubectl get nodes --watch
+kubectl get pods -A --watch
+```
+
+### kubectl config
+
+```
+alias kubeconfig='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
+kubeconfig
+kubectl config current-context
+```
+
+### deployment Dashboard
+
+```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
 echo 'apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -67,28 +55,19 @@ subjects:
   name: admin-user
   namespace: kube-system' > admin-user-service-account.yaml
 kubectl apply -f admin-user-service-account.yaml
-```
-
-### Token
-
-```
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+```
+
+### kubectl proxy with Dashboard
+
+```
 kubectl proxy
+xdg-open http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
 ```
 
-### Examply deploy
+### kubectl port-forward
 
 ```
-kubectl create deployment nginx --image nginx
-kubectl expose deployment nginx --port 80,443 --type LoadBalancer --name nginx
-kubectl get deployment,pods,svc
-
-kubectl create deployment mongo --image mongo
-kubectl expose deployment mongo --port 27017 --type ClusterIP --name mongo
-kubectl get deployment,pods,svc
-
-kubectl create deployment blog --image jobscale/blog
-kubectl expose deployment blog --port 80 --target-port 3344 --type LoadBalancer --name blog
-kubectl get deployment,pods,svc
+kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 9443:443
+sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80
 ```
-
