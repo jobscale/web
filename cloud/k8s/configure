@@ -26,7 +26,8 @@ svc() {
 }
 
 token() {
-  kubectl describe secrets | grep ^token | awk '{print $2}'
+  # kubectl describe secrets | grep ^token | awk '{print $2}'
+  kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 }
 
 portForward() {
