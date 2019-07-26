@@ -71,16 +71,16 @@ svc web
 ### rollout deployment
 
 ```
-kubectl rollout restart deployment nginx
+kubectl rollout restart deployment web
 kubectl get pods --watch
-kubectl rollout status deployment nginx
-kubectl rollout history deployment nginx
-kubectl rollout history deployment nginx --revision 3
+kubectl rollout status deployment web
+kubectl rollout history deployment web
+kubectl rollout history deployment web --revision 3
 ```
 
 ### rollback deployment
 
 ```
-kubectl rollout undo deployment nginx --to-revision 2
+kubectl rollout undo deployment web --to-revision 2
 kubectl get pods --watch
 ```

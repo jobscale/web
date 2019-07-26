@@ -27,3 +27,9 @@ adminDashboard() {
   kubectl apply -f admin-user-service-account.yaml
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
 }
+
+deployWeb() {
+  kubectl proxy
+  kubectl apply -f web
+  portForward
+}
