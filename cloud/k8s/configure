@@ -8,7 +8,29 @@ svc() {
   # open ${KUBE_HOST}/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
   kubectl -n $KUBE_NAMESPACE -ojson get service $KUBE_SERVICE > ../loadbalancer.json
   vi ../loadbalancer.json
+  kubectl proxy &
   https_proxy= http_proxy= curl -k --header "Authorization: Bearer $KUBE_TOKEN" ${KUBE_HOST}/api/v1/namespaces/${KUBE_NAMESPACE}/services/${KUBE_SERVICE}/status -X PUT -d @../loadbalancer.json -H 'content-type:application/json'
+}
+
+allInOne() {
+  kind create clustar --config multinode.yaml
+  adminDashboard
+  deployApps
+  portForward
+}
+
+adminDashboard() {
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+  kubectl apply -f admin-user-service-account.yaml
+  kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
+}
+
+deployApps() {
+  kubectl apply -f web
+  kubectl run redis --image redis --expose --port 6379
+  kubectl run mongo --image mongo --expose --port 27017
+  kubectl run chat --image jobscale/chat --expose --port 3033
+  kubectl run simple-chat --image jobscale/simpl-echat --expose --port 3000
 }
 
 token() {
@@ -19,17 +41,8 @@ token() {
 portForward() {
   kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
   sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
+  kubectl port-forward --address 0.0.0.0 svc/simple-chat 3000:3000 &
+  kubectl port-forward --address 0.0.0.0 svc/chat 3033:3033 &
+  kubectl port-forward --address 0.0.0.0 svc/chat 3344:3344 &
   wait
-}
-
-adminDashboard() {
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
-  kubectl apply -f admin-user-service-account.yaml
-  kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
-}
-
-deployWeb() {
-  kubectl proxy
-  kubectl apply -f web
-  portForward
 }
