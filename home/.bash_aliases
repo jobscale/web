@@ -19,7 +19,7 @@ alias rsync='rsync -tlrHhv --delete'
 alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
-PATH="$PATH:$HOME/bin"
+PATH="$PATH:$HOME/bin:$HOME/go/bin"
 alias kubeconfig='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
 # eval $(minikube docker-env)
 
