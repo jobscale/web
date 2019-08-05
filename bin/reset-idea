@@ -2,7 +2,7 @@
 
 linux() {
   rm -fr ~/.java/.userPrefs/jetbrains
-  rm -fr ~/.{IntelliJIdea,PhpStorm,CLion,AndroidStudio}*
+  rm -fr ~/.{Rider,IntelliJIdea,PhpStorm,CLion,AndroidStudio}*
 }
 
 darwin() {
