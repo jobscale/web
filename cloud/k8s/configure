@@ -27,11 +27,24 @@ adminDashboard() {
 
 deployApps() {
   kubectl apply -f web
+
   kubectl run redis --image redis --expose=true --port 6379
   kubectl run mongo --image mongo --expose=true --port 27017
-  kubectl run simple-chat --image jobscale/simpl-echat --expose=true --port=3000
-  kubectl run chat --image jobscale/chat --expose=true --port=3033
-  kubectl run blog --image jobscale/blog --expose=true --port=3344
+
+  kubectl run simple-chat --image jobscale/simple-chat
+  kubectl expose deployment simple-chat --name=simple-chat --type=LoadBalancer --port=3000 --target-port=3000
+
+  kubectl run chat --image jobscale/chat
+  kubectl expose deployment chat --name=chat --type=LoadBalancer --port=3033 --target-port=3033
+
+  kubectl run blog --image jobscale/blog
+  kubectl expose deployment blog --name=blog --type=LoadBalancer --port=3344 --target-port=3344
+
+  kubectl run laravel --image jobscale/laravel
+  kubectl expose deployment laravel --name=laravel --type=LoadBalancer --port=8801 --target-port=80
+
+  kubectl run lumen --image jobscale/lumen
+  kubectl expose deployment lumen --name=lumen --type=LoadBalancer --port=8802 --target-port=80
 }
 
 token() {
@@ -40,10 +53,10 @@ token() {
 }
 
 portForward() {
-  [[ $(nc -v localhost 8443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
-  [[ $(nc -v localhost 3000 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/simple-chat 3000:3000 &
-  [[ $(nc -v localhost 3033 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/chat 3033:3033 &
-  [[ $(nc -v localhost 3344 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/blog 3344:3344 &
   [[ $(nc -v localhost 443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
+  [[ $(nc -v localhost 8443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
+  # [[ $(nc -v localhost 3000 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/simple-chat 3000:3000 &
+  # [[ $(nc -v localhost 3033 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/chat 3033:3033 &
+  # [[ $(nc -v localhost 3344 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/blog 3344:3344 &
   wait
 }
