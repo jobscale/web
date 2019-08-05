@@ -1,5 +1,12 @@
-.idea
+.idea/
+.c9/
 node_modules/
-bin/.autostart-extra-before
+bin/.autostart-extra*
 package-lock.json
 nohup.out
+*.pem
+*.key
+cert.*
+*.crt
+*.csr
+*.cert

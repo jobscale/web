@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "docker build . -t local/web:0.0.1 --no-cache",
-    "docker": "docker run --rm -d --network=host local/web:0.0.1",
+    "start": "docker run --name=web --rm -d --network=host local/web:0.0.1",
+    "stop": "docker stop web",
     "load": "kind load docker-image local/web:0.0.1",
     "save": "docker save local/web:0.0.1 > ../image.tar",
     "import": "kind load image-archive ../image.tar",
+    "rollout": "kubectl rollout restart deployment web",
     "lint": "eslint .",
     "lint-": "phplint '**/*.php' '**/*.html' '!vendor/**' '!node_modules/**'"
   },
