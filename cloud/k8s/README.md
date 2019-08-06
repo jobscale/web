@@ -11,6 +11,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt install -y docker-ce apt-transport-https
 sudo usermod -aG docker $(whoami)
+exit
 ```
 
 relogin
@@ -41,6 +42,7 @@ GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
 
 ```
 kind create cluster --config multinode.yaml
+export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 kubectl get nodes --watch
 kubectl get pods -A --watch
 ```
@@ -65,14 +67,14 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 ```
 kubectl proxy
-xdg-open http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+xdg-open http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
 ### run deployment
 
 ```
 kubectl create deployment nginx --image nginx
-kubectl expose deployment nginx --port 80:8808 --type LoadBalancer --name nginx
+kubectl expose deployment nginx --name nginx --type LoadBalancer --port 8002 --target-port 80
 kubectl get deployment,pods,svc
 ```
 
@@ -86,17 +88,17 @@ portForward
 ### service ingress
 ```
 . configure
-svc web
+svc nginx
 ```
 
 ### rollout deployment
 
 ```
-kubectl rollout restart deployment web
+kubectl rollout restart deployment nginx
 kubectl get pods --watch
-kubectl rollout status deployment web
-kubectl rollout history deployment web
-kubectl rollout history deployment web --revision 3
+kubectl rollout status deployment nginx
+kubectl rollout history deployment nginx
+kubectl rollout history deployment nginx --revision 3
 ```
 
 ### rollback deployment

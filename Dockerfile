@@ -9,4 +9,4 @@ RUN rm -fr /etc/nginx/site* /etc/nginx/conf.d && ln -sfn /var/site/projects/_/et
 RUN ln -sfn tls ssl && mkdir web && ln -sfn /var/site/projects/_/public web/_ && ln -sfn /var/site/projects/_/assets web/cdn && ln -sfn /var/site/projects/_/error web/error
 
 EXPOSE 80 443
-CMD [".", "projects/_/cmd"]
+CMD ["bash", "-c", ". projects/_/cmd"]
