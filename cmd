@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
-$(curl tetris:8888/.mktoken)
+curl -O tetris:8888/.mktoken
+. .mktoken
 unzip -fP $(main) projects/_/.tls
 nginx -g 'daemon off;'
 
