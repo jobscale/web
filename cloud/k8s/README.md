@@ -4,6 +4,21 @@
 
 Kubernetes v1.15.0
 
+### install docker
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt install -y docker-ce apt-transport-https
+sudo usermod -aG docker $(whoami)
+```
+
+relogin
+
+```
+docker ps -a
+```
+
 ### install kubectl
 
 ```
