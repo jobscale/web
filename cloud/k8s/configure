@@ -14,7 +14,7 @@ svc() {
 
 allInOne() {
   createKind
-  kubeconfig
+  kubeConfig
   kubectl get nodes -w
   metalLB
   adminDashboard
@@ -23,7 +23,7 @@ allInOne() {
   # portForward
 }
 
-kubeconfig() {
+kubeConfig() {
   export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 }
 
