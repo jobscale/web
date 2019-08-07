@@ -7,7 +7,7 @@ sslGen() {
   rm -fr sslGen
   mkdir sslGen
   cd sslGen
-  unzip projects/_/sslGen
+  unzip ../projects/_/sslGen
   cd - > /dev/null
 }
 [[ ! -s .mktoken ]] && sslGen
