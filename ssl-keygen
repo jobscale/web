@@ -21,7 +21,7 @@ rsa() {
   openssl req \
     -new \
     -newkey rsa:4096 \
-    -days 365 \
+    -days $days \
     -nodes \
     -x509 \
     -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
@@ -34,7 +34,7 @@ ec() {
     -new \
     -newkey ec \
     -pkeyopt ec_paramgen_curve:prime256v1 \
-    -days 365 \
+    -days $days \
     -nodes \
     -x509 \
     -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
