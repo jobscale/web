@@ -13,10 +13,31 @@ svc() {
 }
 
 allInOne() {
-  kind create clustar --config multinode.yaml
+  createKind
+  kubeconfig
+  kubectl get nodes -w
+  metalLB
   adminDashboard
   deployApps
-  portForward
+  kubectl get pods -A -w
+  # portForward
+}
+
+kubeconfig() {
+  export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+}
+
+createKind() {
+  kind create cluster --config multinode.yaml
+}
+
+metalLB() {
+  # METAL_VERSION=$(curl -s https://metallb.universe.tf/release-notes/ | grep "MetalLB v" | head -1 | awk '{print $2}')
+  METAL_VERSION=$(git ls-remote --tags https://github.com/danderson/metallb.git | grep -v '{}' | tail -1 | awk -F/ '{print $3}')
+  echo -e "\n MetalLB ${METAL_VERSION} \n"
+  kubectl apply -f https://raw.githubusercontent.com/google/metallb/${METAL_VERSION}/manifests/metallb.yaml
+  kubectl apply -f https://git.io/km-config.yaml
+  # kubectl apply -f layer2-config.yaml
 }
 
 adminDashboard() {
@@ -55,8 +76,5 @@ token() {
 portForward() {
   [[ $(nc -v localhost 443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
   [[ $(nc -v localhost 8443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
-  # [[ $(nc -v localhost 3000 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/simple-chat 3000:3000 &
-  # [[ $(nc -v localhost 3033 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/chat 3033:3033 &
-  # [[ $(nc -v localhost 3344 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/blog 3344:3344 &
   wait
 }
