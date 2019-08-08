@@ -16,8 +16,10 @@ allInOne() {
   createKind
   kubeConfig
   kubectl get nodes -w
+  kubectl get pods -A -w
   metalLB
   adminDashboard
+  kubectl get pods -A -w
   deployApps
   kubectl get pods -A -w
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
@@ -54,8 +56,7 @@ deployApps() {
   kubectl run redis --image redis --expose=true --port 6379
   kubectl run mongo --image mongo --expose=true --port 27017
 
-  cd /home/site/projects/docker/tetris
-  npm run load && cd - > /dev/null
+  kind load docker-image local/tetris:0.0.1
   kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
   delay && kubectl apply -f web
 
