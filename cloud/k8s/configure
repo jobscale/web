@@ -52,30 +52,31 @@ delay() {
   sleep 10
 }
 
+exposedDeployment() {
+  kubectl run $1 --image $2
+  delay
+  kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
+}
+
 deployApps() {
   kubectl run redis --image redis --expose=true --port 6379
   kubectl run mongo --image mongo --expose=true --port 27017
 
-  kind load docker-image local/tetris:0.0.1
-  kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
+  if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
+  then
+    kind load docker-image local/tetris:0.0.1
+    kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
+  fi
+
   delay && kubectl apply -f web
 
   delay && kubectl expose deployment kubernetes-dashboard -n kube-system --name=dashboard --type=LoadBalancer --port=443
 
-  kubectl run laravel --image jobscale/laravel
-  delay && kubectl expose deployment laravel --name=laravel --type=LoadBalancer --port=8801 --target-port=80
-
-  kubectl run lumen --image jobscale/lumen
-  delay && kubectl expose deployment lumen --name=lumen --type=LoadBalancer --port=8802 --target-port=80
-
-  kubectl run blog --image jobscale/blog
-  delay && kubectl expose deployment blog --name=blog --type=LoadBalancer --port=3344 --target-port=3344
-
-  kubectl run simple-chat --image jobscale/simple-chat
-  delay && kubectl expose deployment simple-chat --name=simple-chat --type=LoadBalancer --port=3000 --target-port=3000
-
-  kubectl run chat --image jobscale/chat
-  delay && kubectl expose deployment chat --name=chat --type=LoadBalancer --port=3033 --target-port=3033
+  exposedDeployment laravel jobscale/laravel 8801 80
+  exposedDeployment lumen jobscale/lumen 8802 80
+  exposedDeployment blog jobscale/blog 3344 3344
+  exposedDeployment simple-chat jobscale/simple-chat 3000 3000
+  exposedDeployment chat jobscale/chat 3033 3033
 }
 
 token() {
