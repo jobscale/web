@@ -12,16 +12,30 @@ svc() {
   https_proxy= http_proxy= curl -k --header "Authorization: Bearer $KUBE_TOKEN" ${KUBE_HOST}/api/v1/namespaces/${KUBE_NAMESPACE}/services/${KUBE_SERVICE}/status -X PUT -d @../loadbalancer.json -H 'content-type:application/json'
 }
 
+delay() {
+  sleep 8
+}
+
 allInOne() {
   createKind
   kubeConfig
-  kubectl get nodes -w
-  kubectl get pods -A -w
+
+  timeout 120 kubectl get nodes -w
+  timeout 60 kubectl get pods -A -w
+
   metalLB
-  adminDashboard
-  kubectl get pods -A -w
+  delay && ingressNginx
+  delay && adminDashboard
+
+  timeout 60 kubectl get pods -A -w
+
   deployApps
-  kubectl get pods -A -w
+
+  delay && ingressForward
+
+  timeout 60 kubectl get pods -A -w
+
+  kubectl get pods -A
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
   # portForward
 }
@@ -43,17 +57,22 @@ metalLB() {
   # kubectl apply -f layer2-config.yaml
 }
 
+ingressNginx() {
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+}
+
+ingressForward() {
+  delay && kubectl apply -f web
+}
+
 adminDashboard() {
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+  kubectl apply -f kubernetes-dashboard.yaml
   kubectl apply -f admin-user-service-account.yaml
 }
 
-delay() {
-  sleep 10
-}
-
 exposedDeployment() {
-  kubectl run $1 --image $2
+  kubectl create deployment $1 --image $2
   delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
 }
@@ -67,10 +86,6 @@ deployApps() {
     kind load docker-image local/tetris:0.0.1
     kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
   fi
-
-  delay && kubectl apply -f web
-
-  delay && kubectl expose deployment kubernetes-dashboard -n kube-system --name=dashboard --type=LoadBalancer --port=443
 
   exposedDeployment laravel jobscale/laravel 8801 80
   exposedDeployment lumen jobscale/lumen 8802 80

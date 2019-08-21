@@ -87,17 +87,32 @@ kubectl expose deployment nginx --name nginx --type LoadBalancer --port=443,80
 kubectl get deployment,pods,svc
 ```
 
+### ingress nginx
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+```
+
+### tls termination
+
+```
+kubectl create secret tls wildcard-tls --cert sslGen/wildcard.jsx.jp.cert --key sslGen/wildcard.jsx.jp.key
+echo 'apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wildcard-tls
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80' > ingress.yaml
+kubectl apply -f ingress.yaml
+```
+
 ### kubectl port-forward
 
 ```
-. configure
-portForward
-```
-
-### service ingress
-```
-. configure
-svc nginx
+sudo -E kubectl port-forward -n ingress-nginx --address 0.0.0.0 svc/ingress-nginx 443:443 80:80
 ```
 
 ### rollout deployment
