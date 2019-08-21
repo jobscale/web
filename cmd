@@ -12,6 +12,7 @@ sslOpen() {
 sslGen() {
   . .mktoken
   unzip -oP $(main) projects/_/.tls
+  sed -i -e "s/255-255-255-255/$(ipHost)/" /etc/nginx/conf.d/00-environment.conf
 }
 
 sslShare() {
