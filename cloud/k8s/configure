@@ -101,6 +101,5 @@ token() {
 
 portForward() {
   [[ $(nc -v localhost 443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
-  [[ $(nc -v localhost 8443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl port-forward --address 0.0.0.0 svc/kubernetes-dashboard -n kube-system 8443:443 &
   wait
 }
