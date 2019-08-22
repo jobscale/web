@@ -16,7 +16,12 @@ delay() {
   sleep 8
 }
 
+
 allInOne() {
+  time internalAllInOne | tee /tmp/k8s-all.log
+}
+
+internalAllInOne() {
   createKind
   kubeConfig
 
@@ -35,9 +40,10 @@ allInOne() {
 
   timeout 60 kubectl get pods -A -w
 
+  echo -e '\n\nk8s creation finished.\n\n'
   kubectl get pods -A
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
-  # portForward
+  portForward
 }
 
 kubeConfig() {
@@ -87,11 +93,11 @@ deployApps() {
     kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
   fi
 
-  exposedDeployment laravel jobscale/laravel 8801 80
-  exposedDeployment lumen jobscale/lumen 8802 80
-  exposedDeployment blog jobscale/blog 3344 3344
-  exposedDeployment simple-chat jobscale/simple-chat 3000 3000
-  exposedDeployment chat jobscale/chat 3033 3033
+  exposedDeployment laravel jobscale/laravel 80 80
+  exposedDeployment lumen jobscale/lumen 80 80
+  exposedDeployment blog jobscale/blog 80 3344
+  exposedDeployment simple-chat jobscale/simple-chat 80 3000
+  exposedDeployment chat jobscale/chat 80 3033
 }
 
 token() {
