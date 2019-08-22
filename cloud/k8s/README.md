@@ -7,37 +7,61 @@ Kubernetes v1.15.0
 ### install docker
 
 ```
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt install -y docker-ce apt-transport-https
-sudo usermod -aG docker $(whoami)
-exit
+iDocker() {
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt install -y docker-ce apt-transport-https
+  sudo usermod -aG docker $(whoami)
+} && iDocker && exit
 ```
 
-relogin
-
 ```
+# need login
 docker ps -a
 ```
 
 ### install kubectl
 
 ```
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-chmod +x kubectl
-sudo mv kubectl /usr/local/bin
+iKubectl() {
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(
+    curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt
+  )/bin/linux/amd64/kubectl
+  chmod +x kubectl
+  sudo mv kubectl /usr/local/bin
+} && iKubectl
 ```
 
 ### install go lang
 
 ```
-sudo snap install go --channel=stable --classic
+iGolang() {
+  sudo snap install go --channel=stable --classic
+} && iGolang
 ```
 
 ### install kind
 
 ```
-GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
+iKind() {
+  GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
+} && iKind
+```
+
+### install npm with nodejs
+
+```
+iNodejs() {
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+  . ~/.bashrc
+  LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
+  nvm install $LATEST
+  nvm alias default $LATEST
+  nvm use $LATEST
+  node --version
+  npm --version
+  id
+} && iNodejs
 ```
 
 ### create cluster
