@@ -16,7 +16,6 @@ delay() {
   sleep 8
 }
 
-
 allInOne() {
   time internalAllInOne | tee /tmp/k8s-all.log
 }
@@ -42,8 +41,9 @@ internalAllInOne() {
 
   echo -e '\n\nk8s creation finished.\n\n'
   kubectl get pods -A
-  kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
-  portForward
+
+  delay && kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
+  delay && portForward
 }
 
 kubeConfig() {
@@ -98,6 +98,7 @@ deployApps() {
   exposedDeployment blog jobscale/blog 80 3344
   exposedDeployment simple-chat jobscale/simple-chat 80 3000
   exposedDeployment chat jobscale/chat 80 3033
+  exposedDeployment wetty jobscale/wetty 80 3000
 }
 
 token() {
