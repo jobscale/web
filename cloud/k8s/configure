@@ -40,7 +40,7 @@ internalAllInOne() {
   timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
-  kubectl get pods -A
+  timeout 60 kubectl get pods -A -w
 
   delay && kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
   delay && portForward
@@ -79,6 +79,7 @@ adminDashboard() {
 
 exposedDeployment() {
   kubectl create deployment $1 --image $2
+  kubectl autoscale deployment $1 --cpu-percent=50 --min=3 --max=20
   delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
 }
