@@ -107,6 +107,14 @@ svcApps() {
   exposedDeployment wetty jobscale/wetty 80 3000 0
 }
 
+delAll() {
+  for app in laravel lumen blog simple-chat chat
+  do
+    kubectl delete svc $app
+    kubectl delete deployment $app
+  done
+}
+
 token() {
   # kubectl describe secrets | grep ^token | awk '{print $2}'
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
