@@ -81,6 +81,7 @@ exposedDeployment() {
   kubectl create deployment $1 --image $2
   delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
+  [[ $5 != 0 ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
 }
 
 deployApps() {
@@ -93,12 +94,16 @@ deployApps() {
     kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
   fi
 
-  exposedDeployment laravel jobscale/laravel 80 80
-  exposedDeployment lumen jobscale/lumen 80 80
-  exposedDeployment blog jobscale/blog 80 3344
-  exposedDeployment simple-chat jobscale/simple-chat 80 3000
-  exposedDeployment chat jobscale/chat 80 3033
-  exposedDeployment wetty jobscale/wetty 80 3000
+  svcApps
+}
+
+svcApps() {
+  exposedDeployment laravel jobscale/laravel 80 80 3
+  exposedDeployment lumen jobscale/lumen 80 80 3
+  exposedDeployment blog jobscale/blog 80 3344 3
+  exposedDeployment simple-chat jobscale/simple-chat 80 3000 3
+  exposedDeployment chat jobscale/chat 80 3033 3
+  exposedDeployment wetty jobscale/wetty 80 3000 0
 }
 
 token() {

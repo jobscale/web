@@ -3,7 +3,7 @@ set nofixendofline      " EOF
 set background=dark     " 背景色の傾向(カラースキームがそれに併せて色の明暗を変えてくれる)
 
 " 色
-hi Normal ctermfg=LightGray ctermbg=DarkGray    " 通常
+hi Normal ctermfg=LightGray ctermbg=NONE    " 通常
 hi NonText ctermfg=DarkBlue                     " EOF以降の~など
 hi Comment cterm=Italic ctermfg=LightGreen      " コメント
 hi Statement ctermfg=Magenta                    " 命令、分岐
