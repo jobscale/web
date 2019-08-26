@@ -82,7 +82,7 @@ exposedDeployment() {
   kubectl autoscale deployment $1 --cpu-percent=50 --min=3 --max=20
   delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
-  [[ $5 != 0 ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
+  [[ "$5" != "0" ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
 }
 
 deployApps() {
