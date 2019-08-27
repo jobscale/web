@@ -40,7 +40,8 @@ internalAllInOne() {
   timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
-  timeout 60 kubectl get pods -A -w
+  timeout 120 kubectl get pods -A -w
+  timeout 120 kubectl get pods -A -w
 
   delay && kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
   delay && portForward
@@ -85,8 +86,8 @@ exposedDeployment() {
 }
 
 deployApps() {
-  kubectl run redis --image redis --expose=true --port 6379
-  kubectl run mongo --image mongo --expose=true --port 27017
+  kubectl create deployment redis --image redis --expose=true --port 6379
+  kubectl create deployment mongo --image mongo --expose=true --port 27017
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
@@ -100,9 +101,9 @@ deployApps() {
 svcApps() {
   exposedDeployment laravel jobscale/laravel 80 80 3
   exposedDeployment lumen jobscale/lumen 80 80 3
-  exposedDeployment blog jobscale/blog 80 3344 3
-  exposedDeployment simple-chat jobscale/simple-chat 80 3000 3
-  exposedDeployment chat jobscale/chat 80 3033 3
+  exposedDeployment blog jobscale/blog 80 3344 0
+  exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
+  exposedDeployment chat jobscale/chat 80 3033 0
   exposedDeployment wetty jobscale/wetty 80 3000 0
 }
 
