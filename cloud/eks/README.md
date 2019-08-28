@@ -25,7 +25,7 @@
 ### Create
 
 ```
-eksctl create cluster --name default --version 1.13 --nodegroup-name standard-workers --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 1 --node-ami auto
+eksctl create cluster --name default --version 1.13 --nodegroup-name standard-workers --node-type t3.small --nodes-min 2 --nodes-max 20 --node-ami auto
 ```
 
 ### Delete
@@ -37,32 +37,16 @@ eksctl delete cluster --name default
 ### Update config
 
 ```
-kubectl get svc -A
 aws eks update-kubeconfig --name default
+kubectl get svc -A
 aws-iam-authenticator init -i 0
 ```
 
 ### Dashboard
 
 ```
-kubectl get nodes --watch
+kubectl get nodes -o wide -w
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
-```
-
-### heapster / grafana
-
-```
-git clone https://github.com/kubernetes/heapster.git
-kubectl apply -f heapster/deploy/kube-config/influxdb
-```
-
-or
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
 echo 'apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -82,6 +66,23 @@ subjects:
   name: admin-user
   namespace: kube-system' > admin-user-service-account.yaml
 kubectl apply -f admin-user-service-account.yaml
+```
+
+### heapster / grafana
+
+```
+# under 1.13
+git clone https://github.com/kubernetes/heapster.git
+kubectl apply -f heapster/deploy/kube-config/influxdb
+```
+
+or
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
 ```
 
 ### Token

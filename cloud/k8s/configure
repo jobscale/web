@@ -86,8 +86,10 @@ exposedDeployment() {
 }
 
 deployApps() {
-  kubectl create deployment redis --image redis --expose=true --port 6379
-  kubectl create deployment mongo --image mongo --expose=true --port 27017
+  kubectl create deployment redis --image redis
+  kubectl expose deployment redis --name redis --type ClusterIP --port 6379
+  kubectl create deployment mongo --image mongo
+  kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
