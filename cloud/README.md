@@ -1,6 +1,6 @@
 # コンテナの作り方
 
-### Install Docker
+### Install docker
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -14,6 +14,31 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 sudo add-apt-repository 'deb [arch=amd64] https://apt.kubernetes.io/ $(lsb_release -cs) main'
 # sudo add-apt-repository 'deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main'
 sudo apt install -y kubectl
+```
+
+### Install gcloud (GCP)
+
+```
+CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -cs)"
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo add-apt-repository "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main"
+sudo apt install -y google-cloud-sdk
+gcloud init
+gcloud container clusters get-credentials default --zone asia-east1-c --project project-id
+kubectl get all -A
+```
+
+### Install az (Azure)
+```
+AZ_REPO=$(lsb_release -cs)
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main"
+sudo apt install -y azure-cli
+az login
+az aks get-credentials --resource-group k8s --name default
+kubectl get all -A
+kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+az aks browse --resource-group k8s --name default
 ```
 
 ## Setup k8s Dashboard
