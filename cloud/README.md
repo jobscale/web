@@ -1,5 +1,10 @@
 # コンテナの作り方
 
+### Install required
+```
+apt install -y sudo lsb-release software-properties-common
+```
+
 ### Install docker
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
