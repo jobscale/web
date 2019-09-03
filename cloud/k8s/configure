@@ -106,7 +106,7 @@ svcApps() {
   exposedDeployment blog jobscale/blog 80 3344 0
   exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
   exposedDeployment chat jobscale/chat 80 3033 0
-  exposedDeployment wetty jobscale/wetty 80 3000 0
+  exposedDeployment wetty jobscale/wetty 443 3000 0
 }
 
 delAll() {
