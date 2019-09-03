@@ -32,19 +32,13 @@ iKubectl() {
 } && iKubectl
 ```
 
-### install go lang
-
-```
-iGolang() {
-  sudo snap install go --channel=stable --classic
-} && iGolang
-```
-
 ### install kind
 
 ```
 iKind() {
-  GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
+  curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.5.1/kind-$(uname)-amd64
+  chmod +x kind
+  sudo mv kind /usr/local/bin
 } && iKind
 ```
 

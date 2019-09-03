@@ -48,7 +48,7 @@ internalAllInOne() {
 }
 
 kubeConfig() {
-  export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+  alias kube-kind='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
 }
 
 createKind() {
@@ -94,7 +94,8 @@ deployApps() {
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
     kind load docker-image local/tetris:0.0.1
-    kubectl run tetris --image=local/tetris:0.0.1 --expose=true --port=8888
+    kubectl create deployment tetris --image local/tetris:0.0.1
+    kubectl expose deployment tetris --name tetris --type ClusterIP --port 8888
   fi
 
   svcApps
