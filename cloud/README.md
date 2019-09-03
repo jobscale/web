@@ -2,31 +2,14 @@
 
 ### Install required
 ```
-apt install -y sudo lsb-release software-properties-common
-```
-
-### Install docker
-```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt install -y docker-ce apt-transport-https
-sudo usermod -aG docker $(whoami)
-```
-
-### Install kubectl
-```
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo add-apt-repository 'deb [arch=amd64] https://apt.kubernetes.io/ $(lsb_release -cs) main'
-# sudo add-apt-repository 'deb [arch=amd64] https://apt.kubernetes.io/ kubernetes-xenial main'
-sudo apt install -y kubectl
+apt install -y lsb-release software-properties-common
 ```
 
 ### Install gcloud (GCP)
 
 ```
-CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -cs)"
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo add-apt-repository "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main"
+sudo add-apt-repository "deb http://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main"
 sudo apt install -y google-cloud-sdk
 gcloud init
 gcloud container clusters get-credentials default --zone asia-east1-c --project project-id
@@ -35,15 +18,24 @@ kubectl get all -A
 
 ### Install az (Azure)
 ```
-AZ_REPO=$(lsb_release -cs)
 curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main"
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main"
 sudo apt install -y azure-cli
 az login
 az aks get-credentials --resource-group k8s --name default
 kubectl get all -A
-kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+# kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 az aks browse --resource-group k8s --name default
+```
+
+### Install eksctl (AWS)
+```
+apt install -y python3-pip && pip3 install awscli
+curl -sO https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+chmod +x aws-iam-authenticator
+sudo mv aws-iam-authenticator /usr/local/bin
+curl -sL "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
 ```
 
 ## Setup k8s Dashboard

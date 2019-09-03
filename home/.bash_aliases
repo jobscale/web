@@ -20,10 +20,15 @@ alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
 PATH="$PATH:$HOME/bin:$HOME/go/bin"
-alias kube-kind='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
-alias kube-eks='export KUBECONFIG="$HOME/.kube/config-eks"'
-alias kube-gke='export KUBECONFIG="$HOME/.kube/config-gke"'
-alias kube-azure='export KUBECONFIG="$HOME/.kube/config-azure"'
+
+alias kube-king='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
+alias kube-gke='ln -sfn ~/.kube/config-gke ~/.kube/config'
+alias kube-aks='ln -sfn ~/.kube/config-aks ~/.kube/config'
+alias kube-eks='ln -sfn ~/.kube/config-eks ~/.kube/config'
+# alias kube-kind='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
+# alias kube-eks='export KUBECONFIG="$HOME/.kube/config-eks"'
+# alias kube-gke='export KUBECONFIG="$HOME/.kube/config-gke"'
+# alias kube-aks='export KUBECONFIG="$HOME/.kube/config-aks"'
 # eval $(minikube docker-env)
 
 GPATH="$HOME/.bin/android-studio/gradle/gradle-5.1.1/bin"
