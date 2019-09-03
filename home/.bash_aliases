@@ -21,7 +21,7 @@ alias df='df -x"squashfs"'
 
 PATH="$PATH:$HOME/bin:$HOME/go/bin"
 
-alias kube-king='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
+alias kube-kind='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
 alias kube-gke='ln -sfn ~/.kube/config-gke ~/.kube/config'
 alias kube-aks='ln -sfn ~/.kube/config-aks ~/.kube/config'
 alias kube-eks='ln -sfn ~/.kube/config-eks ~/.kube/config'
