@@ -19,14 +19,18 @@ delay() {
 waitFor() {
   while [[ "$1" != "" ]]
   do
-    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo ok && return
-    echo ng
-    sleep 10
+    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo "$1 - ok" && return
+    echo "$1 - ng"
+    sleep 120
   done
 }
 
 allInOne() {
   time internalAllInOne | tee /tmp/k8s-all.log
+
+  timeout 60 kubectl get pods -A -w
+  kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
+  portForward
 }
 
 internalAllInOne() {
@@ -60,12 +64,9 @@ internalAllInOne() {
   waitFor aks
   TTY_PASSWD="$(makePasswd)"
   genPasswd "$TTY_PASSWD"
+  echo "Initialized password: '$TTY_PASSWD'"
 
   waitFor web
-  timeout 60 kubectl get pods -A -w
-
-  delay && kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
-  delay && portForward
 }
 
 kubeConfig() {
@@ -104,7 +105,7 @@ makePasswd() {
 }
 
 genPasswd() {
-  [[ "GEN_PASSWD" == "" ]] && GEN_PASSWD="$1"
+  [[ "$GEN_PASSWD" == "" ]] && GEN_PASSWD="$1"
   [[ "$GEN_PASSWD" == "" ]] && echo -e "failed password.\nusage:\n\n  GEN_PASSWD='$(makePasswd)' genPasswd\n" && return
   kubectl exec -it $(kubectl get pods | grep ^gke- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
   kubectl exec -it $(kubectl get pods | grep ^eks- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
