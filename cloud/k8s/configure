@@ -37,6 +37,9 @@ internalAllInOne() {
 
   delay && ingressForward
 
+  exposedDeployment gke jobscale/cloud-terminal 443 3000 0
+  exposedDeployment eks jobscale/cloud-terminal 443 3000 0
+  exposedDeployment aks jobscale/cloud-terminal 443 3000 0
   timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
@@ -104,7 +107,7 @@ deployApps() {
 svcApps() {
   exposedDeployment laravel jobscale/laravel 80 80 3
   exposedDeployment lumen jobscale/lumen 80 80 3
-  exposedDeployment blog jobscale/blog 80 3344 0
+  exposedDeployment blog jobscale/blog 80 3344 3
   exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
   exposedDeployment chat jobscale/chat 80 3033 0
   exposedDeployment wetty jobscale/wetty 443 3000 0
