@@ -23,7 +23,7 @@ sslShare() {
 }
 
 initialize() {
-  timeout 5 curl -O tetris:8888/.mktoken &
+  timeout 5 curl -O tetris/.mktoken &
   wait
   [[ ! -s .mktoken ]] && return $(sslOpen | echo 0)
   sslGen

@@ -16,6 +16,15 @@ delay() {
   sleep 8
 }
 
+waitFor() {
+  while [[ "$1" != "" ]]
+  do
+    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo ok && return
+    echo ng
+    sleep 10
+  done
+}
+
 allInOne() {
   time internalAllInOne | tee /tmp/k8s-all.log
 }
@@ -44,7 +53,16 @@ internalAllInOne() {
 
   echo -e '\n\nk8s creation finished.\n\n'
   timeout 120 kubectl get pods -A -w
-  timeout 120 kubectl get pods -A -w
+
+  waitFor wetty
+  waitFor gke
+  waitFor eks
+  waitFor aks
+  TTY_PASSWD="$(makePasswd)"
+  genPasswd "$TTY_PASSWD"
+
+  waitFor web
+  timeout 60 kubectl get pods -A -w
 
   delay && kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
   delay && portForward
@@ -81,6 +99,19 @@ adminDashboard() {
   kubectl apply -f admin-user-service-account.yaml
 }
 
+makePasswd() {
+  head -c 8 /dev/random | mkpasswd -s -5 | sed -e 's/\$//g' | sed -e 's/^1//'
+}
+
+genPasswd() {
+  [[ "GEN_PASSWD" == "" ]] && GEN_PASSWD="$1"
+  [[ "$GEN_PASSWD" == "" ]] && echo -e "failed password.\nusage:\n\n  GEN_PASSWD='$(makePasswd)' genPasswd\n" && return
+  kubectl exec -it $(kubectl get pods | grep ^gke- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
+  kubectl exec -it $(kubectl get pods | grep ^eks- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
+  kubectl exec -it $(kubectl get pods | grep ^aks- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
+  kubectl exec -it $(kubectl get pods | grep ^wetty- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
+}
+
 exposedDeployment() {
   kubectl create deployment $1 --image $2
   delay
@@ -98,7 +129,7 @@ deployApps() {
   then
     kind load docker-image local/tetris:0.0.1
     kubectl create deployment tetris --image local/tetris:0.0.1
-    kubectl expose deployment tetris --name tetris --type ClusterIP --port 8888
+    kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 8888
   fi
 
   svcApps
