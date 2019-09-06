@@ -77,12 +77,13 @@ pullAll() {
 loadAll() {
   for image in ${list[*]}
   do
-    kind load docker-image $image
+    echo "Load $image"
+    time kind load docker-image $image
   done
 }
 
 allInOne() {
-  time internalAllInOne | tee /tmp/k8s-all.log
+  time internalAllInOne |& tee /tmp/k8s-all.log
 
   timeout 60 kubectl get pods -A -w
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
@@ -90,11 +91,9 @@ allInOne() {
 }
 
 internalAllInOne() {
-  pullAll
   createKind
   timeout 120 kubectl get nodes -w
   timeout 60 kubectl get pods -A -w
-  loadAll
   kubeConfig
 
   metalLB
@@ -207,11 +206,17 @@ deployApps() {
 
 svcApps() {
   exposedDeployment laravel jobscale/laravel 80 80 3
+  sleep 30
   exposedDeployment lumen jobscale/lumen 80 80 3
+  sleep 30
   exposedDeployment blog jobscale/blog 80 3344 3
+  sleep 30
   exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
+  sleep 30
   exposedDeployment chat jobscale/chat 80 3033 0
+  sleep 30
   exposedDeployment wetty jobscale/wetty 443 3000 0
+  sleep 30
 }
 
 delAll() {

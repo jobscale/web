@@ -6,15 +6,6 @@ b() {
   cp -pr $1{,.B-$(date +'%Y%m%d%H%M%S')} && echo "backuped --- $1.B-$(date +'%Y%m%d%H%M%S')"
 }
 
-sudo() {
-    if [[ $1 == "shutdown" ]]
-    then
-        echo "not work shutdown"
-        return
-    fi
-    command sudo "$@"
-}
-
 git() {
     if [[ $1 == "clone" && $2 == "--depth" ]]
     then
