@@ -21,7 +21,12 @@ waitFor() {
   do
     [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo "$1 - ok" && return
     echo "$1 - ng"
-    sleep 120
+    echo "just a moment please 11..."
+    for i in {10..0}
+    do
+      sleep 16
+      echo -n " $i..."
+    done
   done
 }
 
@@ -53,6 +58,15 @@ internalAllInOne() {
   exposedDeployment gke jobscale/cloud-terminal 443 3000 0
   exposedDeployment eks jobscale/cloud-terminal 443 3000 0
   exposedDeployment aks jobscale/cloud-terminal 443 3000 0
+  timeout 60 kubectl get pods -A -w
+
+  exposedDeployment django jobscale/django 80 80 3
+  timeout 60 kubectl get pods -A -w
+
+  exposedDeployment anywaychat jobscale/anywaychat 80 80 3
+  timeout 60 kubectl get pods -A -w
+
+  exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
   timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
@@ -111,6 +125,10 @@ genPasswd() {
   kubectl exec -it $(kubectl get pods | grep ^eks- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
   kubectl exec -it $(kubectl get pods | grep ^aks- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
   kubectl exec -it $(kubectl get pods | grep ^wetty- | awk '{print $1}') -- bash -c "echo buster:$GEN_PASSWD | chpasswd"
+}
+
+echoServer() {
+  exposedDeployment hello inanimate/echo-server 443 8443 3
 }
 
 exposedDeployment() {
