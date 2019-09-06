@@ -90,16 +90,12 @@ allInOne() {
 }
 
 internalAllInOne() {
-  pullAll &
+  pullAll
   createKind
-
-  wait
-
-  loadAll
-  kubeConfig
-
   timeout 120 kubectl get nodes -w
   timeout 60 kubectl get pods -A -w
+  loadAll
+  kubeConfig
 
   metalLB
   delay && ingressNginx
