@@ -30,6 +30,57 @@ waitFor() {
   done
 }
 
+list=(
+  redis
+  mongo
+  nginx
+  debian:buster
+  ubuntu:bionic
+  php:7.3-fpm-buster
+  metallb/speaker:v0.8.1
+  metallb/controller:v0.8.1
+  kubernetesui/dashboard:v2.0.0-beta4
+  inanimate/echo-server
+
+  jobscale/debian:buster
+  jobscale/nginx:buster
+
+  jobscale/ubuntu:bionic
+  jobscale/nginx:bionic
+
+  jobscale/web
+
+  jobscale/node
+  jobscale/blog
+  jobscale/chat
+  jobscale/simple-chat
+  jobscale/anywaychat
+
+  jobscale/wetty
+  jobscale/cloud-terminal
+
+  jobscale/php-fpm
+  jobscale/dokuwiki
+  jobscale/laravel
+  jobscale/lumen
+
+  jobscale/django
+)
+
+pullAll() {
+  for image in ${list[*]}
+  do
+    docker pull $image
+  done
+}
+
+loadAll() {
+  for image in ${list[*]}
+  do
+    kind load docker-image $image
+  done
+}
+
 allInOne() {
   time internalAllInOne | tee /tmp/k8s-all.log
 
@@ -39,7 +90,12 @@ allInOne() {
 }
 
 internalAllInOne() {
+  pullAll &
   createKind
+
+  wait
+
+  loadAll
   kubeConfig
 
   timeout 120 kubectl get nodes -w
@@ -92,8 +148,7 @@ createKind() {
 }
 
 metalLB() {
-  # METAL_VERSION=$(curl -s https://metallb.universe.tf/release-notes/ | grep "MetalLB v" | head -1 | awk '{print $2}')
-  METAL_VERSION=$(git ls-remote --tags https://github.com/danderson/metallb.git | grep -v '{}' | tail -1 | awk -F/ '{print $3}')
+  METAL_VERSION=$(git ls-remote --tags --refs https://github.com/danderson/metallb.git | tail -1 | awk -F/ '{print $3}')
   echo -e "\n MetalLB ${METAL_VERSION} \n"
   kubectl apply -f https://raw.githubusercontent.com/google/metallb/${METAL_VERSION}/manifests/metallb.yaml
   kubectl apply -f https://git.io/km-config.yaml
