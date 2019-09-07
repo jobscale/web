@@ -19,9 +19,9 @@ delay() {
 waitFor() {
   while [[ "$1" != "" ]]
   do
-    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo "$1 - ok" && return
-    echo "$1 - ng"
-    echo "just a moment please 11..."
+    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo e "\n $1 - ok" && return
+    echo " $1 - ng"
+    echo -n "just a moment please 11..."
     for i in {10..0}
     do
       sleep 16
@@ -97,7 +97,9 @@ internalAllInOne() {
   kubeConfig
 
   metalLB
+  sleep 30
   delay && ingressNginx
+  sleep 30
   delay && adminDashboard
 
   timeout 60 kubectl get pods -A -w
