@@ -21,7 +21,7 @@ waitFor() {
   do
     [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo e "\n $1 - ok" && return
     echo " $1 - ng"
-    echo -n "just a moment please 11..."
+    echo -ne "just a moment please 11..."
     for i in {10..0}
     do
       sleep 16
