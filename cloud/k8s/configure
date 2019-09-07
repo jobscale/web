@@ -85,7 +85,6 @@ loadAll() {
 allInOne() {
   time internalAllInOne |& tee /tmp/k8s-all.log
 
-  timeout 60 kubectl get pods -A -w
   kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
   portForward
 }
@@ -134,6 +133,7 @@ internalAllInOne() {
   echo "Initialized password: '$TTY_PASSWD'"
 
   waitFor web
+  timeout 60 kubectl get pods -A -w
 }
 
 kubeConfig() {
