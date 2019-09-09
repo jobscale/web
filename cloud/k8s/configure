@@ -110,7 +110,7 @@ internalAllInOne() {
   timeout 60 kubectl get pods -A -w
   exposedDeployment aks jobscale/cloud-terminal 443 3000 0
   timeout 60 kubectl get pods -A -w
-  exposedDeployment hello inanimate/echo-server 443 8443 3
+  exposedDeployment hello inanimate/echo-server 80 8080 3
   timeout 60 kubectl get pods -A -w
   exposedDeployment django jobscale/django 80 80 3
   timeout 60 kubectl get pods -A -w
