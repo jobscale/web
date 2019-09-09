@@ -82,6 +82,12 @@ loadAll() {
   done
 }
 
+initializeDatabase() {
+  kubectl exec -it $(
+    kubectl get all | grep pod | grep mariadb | awk '{print $1}'
+  ) -- bash -c "echo 'create database wordpress;' | mysql -p$1"
+}
+
 allInOne() {
   time internalAllInOne |& tee /tmp/k8s-all.log
 
@@ -89,12 +95,6 @@ allInOne() {
     kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}'
   ) | grep ^token
   portForward
-}
-
-initializeDatabase() {
-  kubectl exec -it $(
-    kubectl get all | grep pod | grep mariadb | awk '{print $1}'
-  ) -- bash -c "echo 'create database wordpress;' | mysql -p$1"
 }
 
 internalAllInOne() {
@@ -112,22 +112,7 @@ internalAllInOne() {
   deployApps
   delay && ingressForward
 
-  exposedDeployment gke jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment eks jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment aks jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment hello inanimate/echo-server 80 8080 3
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment django jobscale/django 80 80 3
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment anywaychat jobscale/anywaychat 80 80 3
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
-  timeout 60 kubectl get pods -A -w
-  exposedDeployment wordpress jobscale/wordpress 80 80 0
-  timeout 60 kubectl get pods -A -w
+  secondApps
 
   echo -e '\n\nk8s creation finished.\n\n'
   timeout 120 kubectl get pods -A -w
@@ -216,17 +201,38 @@ deployApps() {
 
 svcApps() {
   exposedDeployment laravel jobscale/laravel 80 80 3
-  sleep 30
+  timeout 60 kubectl get pods -A -w
   exposedDeployment lumen jobscale/lumen 80 80 3
-  sleep 30
+  timeout 60 kubectl get pods -A -w
   exposedDeployment blog jobscale/blog 80 3344 3
-  sleep 30
+  timeout 60 kubectl get pods -A -w
   exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
-  sleep 30
+  timeout 60 kubectl get pods -A -w
   exposedDeployment chat jobscale/chat 80 3033 0
-  sleep 30
+  timeout 60 kubectl get pods -A -w
   exposedDeployment wetty jobscale/wetty 443 3000 0
-  sleep 30
+  timeout 60 kubectl get pods -A -w
+}
+
+secondApps() {
+  exposedDeployment gke jobscale/cloud-terminal 443 3000 0
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment eks jobscale/cloud-terminal 443 3000 0
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment aks jobscale/cloud-terminal 443 3000 0
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment hello inanimate/echo-server 80 8080 3
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment django jobscale/django 80 80 3
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment anywaychat jobscale/anywaychat 80 80 3
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment wordpress jobscale/wordpress 80 80 0
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment ramen-timer jobscale/ramen-timer 80 80 3
+  timeout 60 kubectl get pods -A -w
 }
 
 delAll() {
