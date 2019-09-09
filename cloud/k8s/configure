@@ -85,8 +85,16 @@ loadAll() {
 allInOne() {
   time internalAllInOne |& tee /tmp/k8s-all.log
 
-  kubectl -n kube-system describe secret $(kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}') | grep ^token
+  kubectl -n kube-system describe secret $(
+    kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}'
+  ) | grep ^token
   portForward
+}
+
+initializeDatabase() {
+  kubectl exec -it $(
+    kubectl get all | grep pod | grep mariadb | awk '{print $1}'
+  ) -- bash -c "echo 'create database wordpress;' | mysql -p$1"
 }
 
 internalAllInOne() {
@@ -118,6 +126,8 @@ internalAllInOne() {
   timeout 60 kubectl get pods -A -w
   exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
   timeout 60 kubectl get pods -A -w
+  exposedDeployment wordpress jobscale/wordpress 80 80 0
+  timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
   timeout 120 kubectl get pods -A -w
@@ -132,6 +142,8 @@ internalAllInOne() {
 
   waitFor web
   timeout 60 kubectl get pods -A -w
+
+  initializeDatabase false
 }
 
 kubeConfig() {
@@ -189,6 +201,8 @@ deployApps() {
   kubectl expose deployment redis --name redis --type ClusterIP --port 6379
   kubectl create deployment mongo --image mongo
   kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
+  kubectl run mariadb --image mariadb --env MYSQL_ROOT_PASSWORD=false
+  kubectl expose deployment mariadb --name mariadb --type ClusterIP --port 3306
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
@@ -225,7 +239,9 @@ delAll() {
 
 token() {
   # kubectl describe secrets | grep ^token | awk '{print $2}'
-  kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+  kubectl -n kube-system describe secret $(
+    kubectl -n kube-system get secret | grep admin-user | awk '{print $1}'
+  )
 }
 
 portForward() {
