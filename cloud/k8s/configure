@@ -99,9 +99,9 @@ allInOne() {
 
 internalAllInOne() {
   createKind
+  kubeConfig
   timeout 120 kubectl get nodes -w
   timeout 60 kubectl get pods -A -w
-  kubeConfig
 
   metalLB
   delay && ingressNginx
@@ -131,12 +131,12 @@ internalAllInOne() {
   initializeDatabase false
 }
 
-kubeConfig() {
-  alias kube-kind='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
-}
-
 createKind() {
   kind create cluster --config multinode.yaml
+}
+
+kubeConfig() {
+  ln -sfn $(kind get kubeconfig-path --name="kind") $HOME/.kube/config
 }
 
 metalLB() {
@@ -232,6 +232,8 @@ secondApps() {
   exposedDeployment wordpress jobscale/wordpress 80 80 0
   timeout 60 kubectl get pods -A -w
   exposedDeployment ramen-timer jobscale/ramen-timer 80 80 3
+  timeout 60 kubectl get pods -A -w
+  exposedDeployment jsxjp jobscale/jsxjp 80 80 3
   timeout 60 kubectl get pods -A -w
 }
 
