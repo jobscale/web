@@ -30,58 +30,6 @@ waitFor() {
   done
 }
 
-list=(
-  redis
-  mongo
-  nginx
-  debian:buster
-  ubuntu:bionic
-  php:7.3-fpm-buster
-  metallb/speaker:v0.8.1
-  metallb/controller:v0.8.1
-  kubernetesui/dashboard:v2.0.0-beta4
-  inanimate/echo-server
-
-  jobscale/debian:buster
-  jobscale/nginx:buster
-
-  jobscale/ubuntu:bionic
-  jobscale/nginx:bionic
-
-  jobscale/web
-
-  jobscale/node
-  jobscale/blog
-  jobscale/chat
-  jobscale/simple-chat
-  jobscale/anywaychat
-
-  jobscale/wetty
-  jobscale/cloud-terminal
-
-  jobscale/php-fpm
-  jobscale/dokuwiki
-  jobscale/laravel
-  jobscale/lumen
-
-  jobscale/django
-)
-
-pullAll() {
-  for image in ${list[*]}
-  do
-    docker pull $image
-  done
-}
-
-loadAll() {
-  for image in ${list[*]}
-  do
-    echo "Load $image"
-    time kind load docker-image $image
-  done
-}
-
 initializeDatabase() {
   kubectl exec -it $(
     kubectl get all | grep pod | grep mariadb | awk '{print $1}'
@@ -99,9 +47,9 @@ allInOne() {
 
 internalAllInOne() {
   createKind
+  kubeConfig
   timeout 120 kubectl get nodes -w
   timeout 60 kubectl get pods -A -w
-  kubeConfig
 
   metalLB
   delay && ingressNginx
@@ -113,6 +61,9 @@ internalAllInOne() {
   delay && ingressForward
 
   secondApps
+
+  delay && kubectl apply -f jsxjp
+  timeout 60 kubectl get pods -A -w
 
   echo -e '\n\nk8s creation finished.\n\n'
   timeout 120 kubectl get pods -A -w
@@ -131,12 +82,12 @@ internalAllInOne() {
   initializeDatabase false
 }
 
-kubeConfig() {
-  alias kube-kind='ln -sfn $(kind get kubeconfig-path --name="kind") ~/.kube/config'
-}
-
 createKind() {
   kind create cluster --config multinode.yaml
+}
+
+kubeConfig() {
+  ln -sfn $(kind get kubeconfig-path --name="kind") $HOME/.kube/config
 }
 
 metalLB() {
@@ -153,7 +104,7 @@ ingressNginx() {
 }
 
 ingressForward() {
-  delay && kubectl apply -f web
+  kubectl apply -f web
 }
 
 adminDashboard() {
