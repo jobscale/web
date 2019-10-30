@@ -1,12 +1,22 @@
-# export KINDNAME=production
-# export KINDHTTP=80
-# export KINDHTTPS=443
-# export KINDNAME=staging
-# export KINDHTTP=3080
-# export KINDHTTPS=3443
-export KINDNAME=development
-export KINDHTTP=4080
-export KINDHTTPS=4443
+production() {
+  export KINDNAME=production
+  export KINDHTTP=80
+  export KINDHTTPS=443
+  export KINDCONFIG=multinode.yaml
+}
+staging() {
+  export KINDNAME=staging
+  export KINDHTTP=3080
+  export KINDHTTPS=3443
+  export KINDCONFIG=singlenode.yaml
+}
+development() {
+  export KINDNAME=development
+  export KINDHTTP=4080
+  export KINDHTTPS=4443
+  export KINDCONFIG=singlenode.yaml
+}
+staging
 svc() {
   [[ $(nc -v localhost 8001 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl proxy &
   KUBE_NAMESPACE=default
@@ -91,14 +101,20 @@ internalAllInOne() {
   echo "Initialized password: '$TTY_PASSWD'"
 
   initializeDatabase false
+
+  [[ "$KINDNAME" == production ]] && cronJob
 }
 
 createKind() {
-  kind create cluster --config multinode.yaml --name $KINDNAME
+  kind create cluster --config $KINDCONFIG --name $KINDNAME
 }
 
 kubeConfig() {
   ln -sfn $(kind get kubeconfig-path --name $KINDNAME) $HOME/.kube/config
+}
+
+cronJob() {
+  kubectl create cronjob value-domain --image=jobscale/value-domain --schedule='0/7 * * * *'
 }
 
 metalLB() {
@@ -206,5 +222,14 @@ token() {
 
 portForward() {
   [[ $(nc -v localhost $KINDHTTPS -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] \
-  && sudo -E kubectl port-forward --address 0.0.0.0 svc/web $KINDHTTPS:443 $KINDHTTP:80
+  && sudo -E kubectl port-forward --address 0.0.0.0 svc/web $KINDHTTPS:443 $KINDHTTP:80 &
+  sleep 2
+  while [[ true ]]
+  do
+    echo -e "$(date +'%F %T') - keep alive port forward connection."
+    delay
+    nc -v 127.0.0.1 $KINDHTTPS -w 1 < /dev/null
+    delay
+    nc -v 127.0.0.1 $KINDHTTP -w 1 < /dev/null
+  done
 }
