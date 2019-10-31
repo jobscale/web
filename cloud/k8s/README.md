@@ -36,8 +36,9 @@ iKubectl() {
 
 ```
 iKind() {
-  KIND_VERSION=$(git ls-remote --tags --refs https://github.com/kubernetes-sigs/kind.git | tail -1 | awk -F/ '{print $3}')
-  curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-$(uname)-amd64
+  curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/$(
+    git ls-remote --tags --refs https://github.com/kubernetes-sigs/kind.git | tail -1 | awk -F/ '{print $3}'
+  )/kind-$(uname)-amd64
   chmod +x kind
   sudo mv kind /usr/local/bin
 } && iKind
@@ -47,8 +48,9 @@ iKind() {
 
 ```
 iNodejs() {
-  NVM_VERSION=$(git ls-remote --tags --refs https://github.com/nvm-sh/nvm.git | grep -P 'v0.\d\d' | tail -1 | awk -F/ '{print $3}')
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | bash
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/$(
+    git ls-remote --tags --refs https://github.com/nvm-sh/nvm.git | grep -P 'v0.\d\d' | tail -1 | awk -F/ '{print $3}'
+  )/install.sh | bash
   . ~/.bashrc
   LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
   nvm install $LATEST

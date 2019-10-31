@@ -1,0 +1,11 @@
+#!/bin/bash -eu
+
+main() {
+  gs \
+   -o $1-gray.pdf \
+   -sDEVICE=pdfwrite \
+   -sColorConversionStrategy=Gray \
+   -sProcessColorModel=DeviceGray \
+    $1
+}
+main $1
