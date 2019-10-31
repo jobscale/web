@@ -1,3 +1,22 @@
+production() {
+  export KINDNAME=production
+  export KINDHTTP=80
+  export KINDHTTPS=443
+  export KINDCONFIG=multinode.yaml
+}
+staging() {
+  export KINDNAME=staging
+  export KINDHTTP=3080
+  export KINDHTTPS=3443
+  export KINDCONFIG=singlenode.yaml
+}
+development() {
+  export KINDNAME=development
+  export KINDHTTP=4080
+  export KINDHTTPS=4443
+  export KINDCONFIG=singlenode.yaml
+}
+staging
 svc() {
   [[ $(nc -v localhost 8001 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl proxy &
   KUBE_NAMESPACE=default
@@ -19,13 +38,16 @@ delay() {
 waitFor() {
   while [[ "$1" != "" ]]
   do
-    [[ $(kubectl get pods | grep ^$1- | awk '{print $2}') == 1/1 ]] && echo e "\n $1 - ok" && return
+    [[ $(kubectl get pods -A | grep $1 | grep 1/1 | wc -l) > 0 ]] && echo -e "\n $1 - ok" && return
     echo " $1 - ng"
-    echo -ne "just a moment please 11..."
+    echo -ne "just a moment please 11.."
     for i in {10..0}
     do
-      sleep 16
-      echo -n " $i..."
+      delay
+      [[ $(kubectl get pods -A | grep $1 | grep 1/1 | wc -l) > 0 ]] && echo -e "\n $1 - ok" && return
+      delay
+      [[ $(kubectl get pods -A | grep $1 | grep 1/1 | wc -l) > 0 ]] && echo -e "\n $1 - ok" && return
+      echo -n " $i.."
     done
   done
 }
@@ -37,7 +59,8 @@ initializeDatabase() {
 }
 
 allInOne() {
-  time internalAllInOne |& tee /tmp/k8s-all.log
+  LOGFILE=/tmp/k8s-$KINDNAME-$(date +'%Y-%m-%d-%H:%M:%S').log
+  time internalAllInOne |& tee $LOGFILE
 
   kubectl -n kube-system describe secret $(
     kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}'
@@ -48,46 +71,50 @@ allInOne() {
 internalAllInOne() {
   createKind
   kubeConfig
-  timeout 120 kubectl get nodes -w
-  timeout 60 kubectl get pods -A -w
+  timeout 60 kubectl get nodes -o wide -w
+  timeout 60 kubectl get pods -A -o wide -w
 
   metalLB
+  waitFor metallb-system
+
   delay && ingressNginx
-  timeout 60 kubectl get pods -A -w
+  waitFor ingress-nginx
+
   delay && adminDashboard
-  timeout 60 kubectl get pods -A -w
+  waitFor kubernetes-dashboard
 
   deployApps
+
   delay && ingressForward
+  waitFor web
 
   secondApps
 
   delay && kubectl apply -f jsxjp
-  timeout 60 kubectl get pods -A -w
+  waitFor jsxjp
 
+  timeout 20 kubectl get pods -A -o wide -w
   echo -e '\n\nk8s creation finished.\n\n'
-  timeout 120 kubectl get pods -A -w
 
-  waitFor wetty
-  waitFor gke
-  waitFor eks
-  waitFor aks
   TTY_PASSWD="$(makePasswd)"
   genPasswd "$TTY_PASSWD"
   echo "Initialized password: '$TTY_PASSWD'"
 
-  waitFor web
-  timeout 60 kubectl get pods -A -w
-
   initializeDatabase false
+
+  [[ "$KINDNAME" == production ]] && cronJob
 }
 
 createKind() {
-  kind create cluster --config multinode.yaml
+  kind create cluster --config $KINDCONFIG --name $KINDNAME
 }
 
 kubeConfig() {
-  ln -sfn $(kind get kubeconfig-path --name="kind") $HOME/.kube/config
+  ln -sfn $(kind get kubeconfig-path --name $KINDNAME) $HOME/.kube/config
+}
+
+cronJob() {
+  kubectl create cronjob value-domain --image=jobscale/value-domain --schedule='0/7 * * * *'
 }
 
 metalLB() {
@@ -130,21 +157,28 @@ exposedDeployment() {
   delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
   [[ "$5" != "0" ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
+  waitFor $1
 }
 
 deployApps() {
   kubectl create deployment redis --image redis
   kubectl expose deployment redis --name redis --type ClusterIP --port 6379
+  waitFor redis
+
   kubectl create deployment mongo --image mongo
   kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
+  waitFor mongo
+
   kubectl run mariadb --image mariadb --env MYSQL_ROOT_PASSWORD=false
   kubectl expose deployment mariadb --name mariadb --type ClusterIP --port 3306
+  waitFor mariadb
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
-    kind load docker-image local/tetris:0.0.1
+    kind load docker-image local/tetris:0.0.1 --name $KINDNAME
     kubectl create deployment tetris --image local/tetris:0.0.1
-    kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 8888
+    kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 80
+    waitFor tetris
   fi
 
   svcApps
@@ -152,38 +186,23 @@ deployApps() {
 
 svcApps() {
   exposedDeployment laravel jobscale/laravel 80 80 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment lumen jobscale/lumen 80 80 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment blog jobscale/blog 80 3344 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment chat jobscale/chat 80 3033 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment wetty jobscale/wetty 443 3000 0
-  timeout 60 kubectl get pods -A -w
 }
 
 secondApps() {
   exposedDeployment gke jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment eks jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment aks jobscale/cloud-terminal 443 3000 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment hello inanimate/echo-server 80 8080 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment django jobscale/django 80 80 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment anywaychat jobscale/anywaychat 80 80 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
-  timeout 60 kubectl get pods -A -w
   exposedDeployment wordpress jobscale/wordpress 80 80 0
-  timeout 60 kubectl get pods -A -w
   exposedDeployment ramen-timer jobscale/ramen-timer 80 80 3
-  timeout 60 kubectl get pods -A -w
 }
 
 delAll() {
@@ -202,6 +221,15 @@ token() {
 }
 
 portForward() {
-  [[ $(nc -v localhost 443 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && sudo -E kubectl port-forward --address 0.0.0.0 svc/web 443:443 80:80 &
-  wait
+  [[ $(nc -v localhost $KINDHTTPS -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] \
+  && sudo -E kubectl port-forward --address 0.0.0.0 svc/web $KINDHTTPS:443 $KINDHTTP:80 &
+  sleep 2
+  while [[ true ]]
+  do
+    echo -e "$(date +'%F %T') - keep alive port forward connection."
+    delay
+    nc -v 127.0.0.1 $KINDHTTPS -w 1 < /dev/null
+    delay
+    nc -v 127.0.0.1 $KINDHTTP -w 1 < /dev/null
+  done
 }
