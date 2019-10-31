@@ -203,6 +203,7 @@ secondApps() {
   exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
   exposedDeployment wordpress jobscale/wordpress 80 80 0
   exposedDeployment ramen-timer jobscale/ramen-timer 80 80 3
+  exposedDeployment ramen-timer jobscale/profile 80 80 3
 }
 
 delAll() {
