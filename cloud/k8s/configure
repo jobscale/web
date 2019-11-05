@@ -83,15 +83,15 @@ internalAllInOne() {
   delay && adminDashboard
   waitFor kubernetes-dashboard
 
-  deployApps
+  deployBackend
 
   delay && ingressForward
   waitFor web
 
-  secondApps
-
   delay && kubectl apply -f jsxjp
   waitFor jsxjp
+
+  deployApps
 
   timeout 20 kubectl get pods -A -o wide -w
   echo -e '\n\nk8s creation finished.\n\n'
@@ -160,7 +160,7 @@ exposedDeployment() {
   waitFor $1
 }
 
-deployApps() {
+deployBackend() {
   kubectl create deployment redis --image redis
   kubectl expose deployment redis --name redis --type ClusterIP --port 6379
   waitFor redis
@@ -180,30 +180,25 @@ deployApps() {
     kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 80
     waitFor tetris
   fi
-
-  svcApps
 }
 
-svcApps() {
-  exposedDeployment laravel jobscale/laravel 80 80 3
-  exposedDeployment lumen jobscale/lumen 80 80 3
-  exposedDeployment blog jobscale/blog 80 3344 3
-  exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
-  exposedDeployment chat jobscale/chat 80 3033 0
-  exposedDeployment wetty jobscale/wetty 443 3000 0
-}
-
-secondApps() {
+deployApps() {
   exposedDeployment gke jobscale/cloud-terminal 443 3000 0
   exposedDeployment eks jobscale/cloud-terminal 443 3000 0
   exposedDeployment aks jobscale/cloud-terminal 443 3000 0
+  exposedDeployment wetty jobscale/wetty 443 3000 0
+  exposedDeployment profile jobscale/profile 80 80 3
+  exposedDeployment blog jobscale/blog 80 3344 3
+  exposedDeployment laravel jobscale/laravel 80 80 3
+  exposedDeployment lumen jobscale/lumen 80 80 3
+  exposedDeployment chat jobscale/chat 80 3033 0
+  exposedDeployment simple-chat jobscale/simple-chat 80 3000 0
   exposedDeployment hello inanimate/echo-server 80 8080 3
   exposedDeployment django jobscale/django 80 80 3
   exposedDeployment anywaychat jobscale/anywaychat 80 80 3
   exposedDeployment dokuwiki jobscale/dokuwiki 80 80 3
   exposedDeployment wordpress jobscale/wordpress 80 80 0
   exposedDeployment ramen-timer jobscale/ramen-timer 80 80 3
-  exposedDeployment ramen-timer jobscale/profile 80 80 3
 }
 
 delAll() {
