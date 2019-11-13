@@ -44,3 +44,13 @@ alias qt-faststart='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) --e
 [[ -s "$HOME/.nvm/nvm.sh" ]] && . "$HOME/.nvm/nvm.sh"
 
 [[ -s "$HOME/.bash_aliases_local" ]] && . "$HOME/.bash_aliases_local"
+
+proxyConfigure() {
+  disableProxy() {
+    export http_proxy=
+    export https_proxy=
+  }
+  [[ $(nc -v 8.8.8.8 53 -w 1 < /dev/null |& grep succeeded | wc -l) > 0 ]] && echo "no proxy" && disableProxy
+}
+proxyConfigure
+
