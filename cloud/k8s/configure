@@ -74,6 +74,8 @@ internalAllInOne() {
   timeout 60 kubectl get nodes -o wide -w
   timeout 60 kubectl get pods -A -o wide -w
 
+  kubectl apply -f limitrange-limits.yaml
+
   metalLB
   waitFor metallb-system
 
@@ -158,6 +160,17 @@ exposedDeployment() {
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
   [[ "$5" != "0" ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
   waitFor $1
+}
+
+deployBacklog() {
+  [[ $(grep ""vm.max_map_count /etc/sysctl.d/99-sysctl.conf | wc -l) < 1 ]] \
+  && echo "vm.max_map_count = 262144" | sudo tee -a /etc/sysctl.d/99-sysctl.conf \
+  && sudo sysctl --system
+  kubectl run elasticsearch --env "http.host=0.0.0.0" --env "ES_JAVA_OPTS=-Xms512m -Xmx512m" --image docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.2
+  waitFor elasticsearch
+  kubectl run graylog --env GRAYLOG_HTTP_EXTERNAL_URI="/" --port 9000 --port 12201 --port 1514 --port 5555 --image graylog/graylog:3.1
+  kubectl expose deployment graylog --name graylog --type LoadBalancer--port 80 --target-port 9000
+  waitFor graylog
 }
 
 deployBackend() {
