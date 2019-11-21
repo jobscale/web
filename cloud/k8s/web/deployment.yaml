@@ -6,7 +6,6 @@ spec:
   selector:
     matchLabels:
       run: web
-  replicas: 1
   template:
     metadata:
       labels:

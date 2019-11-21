@@ -16,10 +16,12 @@ development() {
   export KINDHTTPS=4443
   export KINDCONFIG=singlenode.yaml
 }
-staging
+
+production
+
 svc() {
   [[ $(nc -v localhost 8001 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl proxy &
-  KUBE_NAMESPACE=default
+  KUBE_NAMESPACE=$1
   KUBE_SERVICE=$1
   KUBE_HOST=http://127.0.0.1:8001
   KUBE_TOKEN=$(kubectl describe secrets | grep ^token | awk '{print $2}')
@@ -71,9 +73,14 @@ allInOne() {
 internalAllInOne() {
   createKind
   kubeConfig
-  timeout 60 kubectl get nodes -o wide -w
-  timeout 60 kubectl get pods -A -o wide -w
 
+  timeout 20 kubectl get nodes -o wide -w
+  timeout 20 kubectl get pods -A -o wide -w
+
+  kubectl apply -f limitrange-limits.yaml -n default
+
+  kubectl create namespace standard
+  kubectl config set-context $(kubectl config current-context) --namespace standard
   kubectl apply -f limitrange-limits.yaml
 
   metalLB

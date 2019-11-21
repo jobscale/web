@@ -5,7 +5,7 @@
 ##
 
 web() {
-  apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
+  sudo apt install -y $(apt search php | grep "^php7" | grep -v snmp | awk -F'/' '{print $1}' | xargs) nginx nginx-extras
   rm -f /etc/nginx/sites-enabled/default
   cp -pr /var/site/projects/_/conf.d /etc/nginx
   ln -sfn /run/php/php7*sock /var/site/run/php/php-fpm.sock
@@ -14,22 +14,22 @@ web() {
 }
 
 cli() {
-  apt install -y \
+  sudo apt install -y \
     curl dnsutils net-tools whois nmap traceroute \
     nfs-common cifs-utils exfat-utils sshfs \
     git subversion vim tmux dstat peco \
     at expect zip unzip colordiff speedtest-cli \
-    cmatrix sl \
-    mariadb-client libpng-dev nasm
+    cmatrix sl
 }
 
 gui() {
-  apt install -y terminator conky mysql-workbench polari gimp
+  sudo apt install -y terminator conky mysql-workbench polari gimp
 }
 
 iNodejs() {
-  NVM_VERSION=$(git ls-remote --tags --refs https://github.com/nvm-sh/nvm.git | grep -P 'v0.\d\d' | tail -1 | awk -F/ '{print $3}')
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | bash
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/$(
+    git ls-remote --tags --refs https://github.com/nvm-sh/nvm.git | grep -P 'v0.\d\d' | tail -1 | awk -F/ '{print $3}'
+  )/install.sh | bash
   . ~/.bashrc
   LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
   nvm install $LATEST
@@ -38,6 +38,49 @@ iNodejs() {
   node --version
   npm --version
   id
+}
+
+iAws() {
+  pip3 install awscli
+}
+
+iAz() {
+  pip3 install azure-cli
+}
+
+iGcloud() {
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  sudo add-apt-repository "deb http://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main"
+  sudo apt install -y google-cloud-sdk
+}
+
+iDocker() {
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt install -y docker-ce apt-transport-https
+  sudo usermod -aG docker $(whoami)
+}
+
+iKubectl() {
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(
+    curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt
+  )/bin/linux/amd64/kubectl
+  chmod +x kubectl
+  sudo mv kubectl /usr/local/bin
+}
+
+iKind() {
+  curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/$(
+    git ls-remote --tags --refs https://github.com/kubernetes-sigs/kind.git | tail -1 | awk -F/ '{print $3}'
+  )/kind-$(uname)-amd64
+  chmod +x kind
+  sudo mv kind /usr/local/bin
+}
+
+iChrome() {
+  curl https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  sudo add-apt-repository "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+  sudo apt install -y google-chrome-stable
 }
 
 useFunction() {
@@ -49,33 +92,35 @@ useFunction() {
 }
 
 java() {
-  apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
+  sudo apt install -y openjdk-8-jdk-headless openjdk-8-jre-headless
 }
 
 account() {
   user=jobscale
-  usermod -l $user -m -d /home/$user ubuntu
-  ln -s /var/site/cloud/land.pem /home/$user/.ssh/id_rsa
-  echo "$user ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers.d/70-users
-  systemctl restart sshd
+  old=$(grep -w 1000 /etc/passwd | awk -F: '{print $1}')
+  sudo usermod -l $user -m -d /home/$user $old
+  echo "$user ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers.d/70-users
+  sudo systemctl restart sshd
 }
 
 system() {
-  dd if=/dev/zero of=/var/swap bs=1M count=4K
-  chmod 0600 /var/swap
-  mkswap /var/swap
-  swapon /var/swap
-  echo '/var/swap none swap sw 0 0' | tee -a /etc/fstab
+  sudo dd if=/dev/zero of=/var/swapfile bs=1M count=4K
+  sudo chmod 0600 /var/swapfile
+  sudo mkswap /var/swapfile
+  sudo swapon /var/swapfile
+  echo '/var/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+  sudo mount -a
 }
 
 main() {
   date +'START    my-init %Y-%m-%d %H:%M:%S'
-#  web
-#  account
-#  system
-  cli
+  [[ $(id -u) == 0 ]] && alias sudo=''
+# web
+# account
+# system
+# cli
   date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 
-main | tee -a /var/log/cloud-my-init.log
+main | tee -a /var/log/cloud-admin-init.log
 

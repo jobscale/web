@@ -1,10 +1,7 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: jsxjp
   name: jsxjp
-  namespace: default
 spec:
   selector:
     matchLabels:
@@ -15,6 +12,5 @@ spec:
         app: jsxjp
     spec:
       containers:
-      - image: jobscale/jsxjp
-        imagePullPolicy: Always
-        name: jsxjp
+      - name: jsxjp
+        image: jobscale/jsxjp

@@ -1,5 +1,10 @@
 ## Kubernetes v1.15.0
 
+### Installation
+```
+pip3 install awscli
+```
+
 ### IAM Role 権限
 
 ```

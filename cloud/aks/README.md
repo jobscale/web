@@ -1,3 +1,8 @@
+### Installation
+```
+pip3 install azure-cli
+```
+
 ### Credentials
 ```
 RESOURCE_GROUP=k8s

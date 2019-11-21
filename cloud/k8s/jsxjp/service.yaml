@@ -4,7 +4,6 @@ metadata:
   labels:
     app: jsxjp
   name: jsxjp
-  namespace: default
 spec:
   ports:
   - name: https

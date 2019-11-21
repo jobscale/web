@@ -3,7 +3,6 @@ kind: Remote
 metadata:
   creationTimestamp: null
   name: k8s
-  namespace: default
 spec:
   authorizedKeys:
   - |
