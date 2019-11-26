@@ -189,8 +189,7 @@ deployBackend() {
   kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
   waitFor mongo
 
-  kubectl run mariadb --generator=run-pod/v1 --image mariadb --env MYSQL_ROOT_PASSWORD=false
-  kubectl expose deployment mariadb --name mariadb --type ClusterIP --port 3306
+  kubectl apply -f mariadb
   waitFor mariadb
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
