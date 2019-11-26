@@ -6,6 +6,7 @@ locality=Osaka
 organizational=jsx.jp
 unit=Developpers
 common=jsx.jp
+fname=$(echo $common | sed -e 's/\*\.//g')
 
 rsa() {
   openssl req \
@@ -15,8 +16,8 @@ rsa() {
     -nodes \
     -x509 \
     -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
-    -keyout $common.key \
-    -out $common.cert
+    -keyout $fname.key \
+    -out $fname.crt
 }
 
 ec() {
@@ -28,9 +29,9 @@ ec() {
     -nodes \
     -x509 \
     -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
-    -keyout $common.key \
-    -out $common.cert
+    -keyout $fname.key \
+    -out $fname.crt
 }
 
-ec
-
+rsa
+ls -lh *{key,crt}
