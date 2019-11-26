@@ -1,8 +1,8 @@
-# Web Site
+# Ingress - Multiple Web Site
 
 ## https://jsx.jp
 
-Kubernetes v1.15.0
+Kubernetes v1.16.0
 
 ### install docker
 
@@ -12,12 +12,8 @@ iDocker() {
   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   sudo apt install -y docker-ce apt-transport-https
   sudo usermod -aG docker $(whoami)
-} && iDocker && exit
-```
-
-```
-# need login
-docker ps -a
+} && iDocker
+$SHELL -l
 ```
 
 ### install kubectl
@@ -65,8 +61,9 @@ iNodejs() {
 ### create cluster
 
 ```
-kind create cluster --config multinode.yaml
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+KINDNAME=staging
+kind create cluster --name $KINDNAME --config multinode.yaml
+ln -sfn kind-config-$KINDNAME $HOME/.kube/config
 kubectl get nodes -w
 kubectl get pods -A -w
 ```
@@ -74,9 +71,8 @@ kubectl get pods -A -w
 ### kubectl config
 
 ```
-alias kubeconfig='export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"'
-kubeconfig
 kubectl config current-context
+kubectl config set-context $(kubectl config current-context) --namespace default
 ```
 
 ### setup metallb system

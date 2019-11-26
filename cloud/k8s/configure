@@ -71,34 +71,25 @@ allInOne() {
 }
 
 internalAllInOne() {
-  createKind
   kubeConfig
+  createKind
 
-  timeout 20 kubectl get nodes -o wide -w
-  timeout 20 kubectl get pods -A -o wide -w
+  timeout 60 kubectl get nodes -o wide -w
+  timeout 60 kubectl get pods -A -o wide -w
 
   kubectl apply -f limitrange-limits.yaml -n default
 
   kubectl create namespace standard
   kubectl config set-context $(kubectl config current-context) --namespace standard
   kubectl apply -f limitrange-limits.yaml
+  kubectl describe nodes
 
-  metalLB
-  waitFor metallb-system
-
+  delay && metalLB
   delay && ingressNginx
-  waitFor ingress-nginx
-
   delay && adminDashboard
-  waitFor kubernetes-dashboard
-
-  deployBackend
-
+  delay && deployBackend
   delay && ingressForward
-  waitFor web
-
-  delay && kubectl apply -f jsxjp
-  waitFor jsxjp
+  delay && jsxSite
 
   deployApps
 
@@ -114,12 +105,17 @@ internalAllInOne() {
   [[ "$KINDNAME" == production ]] && cronJob
 }
 
+jsxSite() {
+  kubectl apply -f jsxjp
+  waitFor jsxjp
+}
+
 createKind() {
   kind create cluster --config $KINDCONFIG --name $KINDNAME
 }
 
 kubeConfig() {
-  ln -sfn $(kind get kubeconfig-path --name $KINDNAME) $HOME/.kube/config
+  ln -sfn kind-config-$KINDNAME $HOME/.kube/config
 }
 
 cronJob() {
@@ -132,20 +128,24 @@ metalLB() {
   kubectl apply -f https://raw.githubusercontent.com/google/metallb/${METAL_VERSION}/manifests/metallb.yaml
   kubectl apply -f https://git.io/km-config.yaml
   # kubectl apply -f layer2-config.yaml
+  waitFor metallb-system
 }
 
 ingressNginx() {
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+  waitFor ingress-nginx
 }
 
 ingressForward() {
   kubectl apply -f web
+  waitFor web
 }
 
 adminDashboard() {
   kubectl apply -f kubernetes-dashboard.yaml
   kubectl apply -f admin-user-service-account.yaml
+  waitFor kubernetes-dashboard
 }
 
 makePasswd() {
@@ -189,7 +189,7 @@ deployBackend() {
   kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
   waitFor mongo
 
-  kubectl run mariadb --image mariadb --env MYSQL_ROOT_PASSWORD=false
+  kubectl run mariadb --generator=run-pod/v1 --image mariadb --env MYSQL_ROOT_PASSWORD=false
   kubectl expose deployment mariadb --name mariadb --type ClusterIP --port 3306
   waitFor mariadb
 
