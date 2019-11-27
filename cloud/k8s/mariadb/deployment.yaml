@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mariadb
-  labels:
-    run: mariadb
 spec:
   selector:
     matchLabels:

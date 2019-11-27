@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: jsxjp
+      run: jsxjp
   template:
     metadata:
       labels:
-        app: jsxjp
+        run: jsxjp
     spec:
       containers:
       - name: jsxjp

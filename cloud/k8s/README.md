@@ -151,3 +151,8 @@ kubectl rollout history deployment nginx --revision 3
 kubectl rollout undo deployment web --to-revision 2
 kubectl get pods --watch
 ```
+
+### install debug tools
+```
+apt update && apt install -y net-tools dnsutils curl vim tmux git
+```

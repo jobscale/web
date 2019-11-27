@@ -17,7 +17,7 @@ development() {
   export KINDCONFIG=singlenode.yaml
 }
 
-production
+staging
 
 svc() {
   [[ $(nc -v localhost 8001 -w 1 < /dev/null |& grep succeeded | wc -l) != 1 ]] && kubectl proxy &
@@ -67,10 +67,11 @@ allInOne() {
   kubectl -n kube-system describe secret $(
     kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}'
   ) | grep ^token
+
   portForward
 }
 
-internalAllInOne() {
+createStandard() {
   kubeConfig
   createKind
 
@@ -83,15 +84,13 @@ internalAllInOne() {
   kubectl config set-context $(kubectl config current-context) --namespace standard
   kubectl apply -f limitrange-limits.yaml
   kubectl describe nodes
+}
 
-  delay && metalLB
-  delay && ingressNginx
-  delay && adminDashboard
-  delay && deployBackend
-  delay && ingressForward
-  delay && jsxSite
-
+internalAllInOne() {
+  createStandard
+  appFirst
   deployApps
+  cronJob
 
   timeout 20 kubectl get pods -A -o wide -w
   echo -e '\n\nk8s creation finished.\n\n'
@@ -101,8 +100,6 @@ internalAllInOne() {
   echo "Initialized password: '$TTY_PASSWD'"
 
   initializeDatabase false
-
-  [[ "$KINDNAME" == production ]] && cronJob
 }
 
 jsxSite() {
@@ -119,6 +116,7 @@ kubeConfig() {
 }
 
 cronJob() {
+  [[ "$KINDNAME" != production ]] && return
   kubectl create cronjob value-domain --image=jobscale/value-domain --schedule='0/7 * * * *'
 }
 
@@ -199,6 +197,15 @@ deployBackend() {
     kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 80
     waitFor tetris
   fi
+}
+
+appFirst() {
+  delay && metalLB
+  delay && ingressNginx
+  delay && adminDashboard
+  delay && deployBackend
+  delay && ingressForward
+  delay && jsxSite
 }
 
 deployApps() {
