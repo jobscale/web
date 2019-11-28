@@ -89,8 +89,8 @@ createStandard() {
 internalAllInOne() {
   createStandard
   appFirst
-  deployApps
   cronJob
+  deployApps
 
   timeout 20 kubectl get pods -A -o wide -w
   echo -e '\n\nk8s creation finished.\n\n'
@@ -193,6 +193,7 @@ deployBackend() {
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
     kind load docker-image local/tetris:0.0.1 --name $KINDNAME
+    delay
     kubectl create deployment tetris --image local/tetris:0.0.1
     kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 80
     waitFor tetris
