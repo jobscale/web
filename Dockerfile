@@ -1,6 +1,7 @@
 FROM nginx
 SHELL ["bash", "-c"]
 WORKDIR /var/site
+ENV DEBIAN_FRONTEND noninteractive
 COPY . projects/_
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN apt update && apt install -y vim git unzip curl
