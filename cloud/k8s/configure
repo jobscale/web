@@ -200,7 +200,12 @@ deployBackend() {
   fi
 }
 
+metricsServer() {
+  kubectl apply -f 1.8+
+}
+
 appFirst() {
+  delay && metricsServer
   delay && metalLB
   delay && ingressNginx
   delay && adminDashboard
