@@ -13,4 +13,4 @@ spec:
     spec:
       containers:
       - name: web
-        image: jobscale/web:0.0.1
+        image: jobscale/web:0.0.2
