@@ -14,6 +14,7 @@ web() {
 }
 
 cli() {
+  sudo apt update
   sudo apt install -y \
     curl dnsutils net-tools whois nmap traceroute \
     nfs-common cifs-utils exfat-utils sshfs \
@@ -23,7 +24,9 @@ cli() {
 }
 
 gui() {
-  sudo apt install -y terminator conky mysql-workbench polari gimp
+  sudo apt update
+  sudo apt install -y terminator conky mysql-workbench polari gimp \
+    alarm-clock-applet gnome-clocks
 }
 
 iNodejs() {
