@@ -7,6 +7,7 @@ RUN rm -fr /var/lib/apt/lists/*
 COPY . projects/_
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -fr /etc/nginx/site* /etc/nginx/conf.d \
+ && mkdir /var/site/web \
  && ln -sfn /var/site/projects/_/etc/nginx/conf.d /etc/nginx/conf.d \
  && ln -sfn /var/site/projects/_/site/error /var/site/web/error
 RUN ln -sfn tls ssl
