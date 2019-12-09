@@ -115,6 +115,10 @@ system() {
   sudo mount -a
 }
 
+minimum() {
+  sudo apt update && sudo apt install -y vim vim tmux curl net-tools dnsutils procps iputils-ping
+}
+
 main() {
   date +'START    my-init %Y-%m-%d %H:%M:%S'
   [[ $(id -u) == 0 ]] && alias sudo=''
@@ -125,5 +129,5 @@ main() {
   date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 
-main | tee -a /var/log/cloud-admin-init.log
+main | sudo tee -a /var/log/cloud-admin-init.log
 
