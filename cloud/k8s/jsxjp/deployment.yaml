@@ -5,12 +5,17 @@ metadata:
 spec:
   selector:
     matchLabels:
-      run: jsxjp
+      app: jsxjp
   template:
     metadata:
       labels:
-        run: jsxjp
+        app: jsxjp
     spec:
       containers:
-      - name: jsxjp
-        image: jobscale/jsxjp
+      - image: jobscale/jsxjp
+        name: jsxjp
+        ports:
+        - containerPort: 443
+          protocol: TCP
+        - containerPort: 80
+          protocol: TCP
