@@ -14,16 +14,18 @@ web() {
 }
 
 cli() {
+  export DEBIAN_FRONTEND=noninteractive
   sudo apt update
   sudo apt install -y \
-    curl dnsutils net-tools whois nmap traceroute \
-    nfs-common cifs-utils exfat-utils sshfs \
+    curl dnsutils net-tools iputils-ping whois nmap traceroute \
     git subversion vim tmux dstat peco \
     at expect zip unzip colordiff speedtest-cli \
-    cmatrix sl
+    cmatrix sl \
+    nfs-common cifs-utils exfat-utils sshfs
 }
 
 gui() {
+  export DEBIAN_FRONTEND=noninteractive
   sudo apt update
   sudo apt install -y terminator conky mysql-workbench polari gimp \
     alarm-clock-applet gnome-clocks
@@ -116,7 +118,8 @@ system() {
 }
 
 minimum() {
-  sudo apt update && sudo apt install -y vim vim tmux curl net-tools dnsutils procps iputils-ping
+  export DEBIAN_FRONTEND=noninteractive
+  apt update && apt install -y git vim tmux curl net-tools dnsutils procps iputils-ping
 }
 
 main() {

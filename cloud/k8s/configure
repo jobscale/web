@@ -214,10 +214,14 @@ appFirst() {
   delay && jsxSite
 }
 
-ecoDeploy() {
+loadImage() {
   docker pull $2
   kind load docker-image $2 --name $KINDNAME
   delay
+}
+
+ecoDeploy() {
+  [[ hostname == "bionic" ]] && loadImage $@
   exposedDeployment $@
 }
 
