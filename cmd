@@ -1,14 +1,5 @@
 #!/bin/bash -eu
 
-sslOpen() {
-  touch .mktoken
-  . projects/_/ssl-keygen
-  mkdir tls
-  mv sslGen/wildcard.jsx.jp.cert ssl/cert.pem
-  mv sslGen/wildcard.jsx.jp.key ssl/cert.key
-  openssl dhparam 2048 > ssl/dhparam.pem
-}
-
 sslGen() {
   . .mktoken
   unzip -oP $(main) projects/_/.tls
@@ -25,7 +16,7 @@ sslShare() {
 initialize() {
   timeout 5 curl -O tetris/.mktoken &
   wait
-  [[ ! -s .mktoken ]] && return $(sslOpen | echo 0)
+  [[ ! -s .mktoken ]] && return $(touch .mktoken)
   sslGen
 }
 
