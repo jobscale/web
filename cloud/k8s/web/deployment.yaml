@@ -14,3 +14,8 @@ spec:
       containers:
       - name: web
         image: jobscale/web:0.0.5
+        ports:
+        - containerPort: 443
+          protocol: TCP
+        - containerPort: 80
+          protocol: TCP

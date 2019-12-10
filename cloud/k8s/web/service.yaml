@@ -11,11 +11,11 @@ spec:
   ports:
   - name: https
     port: 443
-    targetPort: https
+    targetPort: 443
     protocol: TCP
   - name: http
     port: 80
-    targetPort: http
+    targetPort: 80
     protocol: TCP
   selector:
     run: web
