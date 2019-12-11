@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: jobscale/web:0.0.5
+        image: jobscale/web:0.0.6
         resources:
           limits:
             cpu: 200m
