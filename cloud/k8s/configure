@@ -222,7 +222,7 @@ loadImage() {
 }
 
 ecoDeploy() {
-  [[ "$(hostname)" == bionic ]] && loadImage $@
+  [[ "$(hostname)" == damemurimuda ]] && loadImage $@
   exposedDeployment $@
 }
 
