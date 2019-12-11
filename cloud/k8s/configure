@@ -117,6 +117,7 @@ kubeConfig() {
 
 cronJob() {
   [[ "$KINDNAME" != production ]] && return
+  [[ "$(hostname)" != bionic ]] && return
   kubectl create cronjob value-domain --image=jobscale/value-domain --schedule='0/7 * * * *'
 }
 
@@ -221,7 +222,7 @@ loadImage() {
 }
 
 ecoDeploy() {
-  [[ hostname == "bionic" ]] && loadImage $@
+  [[ "$(hostname)" == bionic ]] && loadImage $@
   exposedDeployment $@
 }
 

@@ -17,3 +17,10 @@ spec:
         env:
         - name: POSTGRES_PASSWORD
           value: "false"
+        resources:
+          limits:
+            cpu: 200m
+            memory: 500M
+          requests:
+            cpu: 120m
+            memory: 300M

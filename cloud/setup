@@ -18,7 +18,7 @@ cli() {
   sudo apt update
   sudo apt install -y \
     curl dnsutils net-tools iputils-ping whois nmap traceroute \
-    git subversion vim tmux dstat peco \
+    git subversion vim tmux dstat procps peco \
     at expect zip unzip colordiff speedtest-cli \
     cmatrix sl \
     nfs-common cifs-utils exfat-utils sshfs ecryptfs-utils
@@ -129,6 +129,11 @@ main() {
 # account
 # system
 # cli
+  cli
+  iNodejs
+  iDocker
+  iKubectl
+  iKind
   date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 
