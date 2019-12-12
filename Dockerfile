@@ -3,7 +3,6 @@ SHELL ["bash", "-c"]
 WORKDIR /var/site
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y vim git unzip curl
-RUN rm -fr /var/lib/apt/lists/*
 COPY . projects/_
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -fr /etc/nginx/site* /etc/nginx/conf.d \
@@ -16,5 +15,6 @@ RUN ln -sfn tls ssl \
  && mv sslGen/wildcard.jsx.jp.cert tls/cert.pem \
  && mv sslGen/wildcard.jsx.jp.key tls/cert.key \
  && openssl dhparam 2048 > tls/dhparam.pem
+RUN rm -fr /var/lib/apt/lists/*
 EXPOSE 80 443
 CMD ["bash", "-c", ". projects/_/cmd"]

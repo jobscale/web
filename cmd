@@ -14,7 +14,7 @@ sslShare() {
 }
 
 initialize() {
-  timeout 5 curl -O tetris/.mktoken &
+  timeout 5 curl -kO https://tetris/.mktoken &
   wait
   [[ ! -s .mktoken ]] && return $(touch .mktoken)
   sslGen
