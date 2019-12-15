@@ -91,6 +91,7 @@ internalAllInOne() {
   appFirst
   cronJob
   deployApps
+  ingressForward
 
   timeout 20 kubectl get pods -A -o wide -w
   echo -e '\n\nk8s creation finished.\n\n'
@@ -211,7 +212,6 @@ appFirst() {
   delay && ingressNginx
   delay && adminDashboard
   delay && deployBackend
-  delay && ingressForward
   delay && jsxSite
 }
 
@@ -232,17 +232,18 @@ deployApps() {
   ecoDeploy aks jobscale/cloud-terminal 443 3000 0
   ecoDeploy wetty jobscale/wetty 443 3000 0
   ecoDeploy profile jobscale/profile 80 80 3
-  ecoDeploy blog jobscale/blog 80 3344 3
+  ecoDeploy mongo-blog jobscale/mongo-blog 80 3344 3
   ecoDeploy laravel jobscale/laravel 80 80 3
   ecoDeploy lumen jobscale/lumen 80 80 3
-  ecoDeploy chat jobscale/chat 80 3033 0
+  ecoDeploy room-chat jobscale/room-chat 80 3033 0
   ecoDeploy simple-chat jobscale/simple-chat 80 3000 0
-  ecoDeploy hello inanimate/echo-server 80 8080 3
+  ecoDeploy echo-server inanimate/echo-server 80 8080 3
   ecoDeploy django jobscale/django 80 80 3
   ecoDeploy anywaychat jobscale/anywaychat 80 80 3
   ecoDeploy dokuwiki jobscale/dokuwiki 80 80 3
   ecoDeploy wordpress jobscale/wordpress 80 80 0
   ecoDeploy ramen-timer jobscale/ramen-timer 80 80 3
+  ecoDeploy ec-cube jobscale/ec-cube:4.0 80 80 3
 }
 
 delAll() {
