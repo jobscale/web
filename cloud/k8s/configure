@@ -197,7 +197,7 @@ deployBackend() {
     kind load docker-image local/tetris:0.0.1 --name $KINDNAME
     delay
     kubectl create deployment tetris --image local/tetris:0.0.1
-    kubectl expose deployment tetris --name tetris --type ClusterIP --port 80 --target-port 80
+    kubectl expose deployment tetris --name tetris --type ClusterIP --port 443 --target-port 443
     waitFor tetris
   fi
 }
