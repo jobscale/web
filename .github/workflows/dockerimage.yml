@@ -6,7 +6,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      env:
-        img: web
-        tag: $(date +%s)
-      run: docker build . -t ${img}:${tag} && docker run --rm --name ${img} -d ${img}:${tag} && docker run --rm --link ${img} -it node curl ${img}
+      run: tag=$(date +%s) img=web && docker build . -t ${img}:${tag} && docker run --rm --name ${img} -d ${img}:${tag} && sleep 3.0 && docker run --rm --link ${img} -it node curl ${img}
