@@ -14,7 +14,7 @@ RUN ln -sfn tls ssl \
  && mkdir tls \
  && mv sslGen/wildcard.jsx.jp.cert tls/cert.pem \
  && mv sslGen/wildcard.jsx.jp.key tls/cert.key \
- && openssl dhparam 128 > tls/dhparam.pem
+ && openssl dhparam 256 > tls/dhparam.pem
 RUN rm -fr /var/lib/apt/lists/*
 EXPOSE 80 443
 CMD ["bash", "-c", ". projects/_/cmd"]
