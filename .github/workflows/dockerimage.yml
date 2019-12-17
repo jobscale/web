@@ -9,6 +9,4 @@ jobs:
       env:
         imag: web
         tag: $(date +%s)
-      run: docker build . -t ${img}:${tag}
-      run: docker run --rm --name ${img} -d ${img}:${tag}
-      run: docker run --rm --link ${img} -it node curl ${img}
+      run: docker build . -t ${img}:${tag} && docker run --rm --name ${img} -d ${img}:${tag} && docker run --rm --link ${img} -it node curl ${img}
