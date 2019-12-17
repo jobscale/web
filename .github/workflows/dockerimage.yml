@@ -8,4 +8,4 @@ jobs:
     - name: Build the Docker image
       env:
         img: web
-      run: tag=$(date +%s) docker build . -t ${img}:${tag}
+      run: docker build . -t ${img}:$(date +%s)
