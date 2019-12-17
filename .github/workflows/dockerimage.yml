@@ -7,6 +7,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       env:
-        imag: web
+        img: web
         tag: $(date +%s)
       run: docker build . -t ${img}:${tag} && docker run --rm --name ${img} -d ${img}:${tag} && docker run --rm --link ${img} -it node curl ${img}
