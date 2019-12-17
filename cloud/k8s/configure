@@ -238,12 +238,13 @@ deployApps() {
   ecoDeploy room-chat jobscale/room-chat 80 3033 0
   ecoDeploy simple-chat jobscale/simple-chat 80 3000 0
   ecoDeploy echo-server inanimate/echo-server 80 8080 3
-  ecoDeploy django jobscale/django 80 80 3
   ecoDeploy anywaychat jobscale/anywaychat 80 80 3
   ecoDeploy dokuwiki jobscale/dokuwiki 80 80 3
   ecoDeploy wordpress jobscale/wordpress 80 80 0
   ecoDeploy ramen-timer jobscale/ramen-timer 80 80 3
   ecoDeploy ec-cube jobscale/ec-cube:4.0 80 80 3
+  kubectl apply -f django
+  waitFor django
 }
 
 delAll() {
