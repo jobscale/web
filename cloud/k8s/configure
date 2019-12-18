@@ -38,6 +38,8 @@ delay() {
 }
 
 waitFor() {
+  delay
+  delay
   while [[ "$1" != "" ]]
   do
     [[ $(kubectl get pods -A | grep $1 | grep 1/1 | wc -l) > 0 ]] && echo -e "\n $1 - ok" && return
@@ -191,6 +193,8 @@ deployBackend() {
 
   kubectl apply -f mariadb
   waitFor mariadb
+  kubectl apply -f postgres
+  waitFor postgres
 
   if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
   then
