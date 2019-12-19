@@ -2,7 +2,8 @@ FROM nginx
 SHELL ["bash", "-c"]
 WORKDIR /var/site
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y vim git unzip curl
+RUN apt-get update && apt-get install -y vim git unzip curl \
+ && zip openssh net-tools dnsutils iputils-ping procps
 COPY . projects/_
 COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -fr /etc/nginx/site* /etc/nginx/conf.d \
