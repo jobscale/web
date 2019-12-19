@@ -13,11 +13,4 @@ spec:
     spec:
       containers:
       - name: web
-        image: jobscale/web:0.0.10
-        resources:
-          limits:
-            cpu: 200m
-            memory: 500M
-          requests:
-            cpu: 120m
-            memory: 300M
+        image: jobscale/web:0.0.11
