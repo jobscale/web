@@ -11,9 +11,9 @@ main() {
   for repo in ${list[@]}
   do
     name=$(echo $repo | awk -F'[/.]' '{print $6}')
-    echo $name
-    [[ -d $name ]] && cd $name && git pull && cd - >&/dev/null
-    [[ ! -d $name ]] && clone $repo
+    echo -e "\n# $name"
+    [[ -d $name ]] && cd $name && git pull && git-user && cd - >&/dev/null
+    [[ ! -d $name ]] && clone $repo && cd $name && git-user && cd - >&/dev/null
   done
 }
 main
