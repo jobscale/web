@@ -1,3 +1,5 @@
+#!/bin/bash -eu
+
 getAll() {
   curl -s 'https://api.github.com/users/jobscale/repos?type=all&page=1' | grep clone_url
   curl -s 'https://api.github.com/users/jobscale/repos?type=all&page=2' | grep clone_url
