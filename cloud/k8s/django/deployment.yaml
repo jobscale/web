@@ -13,4 +13,5 @@ spec:
     spec:
       containers:
       - image: jobscale/django
+        imagePullPolicy: Always
         name: django

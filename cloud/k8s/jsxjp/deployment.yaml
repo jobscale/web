@@ -13,16 +13,10 @@ spec:
     spec:
       containers:
       - image: jobscale/jsxjp
+        imagePullPolicy: Always
         name: jsxjp
         ports:
         - containerPort: 443
           protocol: TCP
         - containerPort: 80
           protocol: TCP
-        resources:
-          limits:
-            cpu: 200m
-            memory: 500M
-          requests:
-            cpu: 120m
-            memory: 300M
