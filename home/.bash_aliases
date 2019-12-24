@@ -2,6 +2,7 @@ HISTSIZE=500000
 HISTFILESIZE=5000000
 
 export PROMPT_DIRTRIM=3
+export DEBIAN_FRONTEND=noninteractive
 
 if [ "$(which sudo 2>/dev/null)" != "" ]
 then
