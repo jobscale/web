@@ -165,9 +165,14 @@ genPasswd() {
 
 exposedDeployment() {
   kubectl create deployment $1 --image $2
-  delay
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
   [[ "$5" != "0" ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $5 --max 20
+  waitFor $1
+}
+
+deployCluster() {
+  kubectl create deployment $1 --image $2
+  kubectl expose deployment $1 --name $1 --type ClusterIP --port $3 --target-port $4
   waitFor $1
 }
 
@@ -183,27 +188,19 @@ deployBacklog() {
 }
 
 deployBackend() {
-  kubectl create deployment redis --image redis
-  kubectl expose deployment redis --name redis --type ClusterIP --port 6379
-  waitFor redis
+  deployCluster redis redis 6379 6379
+  deployCluster mongo mongo 27017 27017
+  kubectl apply -f mariadb && waitFor mariadb
+  kubectl apply -f postgres && waitFor postgres
+  deployTetris
+}
 
-  kubectl create deployment mongo --image mongo
-  kubectl expose deployment mongo --name mongo --type ClusterIP --port 27017
-  waitFor mongo
-
-  kubectl apply -f mariadb
-  waitFor mariadb
-  kubectl apply -f postgres
-  waitFor postgres
-
-  if [[ $(docker images | grep local/tetris | wc -l) > 0 ]]
-  then
-    kind load docker-image local/tetris:0.0.1 --name $KINDNAME
-    delay
-    kubectl create deployment tetris --image local/tetris:0.0.1
-    kubectl expose deployment tetris --name tetris --type ClusterIP --port 443 --target-port 443
-    waitFor tetris
-  fi
+deployTetris() {
+  echo 1
+  [[ $(docker images | grep local/tetris | wc -l) == 0 ]] && return
+  kind load docker-image local/tetris:0.0.1 --name $KINDNAME
+  delay
+  deployCluster tetris local/tetris:0.0.1 443 443
 }
 
 metricsServer() {
@@ -230,25 +227,32 @@ ecoDeploy() {
   exposedDeployment $@
 }
 
-deployApps() {
+deployNode() {
+  ecoDeploy wetty jobscale/wetty 443 3000 0
   ecoDeploy gke jobscale/cloud-terminal 443 3000 0
   ecoDeploy eks jobscale/cloud-terminal 443 3000 0
   ecoDeploy aks jobscale/cloud-terminal 443 3000 0
-  ecoDeploy wetty jobscale/wetty 443 3000 0
-  ecoDeploy profile jobscale/profile 80 80 3
   ecoDeploy mongo-blog jobscale/mongo-blog 80 3344 3
-  ecoDeploy laravel jobscale/laravel 80 80 3
-  ecoDeploy lumen jobscale/lumen 80 80 3
+  ecoDeploy anywaychat jobscale/anywaychat 80 80 3
   ecoDeploy room-chat jobscale/room-chat 80 3033 0
   ecoDeploy simple-chat jobscale/simple-chat 80 3000 0
-  ecoDeploy echo-server inanimate/echo-server 80 8080 3
-  ecoDeploy anywaychat jobscale/anywaychat 80 80 3
+  ecoDeploy ramen-timer jobscale/ramen-timer 80 80 3
+}
+
+deployPhp() {
+  ecoDeploy profile jobscale/profile 80 80 3
+  ecoDeploy laravel jobscale/laravel 80 80 3
+  ecoDeploy lumen jobscale/lumen 80 80 3
   ecoDeploy dokuwiki jobscale/dokuwiki 80 80 3
   ecoDeploy wordpress jobscale/wordpress 80 80 0
-  ecoDeploy ramen-timer jobscale/ramen-timer 80 80 3
   ecoDeploy ec-cube jobscale/ec-cube:4.0 80 80 3
-  kubectl apply -f django
-  waitFor django
+}
+
+deployApps() {
+  deployNode
+  deployPhp
+  ecoDeploy echo-server inanimate/echo-server 80 8080 3
+  kubectl apply -f django && waitFor django
 }
 
 delAll() {
