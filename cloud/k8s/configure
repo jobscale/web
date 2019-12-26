@@ -63,6 +63,9 @@ initializeDatabase() {
 }
 
 allInOne() {
+  echo -n "setup '$KINDNAME' deployment "
+  read -p "ok? (y/N): " yn; case "$yn" in [yY]*) echo "continue";; *) echo "abort" && return;; esac
+
   LOGFILE=/tmp/k8s-$KINDNAME-$(date +'%Y-%m-%d-%H:%M:%S').log
   time internalAllInOne |& tee $LOGFILE
 
