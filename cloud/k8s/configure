@@ -57,9 +57,12 @@ waitFor() {
 }
 
 initializeDatabase() {
+  sql='CREATE DATABASE wordpress;
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wp-user'@'172.24.0.0/12' IDENTIFIED BY 'wp-admin';
+FLUSH PRIVILEGES;'
   kubectl exec -it $(
     kubectl get all | grep pod | grep mariadb | awk '{print $1}'
-  ) -- bash -c "echo 'create database wordpress;' | mysql -p$1"
+  ) -- bash -c "echo '$sql' | mysql -p$1"
 }
 
 allInOne() {
@@ -247,7 +250,7 @@ deployPhp() {
   ecoDeploy laravel jobscale/laravel 80 80 3
   ecoDeploy lumen jobscale/lumen 80 80 3
   ecoDeploy dokuwiki jobscale/dokuwiki 80 80 3
-  ecoDeploy wordpress jobscale/wordpress 80 80 0
+  ecoDeploy wordpress jobscale/wordpress 80 8000 0
   ecoDeploy ec-cube jobscale/ec-cube:4.0 80 80 3
 }
 
