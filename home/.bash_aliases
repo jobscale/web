@@ -20,7 +20,7 @@ alias rsync='rsync -tlrHhv --delete'
 alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
-PATH="$PATH:$HOME/bin:$HOME/go/bin"
+PATH="$PATH:$HOME/bin"
 
 alias kube-production='ln -sfn kind-config-production $HOME/.kube/config'
 alias kube-staging='ln -sfn kind-config-staging $HOME/.kube/config'
@@ -28,11 +28,9 @@ alias kube-development='ln -sfn kind-config-development $HOME/.kube/config'
 alias kube-gke='ln -sfn gke-config $HOME/.kube/config'
 alias kube-eks='ln -sfn eks-config $HOME/.kube/config'
 alias kube-aks='ln -sfn aks-config $HOME/.kube/config'
-# alias kube-kind='export KUBECONFIG="$(kind get kubeconfig-path --name kind)"'
-# alias kube-gke='export KUBECONFIG="$HOME/.kube/config-gke"'
-# alias kube-eks='export KUBECONFIG="$HOME/.kube/config-eks"'
-# alias kube-aks='export KUBECONFIG="$HOME/.kube/config-aks"'
 
+alias d-node='docker run --rm -v $(pwd):/home/node/app --workdir /home/node/app -it node'
+alias d-nodejs='docker run --rm -v $(pwd):/home/node/app --workdir /home/node/app --entrypoint /bin/bash -it node'
 alias MP4Box='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) jobscale/mp4box'
 alias ffmpeg='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) --entrypoint /usr/local/bin/ffmpeg jobscale/mp4box'
 alias ffprobe='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) --entrypoint /usr/local/bin/ffprobe jobscale/mp4box'
