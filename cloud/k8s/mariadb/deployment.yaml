@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      run: mariadb
+      app: mariadb
   template:
     metadata:
       labels:
-        run: mariadb
+        app: mariadb
     spec:
       containers:
       - name: mariadb

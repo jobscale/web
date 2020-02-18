@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb
   labels:
-    app: mariadb
+    app: tetris
+  name: tetris
 spec:
   ports:
-  - port: 3306
+  - port: 443
     protocol: TCP
-    targetPort: 3306
+    targetPort: 443
   selector:
-    app: mariadb
+    app: tetris
   type: ClusterIP

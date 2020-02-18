@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: partner
+  name: partner
+spec:
+  selector:
+    matchLabels:
+      app: partner
+  template:
+    metadata:
+      labels:
+        app: partner
+    spec:
+      containers:
+      - image: jobscale/partner
+        imagePullPolicy: Always
+        name: partner
+      imagePullSecrets:
+      - name: regcred

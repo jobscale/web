@@ -96,6 +96,7 @@ createStandard() {
 
 internalAllInOne() {
   createStandard
+  createSecret
   appFirst
   cronJob
   deployApps
@@ -109,6 +110,11 @@ internalAllInOne() {
   echo "Initialized password: '$TTY_PASSWD'"
 
   initializeDatabase false
+}
+
+createSecret() {
+  FILE=$HOME/.docker/config.json
+  kubectl create secret generic regcred --from-file=.dockerconfigjson=$FILE --type=kubernetes.io/dockerconfigjson
 }
 
 jsxSite() {
@@ -156,6 +162,11 @@ adminDashboard() {
   waitFor kubernetes-dashboard
 }
 
+partnerEnvironment() {
+  kubectl apply -f partner
+  waitFor partner
+}
+
 makePasswd() {
   head -c 8 /dev/random | mkpasswd -s -5 | sed -e 's/\$//g' | sed -e 's/^1//'
 }
@@ -198,15 +209,7 @@ deployBackend() {
   deployCluster mongo mongo 27017 27017
   kubectl apply -f mariadb && waitFor mariadb
   kubectl apply -f postgres && waitFor postgres
-  deployTetris
-}
-
-deployTetris() {
-  echo 1
-  [[ $(docker images | grep local/tetris | wc -l) == 0 ]] && return
-  kind load docker-image local/tetris:0.0.1 --name $KINDNAME
-  delay
-  deployCluster tetris local/tetris:0.0.1 443 443
+  partnerEnvironment
 }
 
 metricsServer() {
