@@ -5,7 +5,7 @@ sleep $wait
 
 tmux new-session -d
 [[ $(id -u) -eq 1000 && -e /dev/kvm ]] && sudo chown $(whoami). /dev/kvm
-conky -d
+conky-daemon
 ibus-daemon -rxd
 [[ -s "$HOME/bin/mouse-scroll" ]] && "$HOME/bin/mouse-scroll"
 
