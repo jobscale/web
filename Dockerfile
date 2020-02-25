@@ -13,8 +13,8 @@ RUN rm -fr /etc/nginx/site* /etc/nginx/conf.d \
 RUN ln -sfn tls ssl \
  && . projects/_/ssl-keygen \
  && mkdir tls \
- && mv sslGen/wildcard.jsx.jp.cert tls/cert.pem \
- && mv sslGen/wildcard.jsx.jp.key tls/cert.key \
+ && cp sslGen/wildcard.jsx.jp.cert tls/cert.pem \
+ && cp sslGen/wildcard.jsx.jp.key tls/cert.key \
  && openssl dhparam 256 > tls/dhparam.pem
 RUN rm -fr /var/lib/apt/lists/*
 EXPOSE 80 443
