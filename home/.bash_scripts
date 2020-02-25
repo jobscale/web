@@ -15,6 +15,13 @@ git() {
         command $cmd
         return
     fi
+    if [[ $1 == "sort" ]]
+    then
+        cmd="git ls-remote --tags | sort -t '/' -k 3 -V"
+        echo "$cmd"
+        bash -c "$cmd"
+        return
+    fi
     if [[ $@ == "branch -a" ]]
     then
         cmd="git fetch --all --prune"
