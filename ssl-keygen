@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-directory=sslGen
+directory=tls
 country=JA
 state=Osaka
 locality=Osaka
