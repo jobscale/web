@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 sslGen() {
-  unzip -oP $(cat env.json) projects/_/.tls
+  unzip -oP $(sed -e 's/"//g' env.json) projects/_/.tls
 }
 sslShare() {
   rm -fr sslGen
@@ -13,7 +13,7 @@ sslShare() {
 initialize() {
   timeout 5 curl -sk -H "Cookie: X-AUTH=X0X0X0X0X0X0X0X" https://partner/env.json | grep -i =A | awk -F'"' '{print $4}' | sed -e 's/=//g' | base64 -d | jq '.jsxjp.access' > env.json &
   wait
-  [[ ! -f env.json ]] && return $(touch env.json)
+  [[ ! -s env.json ]] && return $(touch env.json)
   sslGen
 }
 routing() {
