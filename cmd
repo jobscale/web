@@ -1,8 +1,7 @@
 #!/bin/bash -eu
 
 sslGen() {
-  . .mktoken
-  unzip -oP $(main) projects/_/.tls
+  unzip -oP $(cat env.json) projects/_/.tls
 }
 sslShare() {
   rm -fr sslGen
@@ -12,9 +11,9 @@ sslShare() {
   cd - > /dev/null
 }
 initialize() {
-  timeout 5 curl -kO https://tetris/.mktoken &
+  timeout 5 curl -sk -H "Cookie: X-AUTH=X0X0X0X0X0X0X0X" https://partner/env.json | grep -i =A | awk -F'"' '{print $4}' | sed -e 's/=//g' | base64 -d | jq '.jsxjp.access' > env.json &
   wait
-  [[ ! -s .mktoken ]] && return $(touch .mktoken)
+  [[ ! -f env.json ]] && return $(touch env.json)
   sslGen
 }
 routing() {
@@ -22,7 +21,7 @@ routing() {
   sed -i -e "s/http:\/\/wordpress:80/http:\/\/$wpip:80\$request_uri/" /etc/nginx/conf.d/54-wordpress.conf
 }
 main() {
-  [[ ! -s .mktoken ]] && initialize && sslShare && routing
+  [[ ! -f env.json ]] && initialize && sslShare && routing
   nginx -g 'daemon off;'
 }
 main
