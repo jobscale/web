@@ -14,4 +14,4 @@ RUN . ssl-keygen \
  && openssl dhparam 256 > tls/dhparam.pem
 RUN rm -fr /var/lib/apt/lists/*
 EXPOSE 80 443
-CMD ["bash", "-c", ". projects/_/cmd"]
+CMD ["bash", "-c", ". cmd"]
