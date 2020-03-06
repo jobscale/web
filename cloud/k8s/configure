@@ -1,3 +1,4 @@
+KINDIMAGE=kindest/node:v1.15.7
 production() {
   export KINDNAME=production
   export KINDHTTP=80
@@ -123,7 +124,7 @@ jsxSite() {
 }
 
 createKind() {
-  kind create cluster --config $KINDCONFIG --name $KINDNAME
+  kind create cluster --name $KINDNAME --image $KINDIMAGE --config $KINDCONFIG
 }
 
 kubeConfig() {

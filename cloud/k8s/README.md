@@ -33,7 +33,7 @@ iKubectl() {
 ```
 iKind() {
   curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/$(
-    git ls-remote --tags --refs https://github.com/kubernetes-sigs/kind.git | tail -1 | awk -F/ '{print $3}'
+    git ls-remote --refs --tags https://github.com/kubernetes-sigs/kind.git | sort -t '/' -k 3 -V | tail -1 | awk -F/ '{print $3}'
   )/kind-$(uname)-amd64
   chmod +x kind
   sudo mv kind /usr/local/bin
@@ -45,7 +45,7 @@ iKind() {
 ```
 iNodejs() {
   curl -o- https://raw.githubusercontent.com/creationix/nvm/$(
-    git ls-remote --tags --refs https://github.com/nvm-sh/nvm.git | grep -P 'v0.\d\d' | tail -1 | awk -F/ '{print $3}'
+    git ls-remote --refs --tags https://github.com/nvm-sh/nvm.git | sort -t '/' -k 3 -V | tail -1 | awk -F/ '{print $3}'
   )/install.sh | bash
   . ~/.bashrc
   LATEST=$(nvm ls-remote | grep 'Latest LTS' | tail -1 | awk '{print $1}')
@@ -78,9 +78,9 @@ kubectl config set-context $(kubectl config current-context) --namespace default
 ### setup metallb system
 
 ```
-METAL_VERSION=$(git ls-remote --tags --refs https://github.com/danderson/metallb.git | tail -1 | awk -F/ '{print $3}')
-echo -e "\n MetalLB ${METAL_VERSION} \n"
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/${METAL_VERSION}/manifests/metallb.yaml
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/${
+  git ls-remote --refs --tags https://github.com/danderson/metallb.git | sort -t '/' -k 3 -V | tail -1 | awk -F/ '{print $3}'
+}/manifests/metallb.yaml
 kubectl apply -f https://git.io/km-config.yaml
 ```
 
