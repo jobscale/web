@@ -20,7 +20,7 @@ alias rsync='rsync -tlrHhv --delete'
 alias lsof='sudo lsof -Pan -i tcp -i udp'
 alias df='df -x"squashfs"'
 
-PATH="$PATH:$HOME/bin"
+PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 
 alias kube-production='ln -sfn kind-config-production $HOME/.kube/config'
 alias kube-staging='ln -sfn kind-config-staging $HOME/.kube/config'
