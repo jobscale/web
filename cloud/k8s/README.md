@@ -28,6 +28,15 @@ iKubectl() {
 } && iKubectl
 ```
 
+### install stern
+```
+iStern() {
+  curl -sLo stern https://github.com/wercker/stern/releases/download/$(
+    git ls-remote --refs --tags https://github.com/wercker/stern.git | sort -t '/' -k 3 -V | tail -1 | awk -F/ '{print $3}'
+  )/stern_linux_amd64
+} && iStern
+```
+
 ### install kind
 
 ```
