@@ -25,6 +25,10 @@ iIstio() {
 k3d create --server-arg --no-deploy --server-arg traefik
 ln -sfn $(k3d get-kubeconfig --name='k3s-default') $HOME/.kube/config
 ```
+## import image
+```
+k3d import-images mysql:8.0
+```
 ## Apply istio
 ```
 istioctl manifest apply --set installPackagePath=$(find /home/istio-* -type d -name charts | grep operator | tail -1)
