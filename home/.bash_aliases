@@ -1,6 +1,7 @@
 HISTSIZE=500000
 HISTFILESIZE=5000000
 
+umask u=rwx,g=,o=
 export PROMPT_DIRTRIM=3
 export DEBIAN_FRONTEND=noninteractive
 
