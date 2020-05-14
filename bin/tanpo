@@ -1,0 +1,60 @@
+#!/bin/bash -eu
+
+echo tanpo
+[[ $# == 0 ]] && echo "Usage: tanpo [init | create | list | logs | tail | test | deploy | restart | remove]" && exit 1
+
+COMMAND=$1
+CONTAINER=web-server
+init() {
+  echo "### tanpo $COMMAND ###"
+  cd /var/task/app
+  docker run --rm --user 1000:1000 \
+  --workdir=/var/task \
+  -v /var/task/app:/var/task \
+  node npm i
+}
+create() {
+  echo "### tanpo $COMMAND ###"
+  cd /var/task/app
+  docker run --name $CONTAINER --user 1000:1000 \
+    --restart=always \
+    --workdir=/var/task \
+    -v /var/task/app:/var/task \
+    -p 80:3000 \
+    -d node npm start
+}
+test() {
+  echo "### tanpo $COMMAND ###"
+  nc -v -w 1 127.0.0.1 80 < /dev/null
+  curl -v 127.0.0.1
+}
+deploy() {
+  echo "### tanpo $COMMAND ###"
+  cd /var/task/app
+  git pull
+}
+list() {
+  echo "### tanpo $COMMAND ###"
+  docker ps -a
+}
+tail() {
+  echo "### tanpo $COMMAND ###"
+  docker logs -f $CONTAINER
+}
+logs() {
+  echo "### tanpo $COMMAND ###"
+  docker logs $CONTAINER
+}
+restart() {
+  echo "### tanpo $COMMAND ###"
+  docker stop $CONTAINER
+  docker start $CONTAINER
+}
+remove() {
+  echo "### tanpo $COMMAND ###"
+  echo "Are you sure you want to remove the server? "
+  read -p "Are you ok? (y/N): " yn; case "$yn" in [yY]*) echo "continue";; *) echo "abort" && return;; esac
+  docker stop $CONTAINER
+  docker rm $CONTAINER
+}
+$1
