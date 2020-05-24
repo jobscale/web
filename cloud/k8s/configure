@@ -148,12 +148,6 @@ metalLB() {
   waitFor metallb-system
 }
 
-ingressNginx() {
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
-  waitFor ingress-nginx
-}
-
 ingressForward() {
   kubectl apply -f web
   waitFor web
@@ -222,7 +216,6 @@ metricsServer() {
 appFirst() {
   delay && metricsServer
   delay && metalLB
-  delay && ingressNginx
   delay && adminDashboard
   delay && deployBackend
   delay && jsxSite
@@ -249,7 +242,10 @@ deployNode() {
   ecoDeploy room-chat jobscale/room-chat 80 3033 0
   ecoDeploy simple-chat jobscale/simple-chat 80 3000 0
   ecoDeploy ramen-timer jobscale/ramen-timer 80 80 3
+  kubectl create namespace gitlab
+  kubectl config set-context $(kubectl config current-context) --namespace gitlab
   ecoDeploy gitlab jobscale/gitlab 443 443 0
+  kubectl config set-context $(kubectl config current-context) --namespace standard
 }
 
 deployPhp() {
