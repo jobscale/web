@@ -32,6 +32,7 @@ alias kube-aks='ln -sfn aks-config $HOME/.kube/config'
 
 alias d-node='docker run --rm -v $(pwd):/home/node/app --workdir /home/node/app -it node'
 alias d-nodejs='docker run --rm -v $(pwd):/home/node/app --workdir /home/node/app --entrypoint /bin/bash -it node'
+alias aws='docker run --rm -v $HOME/.aws:/root/.aws amazon/aws-cli'
 alias MP4Box='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) jobscale/mp4box'
 alias ffmpeg='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) --entrypoint /usr/local/bin/ffmpeg jobscale/mp4box'
 alias ffprobe='docker run --rm -it -v $(pwd):/work -u $(id -u):$(id -g) --entrypoint /usr/local/bin/ffprobe jobscale/mp4box'
@@ -50,7 +51,7 @@ proxyConfigure() {
     export http_proxy=
     export https_proxy=
   }
-  [[ $(nc -v 8.8.8.8 53 -w 1 < /dev/null |& grep succeeded | wc -l) > 0 ]] && echo "no proxy" && disableProxy
+  [[ $(nc -v 8.8.8.8 53 -w 1 < /dev/null 2>&1 | grep succeeded | wc -l) > 0 ]] && echo "no proxy" && disableProxy
 }
 proxyConfigure
 

@@ -71,7 +71,7 @@ allInOne() {
   read -p "ok? (y/N): " yn; case "$yn" in [yY]*) echo "continue";; *) echo "abort" && return;; esac
 
   LOGFILE=/tmp/k8s-$KINDNAME-$(date +'%Y-%m-%d-%H:%M:%S').log
-  time internalAllInOne |& tee $LOGFILE
+  time internalAllInOne 2>&1 | tee $LOGFILE
 
   kubectl -n kube-system describe secret $(
     kubectl -n kube-system get secrets | grep admin-user | awk '{print $1}'

@@ -70,5 +70,5 @@ gff() {
 }
 
 less_with_unbuffer () {
-    unbuffer "$@" |& less -SR
+    unbuffer "$@" 2>&1 | less -SR
 }
