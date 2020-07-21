@@ -1,7 +1,7 @@
 ## Install k3d
 ```
 iK3d() {
-  curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+  curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | sudo TAG=v3.0.0 bash
 } && iK3d
 ```
 ## Install istioctl
