@@ -22,8 +22,7 @@ iIstio() {
 ```
 ## Create k3d cluster
 ```
-k3d create --server-arg --no-deploy --server-arg traefik
-ln -sfn $(k3d get-kubeconfig --name='k3s-default') $HOME/.kube/config
+k3d cluster create --no-lb
 ```
 ## import image
 ```

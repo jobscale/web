@@ -12,7 +12,7 @@ ibus-daemon -rxd
 [[ -s "$HOME/bin/.autostart-extra-before" ]] && "$HOME/bin/.autostart-extra-before"
 
 sleep $wait
-cinnamon-screensaver-command -l
+[[ $(which cinnamon-screensaver-command) ]] && cinnamon-screensaver-command -l
 
 google-chrome "https://time.is"
 

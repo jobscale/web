@@ -27,8 +27,9 @@ cli() {
 gui() {
   export DEBIAN_FRONTEND=noninteractive
   sudo apt update
-  sudo apt install -y terminator conky mysql-workbench polari gimp \
-    alarm-clock-applet gnome-clocks
+  sudo apt install -y terminator conky polari buntu-restricted-extras \
+    gnome-clocks $(apt search cinnamon | grep ^cinnamon | awk -F/ '{print $1}')
+  [[ $(lsb_release -cs) == 'bionic' ]] && sudo apt install -y gimp alarm-clock-applet
 }
 
 iNodejs() {
@@ -129,12 +130,11 @@ main() {
 # account
 # system
 # cli
-  cli
-  iNodejs
-  iDocker
-  iKubectl
-  iKind
-  date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
+# iNodejs
+# iDocker
+# iKubectl
+# iKind
+ date +'FINISHED my-init %Y-%m-%d %H:%M:%S'
 }
 
 main | sudo tee -a /var/log/cloud-admin-init.log
