@@ -13,5 +13,5 @@ spec:
     spec:
       containers:
       - name: web
-        image: jobscale/web:0.0.21
+        image: jobscale/web:0.0.22
         imagePullPolicy: Always
