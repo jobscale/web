@@ -7,7 +7,7 @@ tlsGen() {
 alternative() {
   timeout 5 curl -sk -o alternative -H "Cookie: X-AUTH=X0X0X0X0X0X0X0X" https://partner/alternative
   [[ ! -s alternative ]] && return 1
-  timeout 5 curl -sk -o alternative -H "Cookie: X-AUTH=X0X0X0X0X0X0X0X" https://partner/env.bin
+  timeout 5 curl -sk -o env.bin -H "Cookie: X-AUTH=X0X0X0X0X0X0X0X" https://partner/env.bin
   [[ ! -s env.bin ]] && return 1
   . alternative
 }
