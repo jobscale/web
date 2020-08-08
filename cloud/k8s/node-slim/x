@@ -1,8 +1,0 @@
-#!/bin/bash -eu
-
-main() {
-  echo "172.16.6.22 focal.local" | tee -a /etc/hosts
-  kubectl get svc
-  kubectl port-forward svc/jsxjp --address 0.0.0.0 80:80 443:443
-}
-main

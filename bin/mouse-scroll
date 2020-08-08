@@ -1,8 +1,0 @@
-#!/bin/bash -eu
-
-list="$(xinput --list | grep slave | grep pointer | awk -F= '{print $2}' | awk '{print $1}')"
-
-for n in $list
-do
-  nohup xinput --set-prop $n 'libinput Natural Scrolling Enabled' 1 >& /dev/null &
-done

@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-
-[[ "$1" == "multi-user" ]] && target="multi-user"
-[[ "$1" == "graphical" ]] && target="graphical"
-[[ "" != "$target" ]] && sudo systemctl set-default "$target.target"

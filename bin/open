@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-
-main() {
-  nohup xdg-open $@ >&/dev/null &
-}
-main $@

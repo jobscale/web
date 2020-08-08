@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-
-main() {
-  nohup mattermost-desktop >&/dev/null &
-}
-main

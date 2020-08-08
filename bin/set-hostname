@@ -1,6 +1,0 @@
-#!/bin/bash -eu
-
-hostname=$1
-sudo sed -ie 's/preserve_hostname: false/preserve_hostname: true/' /etc/cloud/cloud.cfg
-sudo hostnamectl set-hostname $hostname
-
