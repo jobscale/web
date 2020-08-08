@@ -63,7 +63,7 @@ allInOne() {
   echo -n "setup '$KINDNAME' deployment "
   read -p "ok? (y/N): " yn; case "$yn" in [yY]*) echo "continue";; *) echo "abort" && return;; esac
 
-  LOGFILE=/tmp/k8s-$KINDNAME-$(date +'%Y-%m-%d-%H:%M:%S').log
+  LOGFILE=/home/log/k8s-$KINDNAME-$(date +'%Y-%m-%d-%H:%M:%S').log
   time internalAllInOne 2>&1 | tee $LOGFILE
 
   kubectl -n kube-system describe secret $(
@@ -167,6 +167,7 @@ genPasswd() {
 
 exposedDeployment() {
   MIN_REPLICA=$5
+  MIN_REPLICA=1 # minimum up
   kubectl create deployment $1 --image $2
   kubectl expose deployment $1 --name $1 --type LoadBalancer --port $3 --target-port $4
   [[ "$5" != "0" ]] && kubectl autoscale deployment $1 --cpu-percent 50 --min $MIN_REPLICA --max 20
@@ -254,7 +255,6 @@ deployPython() {
 
 deployEcho() {
   exposedDeployment echo-server inanimate/echo-server 80 8080 3
-  kubectl apply -f echoserver
 }
 
 deployApps() {

@@ -9,4 +9,3 @@ nodes:
     hostPort: 4443
   - containerPort: 30080
     hostPort: 4080
-- role: worker
