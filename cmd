@@ -22,6 +22,7 @@ initialize() {
 }
 
 main() {
+  sleep 10
   [[ ! -f env.json ]] && initialize
   nginx -g 'daemon off;'
 }
