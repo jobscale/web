@@ -24,7 +24,7 @@ initialize() {
 dummy() {
   for h in $(grep proxy_pass /etc/nginx/conf.d/*conf | awk -F// '{print $2}' | awk -F: '{print $1}' | sort | uniq)
   do
-    ping -c 1 $h || echo "127.0.0.1 $h" | tee -a /etc/hosts
+    host $h || echo "127.0.0.1 $h" | tee -a /etc/hosts
   done
 }
 
