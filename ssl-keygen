@@ -6,7 +6,7 @@ state=Osaka
 locality=Osaka
 organizational=jsx.jp
 unit=Developpers
-common=*.jsx.jp
+common=jsx.jp,*.jsx.jp,*.in.jsx.jp
 fname=wildcard.jsx.jp
 days=3655
 
