@@ -1,11 +1,16 @@
 name: Docker Image CI
+
 on: [push]
+
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       env:
-        img: web
-      run: docker build . -t ${img}:$(date +%s)
+        file: Dockerfile
+      run: docker build . --file ${file} --tag my-image-name:$(date +%s)

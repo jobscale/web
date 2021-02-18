@@ -5,9 +5,9 @@ COOKIE="Cookie: X-AUTH=X0X0X0X0X0X0X0X"
 HOST=https://partner.credentials.svc.cluster.local
 
 initialize() {
-  touch env.json
   curl -sk -H "$COOKIE" $HOST/env.json | grep -i =A | awk -F'"' '{print $4}' | sed -e 's/=//g' | base64 -d | jq '.jsxjp.access' > env.json
-  curl -sk -o env.bin -H "$COOKIE" $HOST/env.bin
+  curl -sk -o env.bin -H "$COOKIE" $HOST/env.bin | echo
+  [[ ! -s env.bin ]] && return
   curl -sk -o alternative -H "$COOKIE" $HOST/alternative
   . alternative
 }
