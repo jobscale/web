@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -eu
+
+export COOKIE="Cookie: X-AUTH=X0X0X0X0X0X0X0X"
+export HOST=https://partner.credentials.svc.cluster.local
+
+initialize() {
+  selfSignedCertificate
+  curl -skO -H "$COOKIE" $HOST/alternative || return
+  . alternative
+}
+
+selfSignedCertificate() {
+  . ssl-keygen
+  openssl dhparam 256 > tls/dhparam.pem
+}
+
+resolver() {
+  for h in $(grep proxy_pass /etc/nginx/conf.d/*conf | awk -F// '{print $2}' | awk -F: '{print $1}' | sort | uniq)
+  do
+    host $h || echo "127.0.0.2 $h" | tee -a /etc/hosts
+  done
+}
+
+main() {
+  [[ ! -d tls ]] && initialize
+  resolver
+  echo "nginx start"
+  nginx -g 'daemon off;'
+}
+
+main
