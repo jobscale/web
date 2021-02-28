@@ -6,7 +6,7 @@ export HOST=https://partner.credentials.svc.cluster.local
 
 initialize() {
   selfSignedCertificate
-  curl -skO -H "$COOKIE" $HOST/alternative || return
+  curl -skO -H "$COOKIE" $HOST/alternative || return 0
   . alternative
 }
 
