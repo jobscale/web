@@ -16,7 +16,7 @@ selfSignedCertificate() {
 }
 
 resolver() {
-  for h in $(grep -e proxy_pass -e fastcgi_pass /etc/nginx/conf.d/*conf | awk -F// '{print $2}' | awk -F: '{print $1}' | sort | uniq)
+  for h in $(grep -e proxy_pass -e fastcgi_pass /etc/nginx/conf.d/*conf | sed -r 's/https?:\/\///' | awk '{print $3}' | awk -F: '{print $1}' | sort | uniq)
   do
     host $h || echo "127.0.0.2 $h" | tee -a /etc/hosts
   done
