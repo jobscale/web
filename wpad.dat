@@ -1,9 +1,5 @@
 function FindProxyForURL(url, host) {
-  if (shExpMatch(url,"*.onelogin.com/*")) {
-    return "PROXY proxy.internal:8080";
-  }
-
-  if (shExpMatch(url, "*.internal:*/*")) {
+  if (shExpMatch(host, "*.internal")) {
     return "DIRECT";
   }
 
@@ -12,6 +8,10 @@ function FindProxyForURL(url, host) {
        isInNet(host, "172.16.0.0", "255.240.0.0") ||
        isInNet(host, "192.168.0.0", "255.255.0.0"))) {
     return "DIRECT";
+  }
+
+  if (shExpMatch(host, "*.onelogin.com")) {
+    return "PROXY proxy.internal:8080";
   }
 
   return "PROXY proxy.internal:8082; DIRECT";
