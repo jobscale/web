@@ -14,5 +14,10 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.internal:8080";
   }
 
-  return "PROXY proxy.internal:8082; DIRECT";
+  if (shExpMatch(host, "*.secure-place.jp.*")
+    || shExpMatch(host, "palet-owa.palet.jp.*")) {
+    return "PROXY proxy.internal:8082";
+  }
+
+  return "PROXY proxy.secure.jsx.jp:3128; DIRECT";
 }
