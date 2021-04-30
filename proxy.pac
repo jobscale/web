@@ -10,9 +10,10 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "geocontrol1.stream.ne.jp")) {
+  if (shExpMatch(host, "google") ||
+      shExpMatch(host, "atlassian")) {
     return "PROXY proxy.aws.jsx.jp:3128";
   }
 
-  return "PROXY proxy.secure.jsx.jp:3128; DIRECT";
+  return "DIRECT";
 }

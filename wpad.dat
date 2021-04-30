@@ -14,10 +14,15 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.internal:8080";
   }
 
-  if (shExpMatch(host, "*.secure-place.jp.*")
-    || shExpMatch(host, "palet-owa.palet.jp.*")) {
-    return "PROXY proxy.internal:8082";
+  if (shExpMatch(host, "*.secure-place.jp.*") ||
+      shExpMatch(host, "palet-owa.palet.jp.*")) {
+    return "PROXY proxy.internal:8080";
   }
 
-  return "PROXY proxy.secure.jsx.jp:3128; DIRECT";
+  if (shExpMatch(host, "google") ||
+      shExpMatch(host, "atlassian")) {
+    return "PROXY proxy.aws.jsx.jp:3128";
+  }
+
+  return "DIRECT";
 }
