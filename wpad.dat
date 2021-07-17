@@ -12,22 +12,31 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "google.co.jp") ||
+  if (shExpMatch(host, "ifconfig.io") ||
       shExpMatch(host, "taruo.net") ||
       shExpMatch(host, "jsx.jp")) {
-    return "PROXY proxy.aws.jsx.jp:3128";
+    return "PROXY proxy.os.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
       shExpMatch(host, "*.secure-place.*")) {
-    return "PROXY proxy.jsx.jp:8080";
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "api.*.*.com") ||
       shExpMatch(host, "*.*-api.*.*.com") ||
       shExpMatch(host, "*.jp.*.*.tech")) {
-    return "PROXY proxy.jsx.jp:8080";
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
-  return "DIRECT";
+  if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
+      shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
+      shExpMatch(host, "*.gvt1.com") ||
+      shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
+      shExpMatch(host, "i.socdm.com") ||
+      shExpMatch(host, "cdn.spotxcdn.com")) {
+        return "PROXY proxy.jsx.jp:3443";
+    }
+
+  return "PROXY proxy.jsx.jp:3128; DIRECT";
 }
