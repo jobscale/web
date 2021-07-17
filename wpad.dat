@@ -15,7 +15,7 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "ifconfig.io") ||
       shExpMatch(host, "taruo.net") ||
       shExpMatch(host, "jsx.jp")) {
-    return "PROXY proxy.os.jsx.jp:3128";
+    return "PROXY proxy.secure.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
