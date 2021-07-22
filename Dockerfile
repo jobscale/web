@@ -3,7 +3,7 @@ SHELL ["bash", "-c"]
 WORKDIR /usr/share/nginx
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y vim git unzip curl jq \
- tmux zip openssh-client net-tools dnsutils iputils-ping netcat ncat procps
+ tmux zip openssh-client iproute2 dnsutils iputils-ping netcat ncat procps
 COPY . .
 RUN rm -fr /etc/nginx/*conf* \
  && ln -sfn $(pwd)/nginx.conf /etc/nginx \
