@@ -12,9 +12,9 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "ifconfig.io") ||
-      shExpMatch(host, "taruo.net") ||
-      shExpMatch(host, "jsx.jp")) {
+  if (shExpMatch(host, "taruo.net") ||
+      shExpMatch(host, "jsx.jp") ||
+      shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.secure.jsx.jp:3128";
   }
 
@@ -35,8 +35,8 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
       shExpMatch(host, "i.socdm.com") ||
       shExpMatch(host, "cdn.spotxcdn.com")) {
-        return "PROXY proxy.jsx.jp:3128";
-    }
+    return "PROXY proxy.jsx.jp:3128";
+  }
 
   return "PROXY proxy.jsx.jp:3128; DIRECT";
 }
