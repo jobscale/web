@@ -23,8 +23,8 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
-  if (shExpMatch(host, "api.*.*.com") ||
-      shExpMatch(host, "*.*-api.*.*.com") ||
+  if (shExpMatch(host, "api.*.*nic.com") ||
+      shExpMatch(host, "*.*-api.*.*nic.com") ||
       shExpMatch(host, "*.jp.*.*.tech")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
@@ -35,7 +35,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
       shExpMatch(host, "i.socdm.com") ||
       shExpMatch(host, "cdn.spotxcdn.com")) {
-        return "PROXY proxy.jsx.jp:3443";
+        return "PROXY proxy.jsx.jp:3128";
     }
 
   return "PROXY proxy.jsx.jp:3128; DIRECT";
