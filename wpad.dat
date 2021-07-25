@@ -1,6 +1,6 @@
 function FindProxyForURL(url, host) {
   if (shExpMatch(host, "*.internal") ||
-      shExpMatch(host, "proxy.jsx.jp")) {
+      shExpMatch(host, "proxy.*")) {
     return "DIRECT";
   }
 
@@ -31,8 +31,8 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
       shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
-      shExpMatch(host, "*.gvt1.com") ||
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
+      shExpMatch(host, "*.gvt1.com") ||
       shExpMatch(host, "i.socdm.com") ||
       shExpMatch(host, "cdn.spotxcdn.com")) {
     return "PROXY proxy.jsx.jp:3128";
