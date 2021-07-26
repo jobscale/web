@@ -12,8 +12,16 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "taruo.net") ||
-      shExpMatch(host, "jsx.jp") ||
+  if (shExpMatch(host, "cdn.jsx.jp") ||
+      shExpMatch(host, "*.cdn.jsx.jp") ||
+      shExpMatch(host, "in.jsx.jp") ||
+      shExpMatch(host, "*.in.jsx.jp") ||
+      shExpMatch(host, "secure.jsx.jp") ||
+      shExpMatch(host, "*.secure.jsx.jp")) {
+    return "DIRECT";
+  }
+
+  if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.secure.jsx.jp:3128";
   }
