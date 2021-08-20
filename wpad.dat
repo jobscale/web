@@ -15,15 +15,13 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "cdn.jsx.jp") ||
       shExpMatch(host, "*.cdn.jsx.jp") ||
       shExpMatch(host, "in.jsx.jp") ||
-      shExpMatch(host, "*.in.jsx.jp") ||
-      shExpMatch(host, "secure.jsx.jp") ||
-      shExpMatch(host, "*.secure.jsx.jp")) {
+      shExpMatch(host, "*.in.jsx.jp")) {
     return "DIRECT";
   }
 
   if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.secure.jsx.jp:3128";
+    return "PROXY proxy.os.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
