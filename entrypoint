@@ -12,7 +12,7 @@ initialize() {
 
 selfSignedCertificate() {
   . ssl-keygen
-  openssl dhparam 256 > tls/dhparam.pem
+  # openssl dhparam 2048 > tls/dhparam.pem
 }
 
 resolver() {
