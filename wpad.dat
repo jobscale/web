@@ -36,6 +36,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.onelogin.com") ||
       shExpMatch(host, "*.aws.amazon.zom") ||
+      shExpMatch(host, "login.microsoftonline.com") ||
       shExpMatch(host, "*.secure-place.*")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
