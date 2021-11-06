@@ -24,8 +24,12 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.os.jsx.jp:3128";
   }
 
+  if (shExpMatch(host, "*.appsync-api.*.*.com")) {
+    return "PROXY proxy.secure.jsx.jp:3128";
+  }
+
   if (shExpMatch(host, "*.google.co.jp") ||
-      shExpMatch(host, "*.google.com")) {
+    shExpMatch(host, "*.google.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
@@ -35,7 +39,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "*.aws.amazon.zom") ||
+      shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "login.microsoftonline.com") ||
       shExpMatch(host, "*.secure-place.*")) {
     return "PROXY proxy.in.jsx.jp:8080";
@@ -52,6 +56,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
       shExpMatch(host, "*.gvt1.com") ||
       shExpMatch(host, "i.socdm.com") ||
+      shExpMatch(host, "gcdn.2mdn.net") ||
       shExpMatch(host, "cdn.spotxcdn.com")) {
     return "PROXY proxy.jsx.jp:3128";
   }
