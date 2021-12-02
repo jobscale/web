@@ -54,10 +54,11 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
       shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
-      shExpMatch(host, "*.gvt1.com") ||
       shExpMatch(host, "i.socdm.com") ||
       shExpMatch(host, "gcdn.2mdn.net") ||
-      shExpMatch(host, "cdn.spotxcdn.com")) {
+      shExpMatch(host, "cdn.spotxcdn.com") ||
+      shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
+      shExpMatch(host, "*.gvt1.com")) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
