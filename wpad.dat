@@ -34,12 +34,11 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.compute.amazonaws.com") ||
-      shExpMatch(host, "*.elb.ap-northeast-1.amazonaws.com")) {
-    return "PROXY proxy.in.jsx.jp:8082";
+      shExpMatch(host, "*.aws.amazon.com")) {
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "login.microsoftonline.com") ||
       shExpMatch(host, "*.secure-place.*")) {
     return "PROXY proxy.in.jsx.jp:8080";
@@ -47,7 +46,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "api.*.*nic.com") ||
       shExpMatch(host, "*.*-api.*.*.com") ||
-      shExpMatch(host, "*.jp.*.*.tech")) {
+      shExpMatch(host, "*.elb.*.*.com") ||
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
