@@ -46,7 +46,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "api.*.*nic.com") ||
       shExpMatch(host, "*.*-api.*.*.com") ||
-      shExpMatch(host, "*.elb.*.*.com") ||
+      shExpMatch(host, "*.elb.*.*.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
