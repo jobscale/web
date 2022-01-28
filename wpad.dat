@@ -24,27 +24,21 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.os.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.appsync-api.*.*.com")) {
+  if (shExpMatch(host, "*.google.co.jp") ||
+    shExpMatch(host, "*.google.com")) {
     return "PROXY proxy.secure.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.google.co.jp") ||
-    shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "*.compute.amazonaws.com") ||
+  if (shExpMatch(host, "*.appsync-api.*.*.com") ||
+      shExpMatch(host, "*.compute.amazonaws.com") ||
       shExpMatch(host, "*.aws.amazon.com")) {
-    return "PROXY proxy.jsx.jp:3128";
+    return "PROXY proxy.secure.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
       shExpMatch(host, "login.microsoftonline.com") ||
-      shExpMatch(host, "*.secure-place.*")) {
-    return "PROXY proxy.in.jsx.jp:8080";
-  }
-
-  if (shExpMatch(host, "api.*.*nic.com") ||
+      shExpMatch(host, "*.secure-place.*") ||
+      shExpMatch(host, "api.*.*nic.com") ||
       shExpMatch(host, "*.*-api.*.*.com") ||
       shExpMatch(host, "*.elb.*.*.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
