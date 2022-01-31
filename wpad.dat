@@ -1,7 +1,10 @@
 function FindProxyForURL(url, host) {
-  if (shExpMatch(host, "*.internal") ||
-      shExpMatch(host, "proxy.*")) {
+  if (shExpMatch(host, "proxy.*")) {
     return "DIRECT";
+  }
+
+  if (shExpMatch(host, "*.internal")) {
+    return "SOCKS a.jsx.jp:3128";
   }
 
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
