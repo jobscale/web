@@ -1,1 +1,1 @@
-wpad.dat
+docs/wpad.dat
