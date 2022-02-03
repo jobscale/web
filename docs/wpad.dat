@@ -3,10 +3,6 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "*.internal")) {
-    return "SOCKS a.jsx.jp:3128";
-  }
-
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
       (isInNet(host, "10.0.0.0", "255.0.0.0") ||
        isInNet(host, "172.16.0.0", "255.240.0.0") ||
@@ -14,12 +10,22 @@ function FindProxyForURL(url, host) {
        isInNet(host, "127.0.0.0", "255.255.255.0"))) {
     return "DIRECT";
   }
-
   if (shExpMatch(host, "cdn.jsx.jp") ||
       shExpMatch(host, "*.cdn.jsx.jp") ||
       shExpMatch(host, "in.jsx.jp") ||
-      shExpMatch(host, "*.in.jsx.jp")) {
+      shExpMatch(host, "*.in.jsx.jp") ||
+      shExpMatch(host, "*os.jsx.jp") ||
+      shExpMatch(host, "*.os.jsx.jp") ||
+      shExpMatch(host, "*.secure.jsx.jp") ||
+      shExpMatch(host, "*.secure.jsx.jp")) {
     return "DIRECT";
+  }
+
+  // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
+  // no_proxy: cdn.jsx.jp, in.jsx.jp, os.jsx.jp, secure.jsx.jp
+
+  if (shExpMatch(host, "*.internal")) {
+    return "SOCKS proxy.a.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "jsx.jp") ||
