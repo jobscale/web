@@ -42,9 +42,10 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "login.microsoftonline.com") ||
       shExpMatch(host, "*.secure-place.*") ||
       shExpMatch(host, "api.*.*nic.com") ||
-      shExpMatch(host, "*.*-api.*.*.com") ||
-      shExpMatch(host, "*.elb.*.*.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+      shExpMatch(host, "*.*-api.*.*nic.com") ||
+      shExpMatch(host, "*.elb.*.*.com") ||
+      shExpMatch(host, "inet-ip.info")) {
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
@@ -55,7 +56,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "cdn.spotxcdn.com") ||
       shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
       shExpMatch(host, "*.gvt1.com")) {
-    return "PROXY proxy.a.jsx.jp:3128";
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   return "PROXY proxy.jsx.jp:3128; DIRECT";
