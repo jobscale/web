@@ -39,9 +39,12 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.appsync-api.*.*.com") ||
-      shExpMatch(host, "*.compute.amazonaws.com") ||
-      shExpMatch(host, "*.aws.amazon.com")) {
+      shExpMatch(host, "*.compute.amazonaws.com")) {
     return "PROXY proxy.os.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.aws.amazon.com")) {
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
