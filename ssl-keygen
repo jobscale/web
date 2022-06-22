@@ -40,8 +40,7 @@ conf() {
   echo 'DNS.7 = *.in.jsx.jp' >> rsa-x509.cnf
   echo 'DNS.8 = *.cn.jsx.jp' >> rsa-x509.cnf
   echo 'DNS.9 = *.sg.jsx.jp' >> rsa-x509.cnf
-  echo 'DNS.10 = *.secure.jsx.jp' >> rsa-x509.cnf
-  echo 'DNS.11 = *.ja.jsx.jp' >> rsa-x509.cnf
+  echo 'DNS.10 = *.io.jsx.jp' >> rsa-x509.cnf
 }
 
 rm -fr $directory
