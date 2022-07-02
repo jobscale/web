@@ -49,7 +49,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "login.microsoftonline.com") ||
+      // shExpMatch(host, "login.microsoftonline.com") ||
       shExpMatch(host, "*.secure-place.*") ||
       shExpMatch(host, "api.*.*nic.com") ||
       shExpMatch(host, "*.*-api.*.*nic.com") ||
