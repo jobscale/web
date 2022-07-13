@@ -48,10 +48,6 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "login.microsoftonline.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
-
   if (shExpMatch(host, "*.onelogin.com") ||
       shExpMatch(host, "*.secure-place.*") ||
       shExpMatch(host, "api.*.*nic.com") ||
