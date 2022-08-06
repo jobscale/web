@@ -43,6 +43,14 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
+  if (shExpMatch(host, "*.amazon.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.microsoft.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
   if (shExpMatch(host, "*.appsync-api.*.*.com") ||
       shExpMatch(host, "*.compute.amazonaws.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
