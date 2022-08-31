@@ -62,7 +62,8 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "*.*-api.*.*nic.com") ||
       shExpMatch(host, "*.elb.*.*.com") ||
       shExpMatch(host, "inet-ip.info")) {
-    return "PROXY proxy.jsx.jp:3128";
+    // return "PROXY proxy.jsx.jp:3128";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
