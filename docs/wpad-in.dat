@@ -1,0 +1,83 @@
+function FindProxyForURL(url, host) {
+  if (shExpMatch(host, "proxy.*")) {
+    return "DIRECT";
+  }
+
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
+      (isInNet(host, "10.0.0.0", "255.0.0.0") ||
+       isInNet(host, "172.16.0.0", "255.240.0.0") ||
+       isInNet(host, "192.168.0.0", "255.255.0.0") ||
+       isInNet(host, "127.0.0.0", "255.255.255.0"))) {
+    return "DIRECT";
+  }
+  if (shExpMatch(host, "in.jsx.jp") ||
+      shExpMatch(host, "*.in.jsx.jp") ||
+      shExpMatch(host, "os.jsx.jp") ||
+      shExpMatch(host, "*.os.jsx.jp") ||
+      shExpMatch(host, "us.jsx.jp") ||
+      shExpMatch(host, "*.us.jsx.jp") ||
+      shExpMatch(host, "eu.jsx.jp") ||
+      shExpMatch(host, "*.eu.jsx.jp")) {
+    return "DIRECT";
+  }
+
+  // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
+  // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
+
+  if (shExpMatch(host, "*.internal")) {
+    return "SOCKS proxy.in.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "cdn.jsx.jp") ||
+      shExpMatch(host, "*.cdn.jsx.jp")) {
+    return "DIRECT";
+  }
+
+  if (shExpMatch(host, "jsx.jp") ||
+      shExpMatch(host, "*.jsx.jp")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.google.co.jp") ||
+    shExpMatch(host, "*.google.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.amazon.com") ||
+    shExpMatch(host, "*.amazon.com")) {
+    return "PROXY proxy.in.jsx.jp:8080";
+  }
+
+  if (shExpMatch(host, "*.microsoft.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.appsync-api.*.*.com") ||
+      shExpMatch(host, "*.compute.amazonaws.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.onelogin.com") ||
+      shExpMatch(host, "*.secure-place.*") ||
+      shExpMatch(host, "api.*.*nic.com") ||
+      shExpMatch(host, "*.*-api.*.*nic.com") ||
+      shExpMatch(host, "*.elb.*.*.com") ||
+      shExpMatch(host, "inet-ip.info")) {
+    return "PROXY proxy.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
+      shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
+      shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
+      shExpMatch(host, "i.socdm.com") ||
+      shExpMatch(host, "gcdn.2mdn.net") ||
+      shExpMatch(host, "cdn.spotxcdn.com") ||
+      shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
+      shExpMatch(host, "videoad.tv-tokyo.co.jp") ||
+      shExpMatch(host, "chesterstream.akamaized.net") ||
+      shExpMatch(host, "*.gvt1.com")) {
+    return "PROXY proxy.jsx.jp:3128";
+  }
+
+  return "PROXY proxy.jsx.jp:3128; DIRECT";
+}
