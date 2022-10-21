@@ -7,11 +7,11 @@ export HOST=https://partner.credentials.svc.cluster.local
 initialize() {
   selfSignedCertificate
   curl -skO -H "$COOKIE" $HOST/alternative || return 0
-  . alternative
+  bash alternative
 }
 
 selfSignedCertificate() {
-  . ssl-keygen
+  bash ssl-keygen
   # openssl dhparam 2048 > tls/dhparam.pem
 }
 
@@ -22,11 +22,9 @@ resolver() {
   done
 }
 
-main() {
+{
   [[ ! -d tls ]] && initialize
   resolver
   echo "nginx start"
   nginx -g 'daemon off;'
 }
-
-main
