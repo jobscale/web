@@ -3,15 +3,15 @@ set -eu
 
 {
   days=$(( 365 * 3 + 1 ))
-  directory=tls
   country=JP
   state=Osaka
   locality=Osaka
   organizational=jsx.jp
-  unit=CE
+  unit=Creators
   common=jsx.jp,*.jsx.jp,*.jp.jsx.jp,*.os.jsx.jp,*.us.jsx.jp,*.eu.jsx.jp,*.in.jsx.jp
   fname=wildcard.jsx.jp
   subj="/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common"
+  directory=tls
 }
 
 conf() {
@@ -54,27 +54,17 @@ x509() {
   conf
   openssl req -new -newkey rsa:4096 -days $days \
   -nodes -x509 -config $(pwd)/rsa-x509.cnf \
-  -keyout $directory/$fname.key \
-  -out $directory/$fname.cert
-}
-
-rsa() {
-  openssl req -new -newkey rsa:4096 -days $days \
-  -nodes -x509 -subj $subj \
-  -keyout $directory/$fname.key \
-  -out $directory/$fname.cert
-}
-
-ec() {
-  openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -days $days \
-  -nodes -x509 -subj $subj \
-  -keyout $directory/$fname.key \
-  -out $directory/$fname.cert
+  -keyout $fname.key \
+  -out $fname.crt
 }
 
 {
+  random
   rm -fr $directory
   mkdir $directory
-  random
+  cd $directory
   x509
+
+  ls -lh *{key,crt}
+  cd - > /dev/null
 }
