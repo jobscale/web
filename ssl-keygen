@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 set -eu
 
-directory=tls
-country=JP
-state=Osaka
-locality=Osaka
-organizational=jsx.jp
-unit=CE
-common=jsx.jp,*.jsx.jp,*.jp.jsx.jp,*.os.jsx.jp,*.us.jsx.jp,*.eu.jsx.jp,*.in.jsx.jp
-fname=wildcard.jsx.jp
-days=3656
+{
+  days=$(( 365 * 3 + 1 ))
+  directory=tls
+  country=JP
+  state=Osaka
+  locality=Osaka
+  organizational=jsx.jp
+  unit=CE
+  common=jsx.jp,*.jsx.jp,*.jp.jsx.jp,*.os.jsx.jp,*.us.jsx.jp,*.eu.jsx.jp,*.in.jsx.jp
+  fname=wildcard.jsx.jp
+  subj="/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common"
+}
 
 conf() {
   > rsa-x509.cnf
   echo '[ req ]' >> rsa-x509.cnf
-  echo 'default_bits        = 4096' >> rsa-x509.cnf
-  echo 'default_md          = sha256' >> rsa-x509.cnf
-  echo 'distinguished_name  = subject' >> rsa-x509.cnf
-  echo 'string_mask         = utf8only' >> rsa-x509.cnf
-  echo 'prompt              = no' >> rsa-x509.cnf
-  echo 'encrypt_key         = no' >> rsa-x509.cnf
+  echo 'default_bits           = 4096' >> rsa-x509.cnf
+  echo 'default_md             = sha256' >> rsa-x509.cnf
+  echo 'distinguished_name     = subject' >> rsa-x509.cnf
+  echo 'string_mask            = utf8only' >> rsa-x509.cnf
+  echo 'prompt                 = no' >> rsa-x509.cnf
+  echo 'encrypt_key            = no' >> rsa-x509.cnf
   echo '' >> rsa-x509.cnf
   echo '[ subject ]' >> rsa-x509.cnf
   echo 'countryName            = JP' >> rsa-x509.cnf
@@ -43,50 +46,35 @@ conf() {
   echo 'DNS.10 = *.io.jsx.jp' >> rsa-x509.cnf
 }
 
-rm -fr $directory
-mkdir $directory
-
 random() {
   head -c 8 /dev/random | od -x -An | sed -e 's/ //g' | tee ~/.rnd
 }
 
 x509() {
   conf
-  openssl req \
-    -new \
-    -newkey rsa:4096 \
-    -days $days \
-    -nodes \
-    -x509 \
-    -config $(pwd)/rsa-x509.cnf \
-    -keyout $directory/$fname.key \
-    -out $directory/$fname.cert
+  openssl req -new -newkey rsa:4096 -days $days \
+  -nodes -x509 -config $(pwd)/rsa-x509.cnf \
+  -keyout $directory/$fname.key \
+  -out $directory/$fname.cert
 }
 
 rsa() {
-  openssl req \
-    -new \
-    -newkey rsa:4096 \
-    -days $days \
-    -nodes \
-    -x509 \
-    -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
-    -keyout $directory/$fname.key \
-    -out $directory/$fname.cert
+  openssl req -new -newkey rsa:4096 -days $days \
+  -nodes -x509 -subj $subj \
+  -keyout $directory/$fname.key \
+  -out $directory/$fname.cert
 }
 
 ec() {
-  openssl req \
-    -new \
-    -newkey ec \
-    -pkeyopt ec_paramgen_curve:prime256v1 \
-    -days $days \
-    -nodes \
-    -x509 \
-    -subj "/C=$country/ST=$state/L=$locality/O=$organizational/CN=$common" \
-    -keyout $directory/$fname.key \
-    -out $directory/$fname.cert
+  openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -days $days \
+  -nodes -x509 -subj $subj \
+  -keyout $directory/$fname.key \
+  -out $directory/$fname.cert
 }
 
-random
-x509
+{
+  rm -fr $directory
+  mkdir $directory
+  random
+  x509
+}
