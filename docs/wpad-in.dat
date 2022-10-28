@@ -61,6 +61,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "*.secure-place.*") ||
       shExpMatch(host, "api.*.*nic.com") ||
       shExpMatch(host, "*.*-api.*.*nic.com") ||
+      shExpMatch(host, "*.jp.*nic.com") ||
       shExpMatch(host, "*.elb.*.*.com") ||
       shExpMatch(host, "inet-ip.info")) {
     return "PROXY proxy.jsx.jp:3128";
