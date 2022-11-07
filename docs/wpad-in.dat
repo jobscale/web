@@ -49,7 +49,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.microsoft.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
+    return "PROXY proxy.red.jsx.jp:34128";
   }
 
   if (shExpMatch(host, "*.appsync-api.*.*.com") ||
