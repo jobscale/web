@@ -63,7 +63,8 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "*.*-api.*.*nic.com") ||
       shExpMatch(host, "*.jp.*nic.com") ||
       shExpMatch(host, "*.elb.*.*.com") ||
-      shExpMatch(host, "inet-ip.info")) {
+      shExpMatch(host, "inet-ip.info") ||
+      shExpMatch(host, "*-portal.new*.next*.jp")) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
