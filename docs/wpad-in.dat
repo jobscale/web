@@ -44,7 +44,9 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.amazon.com") ||
-    shExpMatch(host, "*.amazon.com")) {
+    shExpMatch(host, "*.amazon.com") ||
+    shExpMatch(host, "*.panasonic.co.jp") ||
+    shExpMatch(host, "*.panasonic.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
@@ -58,10 +60,6 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "*.secure-place.*") ||
-      shExpMatch(host, "api.*.*nic.com") ||
-      shExpMatch(host, "*.*-api.*.*nic.com") ||
-      shExpMatch(host, "*.jp.*nic.com") ||
       shExpMatch(host, "*.elb.*.*.com") ||
       shExpMatch(host, "inet-ip.info") ||
       shExpMatch(host, "*-portal.new*.next*.jp")) {
