@@ -24,8 +24,7 @@ function FindProxyForURL(url, host) {
   // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
   // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
 
-  if (shExpMatch(host, "*.internal") ||
-      shExpMatch(host, ".eww.panasonic.com")) {
+  if (shExpMatch(host, "*.internal")) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
