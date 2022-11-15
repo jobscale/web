@@ -39,7 +39,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
-    shExpMatch(host, "*.google.com")) {
+      shExpMatch(host, "*.google.com")) {
     return "PROXY proxy.os.jsx.jp:3128";
   }
 

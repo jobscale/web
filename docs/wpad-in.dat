@@ -24,7 +24,8 @@ function FindProxyForURL(url, host) {
   // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
   // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
 
-  if (shExpMatch(host, "*.internal")) {
+  if (shExpMatch(host, "*.internal") ||
+      shExpMatch(host, ".eww.panasonic.com")) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
@@ -39,14 +40,14 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
-    shExpMatch(host, "*.google.com")) {
+      shExpMatch(host, "*.google.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.amazon.com") ||
-    shExpMatch(host, "*.amazon.com") ||
-    shExpMatch(host, "*.panasonic.co.jp") ||
-    shExpMatch(host, "*.panasonic.com")) {
+      shExpMatch(host, "*.amazon.com") ||
+      shExpMatch(host, "*.panasonic.co.jp") ||
+      shExpMatch(host, "*.panasonic.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
