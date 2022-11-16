@@ -40,11 +40,11 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.google.co.jp") ||
       shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.jsx.jp:3128";
+    return "PROXY proxy.red.jsx.jp:34128";
   }
 
   if (shExpMatch(host, "*.amazon.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
+    return "PROXY proxy.red.jsx.jp:34128";
   }
 
   if (shExpMatch(host, "*.microsoft.com")) {
