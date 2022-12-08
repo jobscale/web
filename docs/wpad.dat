@@ -33,8 +33,16 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
+  if (shExpMatch(host, "jsx.jp")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "os.jsx.jp") ||
+      shExpMatch(host, "*.os.jsx.jp")) {
+    return "PROXY proxy.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
@@ -47,22 +55,14 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.red.jsx.jp:34128";
   }
 
-  if (shExpMatch(host, "*.microsoft.com")) {
+  if (shExpMatch(host, "*.microsoft.com") ||
+      shExpMatch(host, "*.microsoftonline.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.appsync-api.*.*.com") ||
       shExpMatch(host, "*.compute.amazonaws.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "*.secure-place.*") ||
-      shExpMatch(host, "api.*.*nic.com") ||
-      shExpMatch(host, "*.*-api.*.*nic.com") ||
-      shExpMatch(host, "*.elb.*.*.com") ||
-      shExpMatch(host, "inet-ip.info")) {
-    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||

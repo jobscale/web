@@ -33,8 +33,16 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
+  if (shExpMatch(host, "jsx.jp")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "os.jsx.jp") ||
+      shExpMatch(host, "*.os.jsx.jp")) {
+    return "PROXY proxy.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
@@ -43,12 +51,13 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.amazon.com") ||
+  if (shExpMatch(host, "ifconfig.io") ||
       shExpMatch(host, "*.amazon.com") ||
       shExpMatch(host, "*.panasonic.co.jp") ||
       shExpMatch(host, "*.panasonic.com") ||
       shExpMatch(host, "*.cloudfront.net") ||
-      shExpMatch(host, "*.microsoft*.com")) {
+      shExpMatch(host, "*.microsoft.com") ||
+      shExpMatch(host, "*.microsoftonline.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
@@ -59,7 +68,6 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.onelogin.com") ||
       shExpMatch(host, "*.elb.*.*.com") ||
-      shExpMatch(host, "inet-ip.info") ||
       shExpMatch(host, "*-portal.new*.next*.jp")) {
     return "PROXY proxy.jsx.jp:3128";
   }
