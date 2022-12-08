@@ -10,16 +10,6 @@ function FindProxyForURL(url, host) {
        isInNet(host, "127.0.0.0", "255.255.255.0"))) {
     return "DIRECT";
   }
-  if (shExpMatch(host, "in.jsx.jp") ||
-      shExpMatch(host, "*.in.jsx.jp") ||
-      shExpMatch(host, "os.jsx.jp") ||
-      shExpMatch(host, "*.os.jsx.jp") ||
-      shExpMatch(host, "us.jsx.jp") ||
-      shExpMatch(host, "*.us.jsx.jp") ||
-      shExpMatch(host, "eu.jsx.jp") ||
-      shExpMatch(host, "*.eu.jsx.jp")) {
-    return "DIRECT";
-  }
 
   // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
   // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
