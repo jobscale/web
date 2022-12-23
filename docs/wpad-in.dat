@@ -43,17 +43,13 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "ifconfig.io") ||
       shExpMatch(host, "*.amazon.com") ||
+      shExpMatch(host, "*.amazonaws.com") ||
       shExpMatch(host, "*.panasonic.co.jp") ||
       shExpMatch(host, "*.panasonic.com") ||
       shExpMatch(host, "*.cloudfront.net") ||
       shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
-  }
-
-  if (shExpMatch(host, "*.appsync-api.*.*.com") ||
-      shExpMatch(host, "*.compute.amazonaws.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.onelogin.com") ||
