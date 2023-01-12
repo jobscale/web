@@ -36,13 +36,8 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.google.co.jp") ||
-      shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
-
   if (shExpMatch(host, "ifconfig.io") ||
-      shExpMatch(host, "*.amazon.com") ||
+      shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com") ||
       shExpMatch(host, "*.panasonic.co.jp") ||
       shExpMatch(host, "*.panasonic.com") ||
@@ -52,10 +47,9 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
-  if (shExpMatch(host, "*.onelogin.com") ||
-      shExpMatch(host, "*.elb.*.*.com") ||
-      shExpMatch(host, "*-portal.new*.next*.jp")) {
-    return "PROXY proxy.jsx.jp:3128";
+  if (shExpMatch(host, "*.google.co.jp") ||
+      shExpMatch(host, "*.google.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
