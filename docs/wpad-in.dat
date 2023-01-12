@@ -23,16 +23,13 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
-  if (shExpMatch(host, "jsx.jp")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
-
   if (shExpMatch(host, "os.jsx.jp") ||
       shExpMatch(host, "*.os.jsx.jp")) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.jsx.jp")) {
+  if (shExpMatch(host, "jsx.jp") ||
+      shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
