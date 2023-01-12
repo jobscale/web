@@ -39,6 +39,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "*.panasonic.co.jp") ||
       shExpMatch(host, "*.panasonic.com") ||
       shExpMatch(host, "*.cloudfront.net") ||
+      shExpMatch(host, "*.office.com") ||
       shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
