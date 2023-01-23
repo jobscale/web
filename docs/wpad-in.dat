@@ -34,6 +34,8 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "ifconfig.io") ||
+      shExpMatch(host, "nicobo.jp") ||
+      shExpMatch(host, "*.nicobo.jp") ||
       shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com") ||
       shExpMatch(host, "*.panasonic.co.jp") ||
