@@ -33,9 +33,12 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
+  if (shExpMatch(host, "nicobo.jp") ||
+      shExpMatch(host, "*.nicobo.jp")) {
+    return 'PROXY proxy.jp.jsx.jp:443';
+  }
+
   if (shExpMatch(host, "ifconfig.io") ||
-      shExpMatch(host, "nicobo.jp") ||
-      shExpMatch(host, "*.nicobo.jp") ||
       shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com") ||
       shExpMatch(host, "*.panasonic.co.jp") ||
