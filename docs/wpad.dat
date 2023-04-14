@@ -68,7 +68,8 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
       shExpMatch(host, "videoad.tv-tokyo.co.jp") ||
       shExpMatch(host, "chesterstream.akamaized.net") ||
-      shExpMatch(host, "*.gvt1.com")) {
+      shExpMatch(host, "*.gvt1.com") ||
+      shExpMatch(host, "*.adsrvr.org")) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
