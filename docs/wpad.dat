@@ -51,12 +51,12 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.amazon.co.jp") ||
       shExpMatch(host, "*.amazon.com")) {
-    return "PROXY proxy.jsx.jp:34128";
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
       shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.jsx.jp:34128";
+    return "PROXY proxy.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
