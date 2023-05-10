@@ -74,5 +74,5 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
-  return "PROXY proxy.jsx.jp:3128; DIRECT";
+  return "PROXY proxy.asia.jsx.jp:3128; DIRECT";
 }
