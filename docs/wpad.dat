@@ -30,6 +30,10 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
+  if (shExpMatch(host, "txcom-ad.s3-ap-northeast-1.amazonaws.com")) {
+    return "DENY";
+  }
+
   if (shExpMatch(host, "*.cloudfront.net")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
