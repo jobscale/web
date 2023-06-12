@@ -34,6 +34,10 @@ function FindProxyForURL(url, host) {
     return "DENY";
   }
 
+  if (shExpMatch(host, "*.value-domain.com")) {
+    return "PROXY proxy.us.jsx.jp:3128";
+  }
+
   if (shExpMatch(host, "*.cloudfront.net")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
