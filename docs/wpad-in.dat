@@ -47,17 +47,17 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.in.jsx.jp:3128";
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com")) {
-    return "PROXY proxy.in.jsx.jp:3128";
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.amazon.co.jp") ||
       shExpMatch(host, "*.amazon.com")) {
-    return "PROXY proxy.in.jsx.jp:3128";
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
