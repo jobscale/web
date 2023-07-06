@@ -25,11 +25,6 @@ function FindProxyForURL(url, host) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "os.jsx.jp") ||
-      shExpMatch(host, "*.os.jsx.jp")) {
-    return "PROXY proxy.jsx.jp:3128";
-  }
-
   if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
     return "PROXY proxy.us.jsx.jp:3128";
@@ -40,34 +35,34 @@ function FindProxyForURL(url, host) {
     return 'PROXY proxy.jp.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "ifconfig.io") ||
-      shExpMatch(host, "*.aws.amazon.com") ||
-      shExpMatch(host, "*.amazonaws.com") ||
-      shExpMatch(host, "*.panasonic.co.jp") ||
-      shExpMatch(host, "*.panasonic.com") ||
-      shExpMatch(host, "*.cloudfront.net") ||
-      shExpMatch(host, "*.office.com") ||
-      shExpMatch(host, "*.microsoft.com") ||
-      shExpMatch(host, "*.microsoftonline.com")) {
+  if (shExpMatch(host, "*.panasonic.co.jp") ||
+      shExpMatch(host, "*.panasonic.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
+  }
+
+  if (shExpMatch(host, "*.cloudfront.net")) {
+    return "PROXY proxy.in.jsx.jp:8080";
+  }
+
+  if (shExpMatch(host, "*.microsoft.com") ||
+      shExpMatch(host, "*.microsoftonline.com") ||
+      shExpMatch(host, "*.office.com")) {
+    return "PROXY proxy.in.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.aws.amazon.com") ||
+      shExpMatch(host, "*.amazonaws.com")) {
+    return "PROXY proxy.in.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "*.amazon.co.jp") ||
+      shExpMatch(host, "*.amazon.com")) {
+    return "PROXY proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
       shExpMatch(host, "*.google.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
-      shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
-      shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
-      shExpMatch(host, "i.socdm.com") ||
-      shExpMatch(host, "gcdn.2mdn.net") ||
-      shExpMatch(host, "cdn.spotxcdn.com") ||
-      shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
-      shExpMatch(host, "videoad.tv-tokyo.co.jp") ||
-      shExpMatch(host, "chesterstream.akamaized.net") ||
-      shExpMatch(host, "*.gvt1.com")) {
-    return "PROXY proxy.jsx.jp:3128";
   }
 
   return "PROXY proxy.jsx.jp:3128; DIRECT";

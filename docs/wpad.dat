@@ -43,7 +43,8 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.microsoft.com") ||
-      shExpMatch(host, "*.microsoftonline.com")) {
+      shExpMatch(host, "*.microsoftonline.com") ||
+      shExpMatch(host, "*.office.com")) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
