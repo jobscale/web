@@ -65,6 +65,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
       shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
+      shExpMatch(host, "cu-cdn-ad-v3.ntv.co.jp") ||
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
       shExpMatch(host, "i.socdm.com") ||
       shExpMatch(host, "gcdn.2mdn.net") ||
