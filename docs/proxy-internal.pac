@@ -47,7 +47,8 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
+    # return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
