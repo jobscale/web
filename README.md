@@ -1,6 +1,6 @@
 ### example deploy
 ```
-git clone https://github.com/jobscale/web.git
+git clone git@github.com:jobscale/web.git
 cd web
 main() {
   docker build . -t local/web
