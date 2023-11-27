@@ -3,6 +3,10 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
   }
 
+  if (isInNet(host, "10.0.0.0", "255.0.0.0")) {
+    return "SOCKS proxy.in.jsx.jp:11023";
+  }
+
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
       (isInNet(host, "10.0.0.0", "255.0.0.0") ||
        isInNet(host, "172.16.0.0", "255.240.0.0") ||
@@ -23,6 +27,14 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.internal")) {
     return "SOCKS proxy.in.jsx.jp:3128";
+  }
+
+  if (shExpMatch(host, "www-*.*.next*ure.jp")) {
+    return "PROXY proxy.in.jsx.jp:8080";
+  }
+
+  if (shExpMatch(host, "*.next*ure.jp")) {
+    return "SOCKS proxy.in.jsx.jp:11023";
   }
 
   if (shExpMatch(host, "jsx.jp") ||
@@ -48,7 +60,6 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
     return "SOCKS proxy.in.jsx.jp:3128";
-    # return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
