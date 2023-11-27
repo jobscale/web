@@ -25,7 +25,11 @@ function FindProxyForURL(url, host) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "*.nextructure.jp")) {
+  if (shExpMatch(host, "www-*.*.next*ure.jp")) {
+    return "PROXY proxy.in.jsx.jp:8080";
+  }
+
+  if (shExpMatch(host, "*.next*ure.jp")) {
     return "SOCKS proxy.in.jsx.jp:11023";
   }
 
