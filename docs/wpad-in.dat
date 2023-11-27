@@ -42,13 +42,13 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.us.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "nicobo.jp") ||
-      shExpMatch(host, "*.nicobo.jp")) {
+  if (shExpMatch(host, "ni*bo.jp") ||
+      shExpMatch(host, "*.ni*bo.jp")) {
     return 'PROXY proxy.jp.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.panasonic.co.jp") ||
-      shExpMatch(host, "*.panasonic.com")) {
+  if (shExpMatch(host, "*.pan*sonic.co.jp") ||
+      shExpMatch(host, "*.pan*sonic.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
