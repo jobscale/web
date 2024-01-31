@@ -25,11 +25,6 @@ function FindProxyForURL(url, host) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
-
   if (shExpMatch(host, "txcom-ad.s3-ap-northeast-1.amazonaws.com")) {
     return "DENY";
   }
@@ -38,20 +33,25 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.jp.jsx.jp:443";
   }
 
-  if (shExpMatch(host, "*.cloudfront.net")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
+  // if (shExpMatch(host, "jsx.jp") ||
+  //     shExpMatch(host, "*.jsx.jp")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
 
-  if (shExpMatch(host, "*.microsoft.com") ||
-      shExpMatch(host, "*.microsoftonline.com") ||
-      shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
+  // if (shExpMatch(host, "*.cloudfront.net")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
 
-  if (shExpMatch(host, "*.aws.amazon.com") ||
-      shExpMatch(host, "*.amazonaws.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
+  // if (shExpMatch(host, "*.microsoft.com") ||
+  //     shExpMatch(host, "*.microsoftonline.com") ||
+  //     shExpMatch(host, "*.office.com")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
+
+  // if (shExpMatch(host, "*.aws.amazon.com") ||
+  //     shExpMatch(host, "*.amazonaws.com")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
 
   if (shExpMatch(host, "*.amazon.co.jp") ||
       shExpMatch(host, "*.amazon.com")) {

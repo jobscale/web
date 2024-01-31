@@ -37,10 +37,15 @@ function FindProxyForURL(url, host) {
     return "SOCKS proxy.in.jsx.jp:11023";
   }
 
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.us.jsx.jp:3128";
-  }
+  // if (shExpMatch(host, "jsx.jp") ||
+  //     shExpMatch(host, "*.jsx.jp")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
+
+  // if (shExpMatch(host, "*.google.co.jp") ||
+  //     shExpMatch(host, "*.google.com")) {
+  //   return "PROXY proxy.us.jsx.jp:3128";
+  // }
 
   if (shExpMatch(host, "ni*bo.jp") ||
       shExpMatch(host, "*.ni*bo.jp")) {
@@ -70,11 +75,6 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "*.amazon.co.jp") ||
       shExpMatch(host, "*.amazon.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
-  }
-
-  if (shExpMatch(host, "*.google.co.jp") ||
-      shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.us.jsx.jp:3128";
   }
 
   return "PROXY proxy.jsx.jp:3128; DIRECT";
