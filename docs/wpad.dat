@@ -42,11 +42,11 @@ function FindProxyForURL(url, host) {
   //   return "PROXY proxy.us.jsx.jp:3128";
   // }
 
-  // if (shExpMatch(host, "*.microsoft.com") ||
-  //     shExpMatch(host, "*.microsoftonline.com") ||
-  //     shExpMatch(host, "*.office.com")) {
-  //   return "PROXY proxy.us.jsx.jp:3128";
-  // }
+  if (shExpMatch(host, "*.microsoft.com") ||
+      shExpMatch(host, "*.microsoftonline.com") ||
+      shExpMatch(host, "*.office.com")) {
+    return "DIRECT; PROXY proxy.us.jsx.jp:3128";
+  }
 
   // if (shExpMatch(host, "*.aws.amazon.com") ||
   //     shExpMatch(host, "*.amazonaws.com")) {
