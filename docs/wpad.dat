@@ -35,7 +35,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.us.jsx.jp:3128";
+    return "DIRECT";
   }
 
   if (shExpMatch(host, "*.cloudfront.net")) {
