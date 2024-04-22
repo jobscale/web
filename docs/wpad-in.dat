@@ -17,6 +17,8 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "cdn.jsx.jp") ||
       shExpMatch(host, "*.cdn.jsx.jp") ||
+      shExpMatch(host, "*.proxy.jsx.jp") ||
+      shExpMatch(host, "*.x.jsx.jp") ||
       shExpMatch(host, "*.nip.io") ||
       shExpMatch(host, "*.xip.io")) {
     return "DIRECT";
