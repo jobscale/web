@@ -70,6 +70,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "cdncuad.ktv.jp") ||
       shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
       shExpMatch(host, "i.socdm.com") ||
+      shExpMatch(host, "s.socdm.com") ||
       shExpMatch(host, "gcdn.2mdn.net") ||
       shExpMatch(host, "cdn.spotxcdn.com") ||
       shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
