@@ -53,13 +53,18 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.jp.jsx.jp:443";
   }
 
-  if (shExpMatch(host, "*.measurement-lab.org")) {
-    return "PROXY proxy.in.jsx.jp:8080";
-  }
-
   if (shExpMatch(host, "ni*bo.jp") ||
       shExpMatch(host, "*.ni*bo.jp")) {
     return 'PROXY proxy.jp.jsx.jp:443';
+  }
+
+  if (shExpMatch(host, "*.aws.amazon.com") ||
+      shExpMatch(host, "*.amazonaws.com")) {
+    return 'PROXY proxy.jp.jsx.jp:443';
+  }
+
+  if (shExpMatch(host, "*.measurement-lab.org")) {
+    return "PROXY proxy.in.jsx.jp:8080";
   }
 
   if (shExpMatch(host, "*.pan*sonic.co.jp") ||
@@ -74,11 +79,6 @@ function FindProxyForURL(url, host) {
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
-  }
-
-  if (shExpMatch(host, "*.aws.amazon.com") ||
-      shExpMatch(host, "*.amazonaws.com")) {
     return "PROXY proxy.in.jsx.jp:8080";
   }
 
