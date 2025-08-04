@@ -58,6 +58,10 @@ function FindProxyForURL(url, host) {
     return 'PROXY proxy.jp.jsx.jp:443';
   }
 
+  if (shExpMatch(host, "*.s3-ap-northeast-1.amazonaws.com")) {
+    return "PROXY proxy.in.jsx.jp:8080";
+  }
+
   if (shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com")) {
     return 'PROXY proxy.jp.jsx.jp:443';
