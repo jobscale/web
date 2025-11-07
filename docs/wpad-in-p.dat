@@ -32,7 +32,7 @@ function FindProxyForURL(url, host) {
   // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
 
   if (shExpMatch(host, "*.internal")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
+    return "SOCKS proxy.in.jsx.jp:3128; DIRECT";
   }
 
   if (shExpMatch(host, "www-*.*.next*ure.jp")) {
