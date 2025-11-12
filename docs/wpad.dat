@@ -25,6 +25,10 @@ function FindProxyForURL(url, host) {
     return "SOCKS proxy.in.jsx.jp:3128";
   }
 
+  if (shExpMatch(host, "*.quest")) {
+    return "DIRECT";
+  }
+
   if (shExpMatch(host, "txcom-ad.s3-ap-northeast-1.amazonaws.com")) {
     return "DENY";
   }
