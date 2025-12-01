@@ -448,7 +448,7 @@ window.addEventListener('load', () => {
   const winLevel = () => {
     game.classList.add('game--win');
     document.addEventListener('keydown', removeEvent);
-    removeArrowsEvents();
+    removeArrowsEvents(); // eslint-disable-line no-use-before-define
     setTimeout(() => {
       game.innerHTML = '';
       game.classList.remove('game--win');
@@ -457,20 +457,20 @@ window.addEventListener('load', () => {
       buildLevel();
       positionPlayer();
       document.removeEventListener('keydown', removeEvent);
-      registerArrows();
+      registerArrows(); // eslint-disable-line no-use-before-define
     }, 500);
   };
 
   const loseLevel = () => {
     game.classList.add('game--lose');
     document.addEventListener('keydown', removeEvent);
-    removeArrowsEvents();
+    removeArrowsEvents(); // eslint-disable-line no-use-before-define
     setTimeout(() => {
       game.classList.remove('game--lose');
       position = [...initialPosition];
       positionPlayer();
       document.removeEventListener('keydown', removeEvent);
-      registerArrows();
+      registerArrows(); // eslint-disable-line no-use-before-define
     }, 500);
   };
 
@@ -479,9 +479,10 @@ window.addEventListener('load', () => {
       if (level === puzzles.length - 1) {
         // If this was the last level: win the game
         const s = (Date.now() - start) / 1000;
-        timer.innerHTML = `${parseInt(s / 60 / 60)}h ${parseInt(
-          s / 60 % 60,
-        )}m ${parseInt(s % 60)}s`;
+        timer.innerHTML = `${
+          parseInt(s / 60 / 60, 10)}h ${
+          parseInt(s / 60 % 60, 10)}m ${
+          parseInt(s % 60, 10)}s`;
         game.classList.add('game--final-win');
       } else {
         winLevel();

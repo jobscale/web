@@ -36,7 +36,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.value-domain.com")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "jsx.jp") ||
@@ -45,22 +45,22 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.cloudfront.net")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "copilot.microsoft.com")) {
-    return "DIRECT";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "*.amazon.co.jp") ||

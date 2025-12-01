@@ -45,17 +45,17 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
       shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "ni*bo.jp") ||
       shExpMatch(host, "*.ni*bo.jp")) {
-    return 'PROXY proxy.jp.jsx.jp:443';
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
   if (shExpMatch(host, "*.s3-ap-northeast-1.amazonaws.com")) {
@@ -64,7 +64,7 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com")) {
-    return 'PROXY proxy.jp.jsx.jp:443';
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
   if (shExpMatch(host, "*.measurement-lab.org")) {
