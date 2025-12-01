@@ -48,6 +48,10 @@ function FindProxyForURL(url, host) {
     return "PROXY proxy.jp.jsx.jp:443";
   }
 
+  if (shExpMatch(host, "copilot.microsoft.com")) {
+    return "DIRECT";
+  }
+
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
