@@ -90,6 +90,7 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "video-assets.mathtag.com") ||
       shExpMatch(host, "v.adsrvr.org") ||
       shExpMatch(host, "redirector.gvt1.com") ||
+      shExpMatch(host, "ak-act.pubmatic.com") ||
       shExpMatch(host, "m.ads.tver.jp")) {
     return "PROXY proxy.jsx.jp:3128";
   }
