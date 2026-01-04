@@ -36,7 +36,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "*.value-domain.com")) {
-    return "PROXY proxy.os.jsx.jp:443";
+    return "PROXY proxy.jsx.jp:3129";
   }
 
   if (shExpMatch(host, "jsx.jp") ||
