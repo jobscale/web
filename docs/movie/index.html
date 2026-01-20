@@ -74,8 +74,31 @@
         または最新のブラウザをご利用ください。
       </p>
     </video>
+    <hr>
+    <div>synchro play</div>
+    <hr>
+    <button id="synchro-play">Synchro Play</button>
   </div>
 
+  <script>
+    const action = () => {
+      const videos = [...document.querySelectorAll('video')];
+      Promise.all(videos.map(video => {
+        return new Promise(resolve => {
+          if (video.readyState >= 2) resolve();
+          else video.addEventListener('loadeddata', resolve, { once: true });
+        });
+      }))
+      .then(() => {
+        videos.forEach(v => {
+          v.pause();
+          v.currentTime = 0;
+        });
+        videos.forEach(v => v.play());
+      });
+    };
+    document.querySelector('#synchro-play').addEventListener('click', action);
+  </script>
   <!-- Video.js ライブラリ -->
   <script defer src="video.min.js"></script>
 </body>
