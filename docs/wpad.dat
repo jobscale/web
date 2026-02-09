@@ -91,7 +91,8 @@ function FindProxyForURL(url, host) {
       shExpMatch(host, "v.adsrvr.org") ||
       shExpMatch(host, "redirector.gvt1.com") ||
       shExpMatch(host, "ak-act.pubmatic.com") ||
-      shExpMatch(host, "m.ads.tver.jp")) {
+      shExpMatch(host, "m.ads.tver.jp") ||
+      shExpMatch(host, "*googleads.*")) {
     return "PROXY proxy.jsx.jp:3128";
   }
 
