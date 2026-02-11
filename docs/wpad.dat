@@ -1,100 +1,112 @@
+function someMatch(cb, host, list) {
+  for (var i = 0; i < list.length; i++) {
+    if (cb(host, list[i])) return true;
+  }
+  return false;
+}
+
 function FindProxyForURL(url, host) {
-  if (shExpMatch(host, "proxy.*") ||
-    shExpMatch(host, "cdn.*")) {
-    return "DIRECT";
+  if (shExpMatch(host, 'proxy.*') ||
+    shExpMatch(host, 'cdn.*')) {
+    return 'DIRECT';
   }
 
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
-      (isInNet(host, "10.0.0.0", "255.0.0.0") ||
-       isInNet(host, "172.16.0.0", "255.240.0.0") ||
-       isInNet(host, "192.168.0.0", "255.255.0.0") ||
-       isInNet(host, "127.0.0.0", "255.255.255.0"))) {
-    return "DIRECT";
+      (isInNet(host, '10.0.0.0', '255.0.0.0') ||
+       isInNet(host, '172.16.0.0', '255.240.0.0') ||
+       isInNet(host, '192.168.0.0', '255.255.0.0') ||
+       isInNet(host, '127.0.0.0', '255.0.0.0'))) {
+    return 'DIRECT';
   }
 
-  if (shExpMatch(host, "cdn.jsx.jp") ||
-      shExpMatch(host, "*.cdn.jsx.jp") ||
-      shExpMatch(host, "*.nip.io") ||
-      shExpMatch(host, "*.xip.io")) {
-    return "DIRECT";
+  if (shExpMatch(host, 'cdn.jsx.jp') ||
+      shExpMatch(host, '*.cdn.jsx.jp') ||
+      shExpMatch(host, '*.nip.io') ||
+      shExpMatch(host, '*.xip.io')) {
+    return 'DIRECT';
   }
 
   // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
   // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
 
-  if (shExpMatch(host, "*.internal")) {
-    return "SOCKS proxy.in.jsx.jp:3128; DIRECT";
+  if (shExpMatch(host, '*.internal')) {
+    return 'SOCKS proxy.in.jsx.jp:3128; DIRECT';
   }
 
-  if (shExpMatch(host, "*.quest") ||
-      shExpMatch(host, "*.strategy*.com")) {
-    return "DIRECT";
+  if (shExpMatch(host, '*.quest') ||
+      shExpMatch(host, '*.strategy*.com')) {
+    return 'DIRECT';
   }
 
-  if (shExpMatch(host, "txcom-ad.s3-ap-northeast-1.amazonaws.com")) {
-    return "DENY";
+  if (shExpMatch(host, 'txcom-ad.s3-ap-northeast-1.amazonaws.com')) {
+    return 'DENY';
   }
 
-  if (shExpMatch(host, "*.value-domain.com")) {
-    return "PROXY proxy.jsx.jp:3129";
+  if (shExpMatch(host, '*.value-domain.com')) {
+    return 'PROXY proxy.jsx.jp:3129';
   }
 
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
-    return "DIRECT";
+  if (shExpMatch(host, 'jsx.jp') ||
+      shExpMatch(host, '*.jsx.jp')) {
+    return 'DIRECT';
   }
 
-  if (shExpMatch(host, "*.cloudfront.net")) {
-    return "PROXY proxy.os.jsx.jp:443";
+  if (shExpMatch(host, '*.cloudfront.net')) {
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "copilot.microsoft.com")) {
-    return "PROXY proxy.os.jsx.jp:443";
+  if (shExpMatch(host, 'copilot.microsoft.com')) {
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.microsoft.com") ||
-      shExpMatch(host, "*.microsoftonline.com") ||
-      shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.os.jsx.jp:443";
+  if (shExpMatch(host, '*.microsoft.com') ||
+      shExpMatch(host, '*.microsoftonline.com') ||
+      shExpMatch(host, '*.office.com')) {
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.aws.amazon.com") ||
-      shExpMatch(host, "*.amazonaws.com")) {
-    return "PROXY proxy.os.jsx.jp:443";
+  if (shExpMatch(host, '*.aws.amazon.com') ||
+      shExpMatch(host, '*.amazonaws.com')) {
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.amazon.co.jp") ||
-      shExpMatch(host, "*.amazon.com")) {
-    return "PROXY proxy.jsx.jp:3128";
+  if (shExpMatch(host, '*.amazon.co.jp') ||
+      shExpMatch(host, '*.amazon.com')) {
+    return 'PROXY proxy.jsx.jp:3128';
   }
 
-  if (shExpMatch(host, "*.google.co.jp") ||
-      shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.jsx.jp:3128";
+  if (shExpMatch(host, '*.google.co.jp') ||
+      shExpMatch(host, '*.google.com')) {
+    return 'PROXY proxy.jsx.jp:3128';
   }
 
-  if (shExpMatch(host, "cu-ad.tbs.co.jp") ||
-      shExpMatch(host, "cu-cdn-ad.ntv.co.jp") ||
-      shExpMatch(host, "cu-cdn-ad-v3.ntv.co.jp") ||
-      shExpMatch(host, "cu-ad.mbs.jp") ||
-      shExpMatch(host, "cdncuad.ktv.jp") ||
-      shExpMatch(host, "fod-cm-ad-v.webcdn.stream.ne.jp") ||
-      shExpMatch(host, "i.socdm.com") ||
-      shExpMatch(host, "s.socdm.com") ||
-      shExpMatch(host, "gcdn.2mdn.net") ||
-      shExpMatch(host, "cdn.spotxcdn.com") ||
-      shExpMatch(host, "cdn.as.amanad.adtdp.com") ||
-      shExpMatch(host, "videoad.tv-tokyo.co.jp") ||
-      shExpMatch(host, "chesterstream.akamaized.net") ||
-      shExpMatch(host, "tver-pmp.dspcdn.com") ||
-      shExpMatch(host, "video-assets.mathtag.com") ||
-      shExpMatch(host, "v.adsrvr.org") ||
-      shExpMatch(host, "redirector.gvt1.com") ||
-      shExpMatch(host, "ak-act.pubmatic.com") ||
-      shExpMatch(host, "m.ads.tver.jp") ||
-      shExpMatch(host, "*googleads.*")) {
-    return "PROXY proxy.jsx.jp:3128";
+  var ads = [
+    'cu-ad.tbs.co.jp',
+    'cu-cdn-ad.ntv.co.jp',
+    'cu-cdn-ad-v3.ntv.co.jp',
+    'cu-ad.mbs.jp',
+    'cdncuad.ktv.jp',
+    'fod-cm-ad-v.webcdn.stream.ne.jp',
+    'i.socdm.com',
+    's.socdm.com',
+    'gcdn.2mdn.net',
+    'cdn.spotxcdn.com',
+    'cdn.as.amanad.adtdp.com',
+    'videoad.tv-tokyo.co.jp',
+    'chesterstream.akamaized.net',
+    'tver-pmp.dspcdn.com',
+    'video-assets.mathtag.com',
+    'v.adsrvr.org',
+    'redirector.gvt1.com',
+    'ak-act.pubmatic.com',
+    'm.ads.tver.jp',
+    '*googleads.*',
+    '*.yimg.jp',
+    '*ads.g.doubleclick.net',
+  ];
+  if (someMatch(shExpMatch, host, ads)) {
+    return 'PROXY proxy.jsx.jp:3128';
   }
 
-  return "PROXY proxy.jsx.jp:3128; DIRECT";
+  return 'PROXY proxy.jsx.jp:3128; DIRECT';
 }
