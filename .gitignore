@@ -11,3 +11,4 @@ cert.*
 *.csr
 *.cert
 tls/
+.vscode/

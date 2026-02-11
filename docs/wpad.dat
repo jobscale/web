@@ -1,3 +1,13 @@
+function isPrivate(host) {
+  if (dnsDomainLevels(host) === 0) return true;
+  if (!/^\d+\.\d+\.\d+\.\d+$/.test(host)) return false;
+  if (isInNet(host, '127.0.0.0', '255.0.0.0')) return true;
+  if (isInNet(host, '10.0.0.0', '255.0.0.0')) return true;
+  if (isInNet(host, '172.16.0.0', '255.240.0.0')) return true;
+  if (isInNet(host, '192.168.0.0', '255.255.0.0')) return true;
+  return false;
+}
+
 function someMatch(cb, host, list) {
   for (var i = 0; i < list.length; i++) {
     if (cb(host, list[i])) return true;
@@ -6,77 +16,50 @@ function someMatch(cb, host, list) {
 }
 
 function FindProxyForURL(url, host) {
-  if (shExpMatch(host, 'proxy.*') ||
-    shExpMatch(host, 'cdn.*')) {
+  if (isPrivate(host)) {
     return 'DIRECT';
   }
 
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
-      (isInNet(host, '10.0.0.0', '255.0.0.0') ||
-       isInNet(host, '172.16.0.0', '255.240.0.0') ||
-       isInNet(host, '192.168.0.0', '255.255.0.0') ||
-       isInNet(host, '127.0.0.0', '255.0.0.0'))) {
+  var allowDirect = [
+    'proxy.*', 'cdn.*', 'jsx.jp', 'www.jsx.jp', 'cdn.jsx.jp', '*.cdn.jsx.jp',
+    '*.nip.io', '*.xip.io', '*.quest', '*.strategy*.com',
+  ];
+  if (someMatch(shExpMatch, host, allowDirect)) {
     return 'DIRECT';
   }
 
-  if (shExpMatch(host, 'cdn.jsx.jp') ||
-      shExpMatch(host, '*.cdn.jsx.jp') ||
-      shExpMatch(host, '*.nip.io') ||
-      shExpMatch(host, '*.xip.io')) {
-    return 'DIRECT';
-  }
-
-  // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
-  // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
-
-  if (shExpMatch(host, '*.internal')) {
+  var internal = ['*.internal'];
+  if (someMatch(shExpMatch, host, internal)) {
     return 'SOCKS proxy.in.jsx.jp:3128; DIRECT';
   }
 
-  if (shExpMatch(host, '*.quest') ||
-      shExpMatch(host, '*.strategy*.com')) {
-    return 'DIRECT';
-  }
-
-  if (shExpMatch(host, 'txcom-ad.s3-ap-northeast-1.amazonaws.com')) {
+  var denySite = ['txcom-ad.s3-ap-northeast-1.amazonaws.com'];
+  if (someMatch(shExpMatch, host, denySite)) {
     return 'DENY';
   }
 
-  if (shExpMatch(host, '*.value-domain.com')) {
-    return 'PROXY proxy.jsx.jp:3129';
-  }
-
-  if (shExpMatch(host, 'jsx.jp') ||
-      shExpMatch(host, '*.jsx.jp')) {
-    return 'DIRECT';
-  }
-
-  if (shExpMatch(host, '*.cloudfront.net')) {
-    return 'PROXY proxy.os.jsx.jp:443';
-  }
-
-  if (shExpMatch(host, 'copilot.microsoft.com')) {
-    return 'PROXY proxy.os.jsx.jp:443';
-  }
-
-  if (shExpMatch(host, '*.microsoft.com') ||
-      shExpMatch(host, '*.microsoftonline.com') ||
-      shExpMatch(host, '*.office.com')) {
-    return 'PROXY proxy.os.jsx.jp:443';
-  }
-
-  if (shExpMatch(host, '*.aws.amazon.com') ||
-      shExpMatch(host, '*.amazonaws.com')) {
-    return 'PROXY proxy.os.jsx.jp:443';
-  }
-
-  if (shExpMatch(host, '*.amazon.co.jp') ||
-      shExpMatch(host, '*.amazon.com')) {
+  var ai = ['chat.openai.com', 'gemini.google.com', 'copilot.microsoft.com'];
+  if (someMatch(shExpMatch, host, ai)) {
     return 'PROXY proxy.jsx.jp:3128';
   }
 
-  if (shExpMatch(host, '*.google.co.jp') ||
-      shExpMatch(host, '*.google.com')) {
+  var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
+  if (someMatch(shExpMatch, host, microsoft)) {
+    return 'PROXY proxy.os.jsx.jp:443';
+  }
+
+  var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
+  if (someMatch(shExpMatch, host, aws)) {
+    return 'PROXY proxy.os.jsx.jp:443';
+  }
+
+  var amazon = ['*.amazon.co.jp', '*.amazon.com'];
+  if (someMatch(shExpMatch, host, amazon)) {
+    return 'PROXY proxy.jsx.jp:3128';
+  }
+
+  var google = ['*.google.co.jp', '*.google.com'];
+  if (someMatch(shExpMatch, host, google)) {
     return 'PROXY proxy.jsx.jp:3128';
   }
 

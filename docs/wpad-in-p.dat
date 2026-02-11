@@ -8,7 +8,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (isInNet(host, "172.16.128.0", "255.255.128.0")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
@@ -36,7 +36,7 @@ function FindProxyForURL(url, host) {
   }
 
   if (shExpMatch(host, "www-*.*.next*ure.jp")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.next*ure.jp")) {
@@ -45,41 +45,45 @@ function FindProxyForURL(url, host) {
 
   if (shExpMatch(host, "jsx.jp") ||
       shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "*.google.co.jp") ||
       shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.jp.jsx.jp:443";
+    return "PROXY proxy.os.jsx.jp:443";
   }
 
   if (shExpMatch(host, "ni*bo.jp") ||
       shExpMatch(host, "*.ni*bo.jp")) {
-    return 'PROXY proxy.jp.jsx.jp:443';
+    return 'PROXY proxy.os.jsx.jp:443';
+  }
+
+  if (shExpMatch(host, "*.s3-ap-northeast-1.amazonaws.com")) {
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.aws.amazon.com") ||
       shExpMatch(host, "*.amazonaws.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return 'PROXY proxy.os.jsx.jp:443';
   }
 
   if (shExpMatch(host, "*.measurement-lab.org")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.pan*sonic.co.jp") ||
       shExpMatch(host, "*.pan*sonic.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.cloudfront.net")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.microsoft.com") ||
       shExpMatch(host, "*.microsoftonline.com") ||
       shExpMatch(host, "*.office.com")) {
-    return "PROXY proxy.in.jsx.jp:8080";
+    return "SOCKS proxy.in.jsx.jp:3128";
   }
 
   if (shExpMatch(host, "*.amazon.co.jp") ||
