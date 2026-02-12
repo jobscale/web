@@ -36,8 +36,7 @@ function FindProxyForURL(url, host) {
     return 'SOCKS proxy.in.jsx.jp:3128';
   }
 
-  var internal = [
-    '*.internal',
+  var external = [
     '*.next*ure.jp',
     'ni*bo.jp',
     '*.ni*bo.jp',
@@ -46,6 +45,11 @@ function FindProxyForURL(url, host) {
     '*.pan*sonic.co.jp',
     '*.pan*sonic.com',
   ];
+  if (someMatch(shExpMatch, host, external)) {
+    return 'PROXY proxy.in.jsx.jp:8080';
+  }
+
+  var internal = ['*.internal'];
   if (someMatch(shExpMatch, host, internal)) {
     return 'SOCKS proxy.in.jsx.jp:3128; DIRECT';
   }
@@ -63,12 +67,12 @@ function FindProxyForURL(url, host) {
 
   var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
   if (someMatch(shExpMatch, host, microsoft)) {
-    return 'PROXY proxy.in.jsx.jp:443';
+    return 'PROXY proxy.in.jsx.jp:8080';
   }
 
   var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
   if (someMatch(shExpMatch, host, aws)) {
-    return 'PROXY proxy.in.jsx.jp:443';
+    return 'PROXY proxy.in.jsx.jp:8080';
   }
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
