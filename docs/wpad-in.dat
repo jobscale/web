@@ -1,95 +1,113 @@
+function isPrivate(host) {
+  if (dnsDomainLevels(host) === 0) return true;
+  if (!/^\d+\.\d+\.\d+\.\d+$/.test(host)) return false;
+  if (isInNet(host, '127.0.0.0', '255.0.0.0')) return true;
+  if (isInNet(host, '10.0.0.0', '255.0.0.0')) return true;
+  if (isInNet(host, '172.16.0.0', '255.240.0.0')) return true;
+  if (isInNet(host, '192.168.0.0', '255.255.0.0')) return true;
+  return false;
+}
+
+function someMatch(cb, host, list) {
+  for (var i = 0; i < list.length; i++) {
+    if (cb(host, list[i])) return true;
+  }
+  return false;
+}
+
 function FindProxyForURL(url, host) {
-  if (shExpMatch(host, "proxy.*")) {
-    return "DIRECT";
+  if (isPrivate(host)) {
+    return 'DIRECT';
   }
 
-  if (isInNet(host, "10.0.0.0", "255.0.0.0")) {
-    return "SOCKS proxy.in.jsx.jp:11023";
+  var allowDirect = [
+    'proxy.*', 'cdn.*', 'jsx.jp', 'www.jsx.jp', 'cdn.jsx.jp', '*.cdn.jsx.jp',
+    '*.nip.io', '*.xip.io', '*.quest', '*.strategy*.com',
+  ];
+  if (someMatch(shExpMatch, host, allowDirect)) {
+    return 'DIRECT';
   }
 
-  if (isInNet(host, "172.16.128.0", "255.255.128.0")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
+  if (isInNet(host, '10.0.0.0', '255.0.0.0')) {
+    return 'SOCKS proxy.in.jsx.jp:11023';
   }
 
-  if (/^\d+\.\d+\.\d+\.\d+$/.test(host) &&
-      (isInNet(host, "10.0.0.0", "255.0.0.0") ||
-       isInNet(host, "172.16.0.0", "255.240.0.0") ||
-       isInNet(host, "192.168.0.0", "255.255.0.0") ||
-       isInNet(host, "127.0.0.0", "255.255.255.0"))) {
-    return "DIRECT";
+  if (isInNet(host, '172.16.128.0', '255.255.128.0')) {
+    return 'SOCKS proxy.in.jsx.jp:3128';
   }
 
-  if (shExpMatch(host, "cdn.jsx.jp") ||
-      shExpMatch(host, "*.cdn.jsx.jp") ||
-      shExpMatch(host, "*.proxy.jsx.jp") ||
-      shExpMatch(host, "*.x.jsx.jp") ||
-      shExpMatch(host, "*.nip.io") ||
-      shExpMatch(host, "*.xip.io")) {
-    return "DIRECT";
+  var internal = [
+    '*.internal',
+    '*.next*ure.jp',
+    'ni*bo.jp',
+    '*.ni*bo.jp',
+    '*.s3-ap-northeast-1.amazonaws.com',
+    '*.measurement-lab.org',
+    '*.pan*sonic.co.jp',
+    '*.pan*sonic.com',
+  ];
+  if (someMatch(shExpMatch, host, internal)) {
+    return 'SOCKS proxy.in.jsx.jp:3128; DIRECT';
   }
 
-  // no_proxy: 192.168.0.0./16, 172.16.0.0./12, 10.0.0.0/8, localhost, 127.0.0.0/8, ::1
-  // no_proxy: in.jsx.jp, os.jsx.jp, us.jsx.jp, eu.jsx.jp
-
-  if (shExpMatch(host, "*.internal")) {
-    return "SOCKS proxy.in.jsx.jp:3128; DIRECT";
+  var denySite = ['txcom-ad.s3-ap-northeast-1.amazonaws.com'];
+  if (someMatch(shExpMatch, host, denySite)) {
+    return 'DENY';
   }
 
-  if (shExpMatch(host, "www-*.*.next*ure.jp")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
-  }
 
-  if (shExpMatch(host, "*.next*ure.jp")) {
-    return "SOCKS proxy.in.jsx.jp:11023";
-  }
-
-  if (shExpMatch(host, "jsx.jp") ||
-      shExpMatch(host, "*.jsx.jp")) {
-    return "PROXY proxy.os.jsx.jp:443";
-  }
-
-  if (shExpMatch(host, "*.google.co.jp") ||
-      shExpMatch(host, "*.google.com")) {
-    return "PROXY proxy.os.jsx.jp:443";
-  }
-
-  if (shExpMatch(host, "ni*bo.jp") ||
-      shExpMatch(host, "*.ni*bo.jp")) {
+  var ai = ['chat.openai.com', 'gemini.google.com', 'copilot.microsoft.com'];
+  if (someMatch(shExpMatch, host, ai)) {
     return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.s3-ap-northeast-1.amazonaws.com")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
+  var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
+  if (someMatch(shExpMatch, host, microsoft)) {
+    return 'PROXY proxy.in.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.aws.amazon.com") ||
-      shExpMatch(host, "*.amazonaws.com")) {
+  var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
+  if (someMatch(shExpMatch, host, aws)) {
+    return 'PROXY proxy.in.jsx.jp:443';
+  }
+
+  var amazon = ['*.amazon.co.jp', '*.amazon.com'];
+  if (someMatch(shExpMatch, host, amazon)) {
+    return 'PROXY proxy.jsx.jp:3128';
+  }
+
+  var google = ['*.google.co.jp', '*.google.com'];
+  if (someMatch(shExpMatch, host, google)) {
     return 'PROXY proxy.os.jsx.jp:443';
   }
 
-  if (shExpMatch(host, "*.measurement-lab.org")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
+  var ads = [
+    'cu-ad.tbs.co.jp',
+    'cu-cdn-ad.ntv.co.jp',
+    'cu-cdn-ad-v3.ntv.co.jp',
+    'cu-ad.mbs.jp',
+    'cdncuad.ktv.jp',
+    'fod-cm-ad-v.webcdn.stream.ne.jp',
+    'i.socdm.com',
+    's.socdm.com',
+    'gcdn.2mdn.net',
+    'cdn.spotxcdn.com',
+    'cdn.as.amanad.adtdp.com',
+    'videoad.tv-tokyo.co.jp',
+    'chesterstream.akamaized.net',
+    'tver-pmp.dspcdn.com',
+    'video-assets.mathtag.com',
+    'v.adsrvr.org',
+    'redirector.gvt1.com',
+    'ak-act.pubmatic.com',
+    'm.ads.tver.jp',
+    '*googleads.*',
+    '*.yimg.jp',
+    '*ads.g.doubleclick.net',
+  ];
+  if (someMatch(shExpMatch, host, ads)) {
+    return 'PROXY proxy.jsx.jp:3128';
   }
 
-  if (shExpMatch(host, "*.pan*sonic.co.jp") ||
-      shExpMatch(host, "*.pan*sonic.com")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "*.cloudfront.net")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "*.microsoft.com") ||
-      shExpMatch(host, "*.microsoftonline.com") ||
-      shExpMatch(host, "*.office.com")) {
-    return "SOCKS proxy.in.jsx.jp:3128";
-  }
-
-  if (shExpMatch(host, "*.amazon.co.jp") ||
-      shExpMatch(host, "*.amazon.com")) {
-    return "PROXY proxy.jsx.jp:3128";
-  }
-
-  return "PROXY proxy.jsx.jp:3128; DIRECT";
+  return 'PROXY proxy.jsx.jp:3128; DIRECT';
 }
