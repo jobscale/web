@@ -89,6 +89,7 @@ function FindProxyForURL(url, host) {
     'mf.socdm.com',
     '*.aiv-delivery.net',
     '*.amazon.pv-cdn.net',
+    '*.aux.pv-cdn.net',
   ];
   if (someMatch(shExpMatch, host, ads)) {
     return 'PROXY proxy.jsx.jp:3128';
