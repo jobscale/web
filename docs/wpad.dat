@@ -87,6 +87,8 @@ function FindProxyForURL(url, host) {
     '*.yimg.jp',
     '*ads.g.doubleclick.net',
     'mf.socdm.com',
+    '*.aiv-delivery.net',
+    '*.amazon.pv-cdn.net',
   ];
   if (someMatch(shExpMatch, host, ads)) {
     return 'PROXY proxy.jsx.jp:3128';
