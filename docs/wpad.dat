@@ -86,6 +86,7 @@ function FindProxyForURL(url, host) {
     '*googleads.*',
     '*.yimg.jp',
     '*ads.g.doubleclick.net',
+    'mf.socdm.com',
   ];
   if (someMatch(shExpMatch, host, ads)) {
     return 'PROXY proxy.jsx.jp:3128';
