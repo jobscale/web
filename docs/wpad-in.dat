@@ -40,6 +40,18 @@ function FindProxyForURL(url, host) {
   ];
   if (someMatch(isInNet, host, fish)) return proxies.beef;
 
+  var external = [
+    '*.next*ure.jp',
+    'ni*bo.jp',
+    '*.ni*bo.jp',
+    '*.measurement-lab.org',
+    '*.pan*nic.co.jp',
+    '*.pan*nic.com',
+    '*.s3-ap-northeast-1.amazonaws.com',
+    '*.cloudfront.net',
+  ];
+  if (someMatch(isInNet, host, external)) return proxies.beef;
+
   if (isPrivate(host)) return 'DIRECT';
 
   var allowDirect = [
