@@ -24,10 +24,10 @@ function isPrivate(host) {
 
 var proxies = {
   beef: 'PROXY proxy.os.jsx.jp:443',
-  pork: 'SOCKS proxy.n100.jsx.jp:8010',
-  chicken: '',
+  pork: '',
+  chicken: 'SOCKS proxy.n100.jsx.jp:8010',
   mutton: 'PROXY proxy.jsx.jp:3128',
-  venison: '',
+  venison: 'PROXY proxy.us.jsx.jp:3128',
   veal: 'PROXY proxy.jsx.jp:3128',
   deny: 'SOCKS 127.0.0.9:9',
 };
@@ -41,8 +41,8 @@ function FindProxyForURL(url, host) {
   ];
   if (someMatch(shExpMatch, host, allowDirect)) return 'DIRECT';
 
-  var real = [['10.0.0.0', '255.255.0.0']];
-  if (someMatch(isInNet, host, real)) return proxies.chicken;
+  var chicken = [['10.0.0.0', '255.255.0.0']];
+  if (someMatch(isInNet, host, chicken)) return proxies.chicken;
 
   var internal = ['*.internal'];
   if (someMatch(shExpMatch, host, internal)) return proxies.beef;
