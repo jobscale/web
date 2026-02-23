@@ -22,22 +22,28 @@ function isPrivate(host) {
   return someMatch(isInNet, host, private);
 }
 
-function FindProxyForURL(url, host) {
-  var beefProxy = 'SOCKS proxy.in.jsx.jp:8010';
+var proxies = {
+  beef: 'PROXY proxy.os.jsx.jp:443',
+  pork: 'SOCKS proxy.n100.jsx.jp:8010',
+  chicken: 'SOCKS proxy.in.jsx.jp:11023',
+  mutton: 'PROXY proxy.jsx.jp:3128',
+  venison: '',
+  veal: 'PROXY proxy.jsx.jp:3128',
+  deny: 'SOCKS 127.0.0.9:9',
+};
 
+function FindProxyForURL(url, host) {
   var fish = [
     ['172.16.176.0', '255.255.255.0'],
-    ['172.16.150.0', '255.255.255.0']
-    ['172.16.128.0', '255.255.255.0']
+    ['172.16.150.0', '255.255.255.0'],
+    ['172.16.128.0', '255.255.255.0'],
   ];
-  if (someMatch(isInNet, host, fish)) return beefProxy;
+  if (someMatch(isInNet, host, fish)) return proxies.beef;
 
   var chicken = [
     ['10.0.0.0', '255.0.0.0'],
   ];
-  if (someMatch(isInNet, host, chicken)) {
-    return 'SOCKS proxy.in.jsx.jp:11023';
-  }
+  if (someMatch(isInNet, host, chicken)) return proxies.chicken;
 
   if (isPrivate(host)) return 'DIRECT';
 
@@ -48,36 +54,28 @@ function FindProxyForURL(url, host) {
   if (someMatch(shExpMatch, host, allowDirect)) return 'DIRECT';
 
   var real = [['10.0.0.0', '255.255.0.0']];
-  if (someMatch(isInNet, host, real)) {
-    return 'SOCKS proxy.n100.jsx.jp:8010; DIRECT';
-  }
+  if (someMatch(isInNet, host, real)) return proxies.chicken;
 
   var internal = ['*.internal'];
-  if (someMatch(shExpMatch, host, internal)) return beefProxy;
+  if (someMatch(shExpMatch, host, internal)) return proxies.beef;
 
   var denySite = ['txcom-ad.s3-ap-northeast-1.amazonaws.com'];
-  if (someMatch(shExpMatch, host, denySite)) {
-    return 'SOCKS 127.0.0.9:9';
-  }
+  if (someMatch(shExpMatch, host, denySite)) return proxies.deny;
 
   var ai = ['chat.openai.com', 'gemini.google.com', 'copilot.microsoft.com'];
-  if (someMatch(shExpMatch, host, ai)) {
-    return 'PROXY proxy.jsx.jp:3128';
-  }
+  if (someMatch(shExpMatch, host, ai)) return proxies.veal;
 
   var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
-  if (someMatch(shExpMatch, host, microsoft)) return beefProxy;
+  if (someMatch(shExpMatch, host, microsoft)) return proxies.beef;
 
   var google = ['*.google.co.jp', '*.google.com'];
-  if (someMatch(shExpMatch, host, google)) return beefProxy;
+  if (someMatch(shExpMatch, host, google)) return proxies.beef;
 
   var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
-  if (someMatch(shExpMatch, host, aws)) return beefProxy;
+  if (someMatch(shExpMatch, host, aws)) return proxies.beef;
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
-  if (someMatch(shExpMatch, host, amazon)) {
-    return 'PROXY proxy.jsx.jp:3128';
-  }
+  if (someMatch(shExpMatch, host, amazon)) return proxies.mutton;
 
   var ads = [
     'cu-ad.tbs.co.jp',
@@ -107,9 +105,7 @@ function FindProxyForURL(url, host) {
     '*.amazon.pv-cdn.net',
     '*.aux.pv-cdn.net',
   ];
-  if (someMatch(shExpMatch, host, ads)) {
-    return 'PROXY proxy.jsx.jp:3128';
-  }
+  if (someMatch(shExpMatch, host, ads)) return proxies.mutton;
 
-  return 'PROXY proxy.jsx.jp:3128; DIRECT';
+  return proxies.mutton + '; DIRECT';
 }
