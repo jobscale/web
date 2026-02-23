@@ -1,18 +1,25 @@
-function isPrivate(host) {
-  if (dnsDomainLevels(host) === 0) return true;
-  if (!/^\d+\.\d+\.\d+\.\d+$/.test(host)) return false;
-  if (isInNet(host, '127.0.0.0', '255.0.0.0')) return true;
-  if (isInNet(host, '10.0.0.0', '255.0.0.0')) return true;
-  if (isInNet(host, '172.16.0.0', '255.240.0.0')) return true;
-  if (isInNet(host, '192.168.0.0', '255.255.0.0')) return true;
+function someMatch(cb, host, list) {
+  for (var i = 0; i < list.length; i++) {
+    if (Array.isArray(list[i])) {
+      if (cb.apply(null, [host].concat(list[i]))) return true;
+    } else {
+      if (cb(host, list[i])) return true;
+    }
+  }
   return false;
 }
 
-function someMatch(cb, host, list) {
-  for (var i = 0; i < list.length; i++) {
-    if (cb(host, list[i])) return true;
-  }
-  return false;
+function isPrivate(host) {
+  if (dnsDomainLevels(host) === 0) return true;
+  if (!/^\d+\.\d+\.\d+\.\d+$/.test(host)) return false;
+
+  var private = [
+    ['127.0.0.0', '255.0.0.0'],
+    ['10.0.0.0', '255.0.0.0'],
+    ['172.16.0.0', '255.240.0.0'],
+    ['192.168.0.0', '255.255.0.0'],
+  ];
+  return someMatch(isInNet, host, private);
 }
 
 function FindProxyForURL(url, host) {
@@ -28,14 +35,19 @@ function FindProxyForURL(url, host) {
     return 'DIRECT';
   }
 
+  var real = [['10.0.0.0', '255.255.0.0']];
+  if (someMatch(isInNet, host, real)) {
+    return 'SOCKS proxy.n100.jsx.jp:8010; DIRECT';
+  }
+
   var internal = ['*.internal'];
   if (someMatch(shExpMatch, host, internal)) {
-    return 'SOCKS proxy.in.jsx.jp:3128; DIRECT';
+    return 'SOCKS proxy.in.jsx.jp:8010; DIRECT';
   }
 
   var denySite = ['txcom-ad.s3-ap-northeast-1.amazonaws.com'];
   if (someMatch(shExpMatch, host, denySite)) {
-    return 'DENY';
+    return 'SOCKS 127.0.0.9:9';
   }
 
   var ai = ['chat.openai.com', 'gemini.google.com', 'copilot.microsoft.com'];
@@ -48,6 +60,11 @@ function FindProxyForURL(url, host) {
     return 'PROXY proxy.os.jsx.jp:443';
   }
 
+  var google = ['*.google.co.jp', '*.google.com'];
+  if (someMatch(shExpMatch, host, google)) {
+    return 'PROXY proxy.os.jsx.jp:3128';
+  }
+
   var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
   if (someMatch(shExpMatch, host, aws)) {
     return 'PROXY proxy.os.jsx.jp:443';
@@ -55,11 +72,6 @@ function FindProxyForURL(url, host) {
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
   if (someMatch(shExpMatch, host, amazon)) {
-    return 'PROXY proxy.jsx.jp:3128';
-  }
-
-  var google = ['*.google.co.jp', '*.google.com'];
-  if (someMatch(shExpMatch, host, google)) {
     return 'PROXY proxy.jsx.jp:3128';
   }
 
