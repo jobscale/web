@@ -23,14 +23,14 @@ function isPrivate(host) {
 }
 
 function FindProxyForURL(url, host) {
+  var beefProxy = 'SOCKS proxy.in.jsx.jp:8010';
+
   var fish = [
     ['172.16.176.0', '255.255.255.0'],
     ['172.16.150.0', '255.255.255.0']
     ['172.16.128.0', '255.255.255.0']
   ];
-  if (someMatch(isInNet, host, fish)) {
-    return 'SOCKS proxy.in.jsx.jp:8010';
-  }
+  if (someMatch(isInNet, host, fish)) return beefProxy;
 
   var chicken = [
     ['10.0.0.0', '255.0.0.0'],
@@ -39,17 +39,13 @@ function FindProxyForURL(url, host) {
     return 'SOCKS proxy.in.jsx.jp:11023';
   }
 
-  if (isPrivate(host)) {
-    return 'DIRECT';
-  }
+  if (isPrivate(host)) return 'DIRECT';
 
   var allowDirect = [
     'proxy.*', 'cdn.*', 'jsx.jp', 'www.jsx.jp', 'cdn.jsx.jp', '*.cdn.jsx.jp',
     '*.nip.io', '*.xip.io', '*.quest', '*.strategy*.com',
   ];
-  if (someMatch(shExpMatch, host, allowDirect)) {
-    return 'DIRECT';
-  }
+  if (someMatch(shExpMatch, host, allowDirect)) return 'DIRECT';
 
   var real = [['10.0.0.0', '255.255.0.0']];
   if (someMatch(isInNet, host, real)) {
@@ -57,9 +53,7 @@ function FindProxyForURL(url, host) {
   }
 
   var internal = ['*.internal'];
-  if (someMatch(shExpMatch, host, internal)) {
-    return 'SOCKS proxy.in.jsx.jp:8010; DIRECT';
-  }
+  if (someMatch(shExpMatch, host, internal)) return beefProxy;
 
   var denySite = ['txcom-ad.s3-ap-northeast-1.amazonaws.com'];
   if (someMatch(shExpMatch, host, denySite)) {
@@ -71,22 +65,14 @@ function FindProxyForURL(url, host) {
     return 'PROXY proxy.jsx.jp:3128';
   }
 
-  var beefProxy = 'SOCKS proxy.in.jsx.jp:8010';
-
   var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
-  if (someMatch(shExpMatch, host, microsoft)) {
-    return beefProxy;
-  }
+  if (someMatch(shExpMatch, host, microsoft)) return beefProxy;
 
   var google = ['*.google.co.jp', '*.google.com'];
-  if (someMatch(shExpMatch, host, google)) {
-    return beefProxy;
-  }
+  if (someMatch(shExpMatch, host, google)) return beefProxy;
 
   var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
-  if (someMatch(shExpMatch, host, aws)) {
-    return beefProxy;
-  }
+  if (someMatch(shExpMatch, host, aws)) return beefProxy;
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
   if (someMatch(shExpMatch, host, amazon)) {
