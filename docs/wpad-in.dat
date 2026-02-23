@@ -23,7 +23,7 @@ function isPrivate(host) {
 }
 
 var proxies = {
-  beef: 'PROXY proxy.os.jsx.jp:443',
+  beef: 'PROXY proxy.in.jsx.jp:8080',
   pork: 'SOCKS proxy.n100.jsx.jp:8010',
   chicken: 'SOCKS proxy.in.jsx.jp:11023',
   mutton: 'PROXY proxy.jsx.jp:3128',
