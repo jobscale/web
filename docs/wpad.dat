@@ -55,19 +55,21 @@ function FindProxyForURL(url, host) {
     return 'PROXY proxy.jsx.jp:3128';
   }
 
+  var beefProxy = 'PROXY proxy.os.jsx.jp:443';
+
   var microsoft = ['*.microsoft.com', '*.microsoftonline.com', '*.office.com'];
   if (someMatch(shExpMatch, host, microsoft)) {
-    return 'PROXY proxy.os.jsx.jp:443';
+    return beefProxy;
   }
 
   var google = ['*.google.co.jp', '*.google.com'];
   if (someMatch(shExpMatch, host, google)) {
-    return 'PROXY proxy.os.jsx.jp:3128';
+    return beefProxy;
   }
 
   var aws = ['*.aws.amazon.com', '*.amazonaws.com', '*.cloudfront.net'];
   if (someMatch(shExpMatch, host, aws)) {
-    return 'PROXY proxy.os.jsx.jp:443';
+    return beefProxy;
   }
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
