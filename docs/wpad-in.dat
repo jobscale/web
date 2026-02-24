@@ -24,7 +24,7 @@ function isPrivate(host) {
 
 var proxies = {
   beef: 'SOCKS proxy.in.jsx.jp:8010',
-  pork: '',
+  pork: 'PROXY proxy.in.jsx.jp:8080',
   chicken: 'SOCKS proxy.in.jsx.jp:11023',
   mutton: 'PROXY proxy.jsx.jp:3128',
   venison: 'PROXY proxy.us.jsx.jp:3128',
@@ -50,7 +50,7 @@ function FindProxyForURL(url, host) {
     '*.s3-ap-northeast-1.amazonaws.com',
     '*.cloudfront.net',
   ];
-  if (someMatch(isInNet, host, external)) return proxies.beef;
+  if (someMatch(isInNet, host, external)) return proxies.pork;
 
   if (isPrivate(host)) return 'DIRECT';
 
