@@ -50,7 +50,7 @@ function FindProxyForURL(url, host) {
     '*.s3-ap-northeast-1.amazonaws.com',
     '*.cloudfront.net',
   ];
-  if (someMatch(isInNet, host, external)) return proxies.pork;
+  if (someMatch(shExpMatch, host, external)) return proxies.beef;
 
   if (isPrivate(host)) return 'DIRECT';
 
