@@ -41,6 +41,7 @@ function FindProxyForURL(url, host) {
   if (someMatch(isInNet, host, fish)) return proxies.beef;
 
   var external = [
+    'ba*.pe*-av*.co.jp',
     '*.next*ure.jp',
     'ni*bo.jp',
     '*.ni*bo.jp',
