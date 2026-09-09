@@ -28,7 +28,7 @@ var proxies = {
   chicken: 'SOCKS proxy.n100.jsx.jp:8010',
   mutton: 'PROXY proxy.jsx.jp:3128',
   venison: 'PROXY proxy.us.jsx.jp:3128',
-  veal: 'PROXY proxy.jsx.jp:3128',
+  veal: 'PROXY proxy.os.jsx.jp:443',
   deny: 'SOCKS 127.0.0.9:9',
 };
 
@@ -63,7 +63,7 @@ function FindProxyForURL(url, host) {
   if (someMatch(shExpMatch, host, aws)) return proxies.beef;
 
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
-  if (someMatch(shExpMatch, host, amazon)) return proxies.mutton;
+  if (someMatch(shExpMatch, host, amazon)) return proxies.veal;
 
   var ads = [
     'cu-ad.tbs.co.jp',
@@ -95,5 +95,5 @@ function FindProxyForURL(url, host) {
   ];
   if (someMatch(shExpMatch, host, ads)) return proxies.mutton;
 
-  return proxies.mutton + '; DIRECT';
+  return proxies.veal + '; DIRECT';
 }
