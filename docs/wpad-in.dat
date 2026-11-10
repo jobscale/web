@@ -83,6 +83,9 @@ function FindProxyForURL(url, host) {
   var amazon = ['*.amazon.co.jp', '*.amazon.com'];
   if (someMatch(shExpMatch, host, amazon)) return proxies.veal;
 
+  var quest = ['*.quest', '*.strategy*.com'];
+  if (someMatch(shExpMatch, host, quest)) return proxies.venison;
+
   var ads = [
     'cu-ad.tbs.co.jp',
     'cu-cdn-ad.ntv.co.jp',
